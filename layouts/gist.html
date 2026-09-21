@@ -1,0 +1,30 @@
+{{/*
+  Одиночный гист: та же базовая вёрстка, что и у обычной страницы,
+  но БЕЗ левого меню-«книги». Правое оглавление и переключатель темы
+  остаются. Поверх baseof.html (тема не тронута).
+
+  Используется страницами с front matter: layout: gist
+*/}}
+
+{{ define "menu-container" }}
+<!-- левого меню у гиста нет -->
+{{ end }}
+
+{{/*
+  Мобильный хедер: тема всегда рисует гамбургер (menu-control) и
+  правую кнопку оглавления. У гиста левого меню нет, поэтому нажатие
+  на гамбургер открывает пустоту. Гамбургер убираем — остаётся
+  заголовок и кнопка оглавления.
+*/}}
+{{ define "header" }}
+<div class="flex align-center justify-between">
+  <span class="gist-spacer"></span>
+  <h3>{{ partial "docs/title" . }}</h3>
+  {{ if .Param "BookToC" | default true }}
+  <input type="checkbox" class="toggle" id="toc-control" />
+  <label for="toc-control">
+    <img src="{{ partial "docs/icon" "toc" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Table of Contents" }}" />
+  </label>
+  {{ else }}<div></div>{{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,149 @@
+/* ============================================================
+   Верхняя панель: название сайта (клик → главная) + переключатель темы.
+   Статичная (не sticky): контент уходит вниз, ничего не перекрывается.
+   Тема верхнего меню в hugo-book отсутствует — панель наша, на её переменных.
+
+   Высота панели вынесена в --topbar-height: на неё опирается сдвиг
+   фиксированных боковых панелей темы (см. ниже), чтобы не наезжать
+   друг на друга. Меняйте высоту панели только в одном месте.
+
+   Подключается автоматически: тема собирает CSS из
+   assets/styles/index.yaml, где custom.css указан последним.
+   ============================================================ */
+
+:root {
+  --topbar-height: 3rem;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: var(--topbar-height);
+  background: var(--body-background);
+  color: var(--body-font-color);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  font-size: var(--font-size-smaller, 0.875rem);
+
+  /* Содержимое панели выравнивается строго по краям контейнера темы
+     (--container-max-width), на узких — не меньше 1rem.
+     На очень широких экранах main добавляет своё поле (--space-16),
+     поэтому там добавляем его и здесь. */
+  padding-inline: max(
+    1rem,
+    calc((100% - var(--container-max-width)) / 2)
+  );
+}
+
+@media screen and (min-width: 90rem) {
+  .topbar {
+    padding-inline: calc(
+      (100% - var(--container-max-width)) / 2 + var(--space-16)
+    );
+  }
+}
+
+/* Фиксированные боковые панели темы (book.css: top:0; bottom:0) привязаны
+   к верху экрана. Без верхней панели это правильно. С нашей панелью они
+   налезали бы на неё, поэтому отодвигаем вниз на высоту панели.
+
+   Как только панель уходит с экрана при прокрутке наверх, скрипт
+   layout-topbar.js снимает этот отступ — менюшки поднимаются к краю
+   страницы, а при прокрутке вниз снова прижимаются к панели. */
+.book-menu .book-menu-content,
+.book-toc  .book-toc-content {
+  top: var(--topbar-height);
+}
+
+.book-menu .book-menu-content.pinned-top,
+.book-toc  .book-toc-content.pinned-top {
+  top: 0;
+}
+
+/* Главная страница: пустой .book-header (слот темы под menu.home) не
+   используется — верхнее меню у нас общее, в baseof.html, на всех
+   страницах. Тема на лендинге показывает эту коробку принудительно,
+   скрываем, чтобы пустая панель не занимала место сверху. */
+.book-layout-landing .book-header {
+  display: none;
+}
+
+/* У гиста левого меню нет — кнопка-гамбургер в мобильном хедере
+   убрана, её место занимает распорка, чтобы заголовок остался по центру. */
+.gist-spacer {
+  display: block;
+  width: 2rem;
+  flex: 0 0 auto;
+}
+
+/* Мобильные: укорачиваем заголовок */
+@media (max-width: 40rem) {
+  .topbar { padding: 0 0.5rem; }
+  .topbar-home { max-width: 9rem; }
+}
+
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: var(--border-radius, 0.25rem);
+  background: transparent;
+  color: var(--body-font-color);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-btn svg {
+  display: block;
+  pointer-events: none;
+}
+
+.theme-btn:hover {
+  background: rgba(128, 128, 128, 0.14);
+}
+
+.theme-btn[aria-pressed="true"] {
+  background: rgba(128, 128, 128, 0.16);
+  border-color: var(--color-link);
+  color: var(--color-link);
+}
+
+.topbar-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--body-font-color);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.topbar-home:hover { color: var(--color-link); }
+
+.topbar-logo {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  /* Картинка colourful на любом фоне темы */
+  outline: 1px solid rgba(128, 128, 128, 0.3);
+  flex: 0 0 auto;
+}
+
+.topbar-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-spacer { flex: 1 1 auto; }
+
+/* Мобильные: укорачиваем заголовок */
+@media (max-width: 40rem) {
+  .topbar { padding: 0 0.5rem; }
+  .topbar-home { max-width: 9rem; }
+}

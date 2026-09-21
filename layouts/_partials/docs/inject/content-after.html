@@ -1,0 +1,36 @@
+{{/*
+  Точка расширения темы: код ПОСЛЕ контента страницы на каждой странице
+  (baseof.html → inject/content-after). Тема рендерит его, если файл
+  лежит в проекте (исходники темы не трогаем).
+  См. https://book.alxs.dev/docs/getting-started/configuration/#inject-partials
+
+  Здесь — автоматический список гистов. Почему ПОСЛЕ контента, а не до:
+  inject/content-before рисуется над текстом страницы, и получалось
+  «список → описание». Правильно сначала описание, потом список.
+
+  Название раздела НИГДЕ не дублируется: оно берётся из title в
+  content/gists/_index.md. Хотите переименовать — правьте ТОЛЬКО
+  этот файл (title + текст), шаблон трогать не надо.
+
+  В список попадают ТОЛЬКО страницы из каталога gists/ — проверки
+  раздела через where .Section "gists". Технические страницы из
+  других каталогов (например, tests/) сюда не идут.
+*/}}
+{{ if or .IsHome (and .IsSection (eq .Type "gists")) }}
+{{- $section := .Site.GetPage "/gists" -}}
+<section class="gists-recent">
+  <h2><a href="{{ with $section }}{{ .RelPermalink }}{{ end }}">{{ with $section }}{{ .Title }}{{ end }}</a></h2>
+  <ul>
+    {{- $pages := where .Site.RegularPages "Section" "gists" -}}
+    {{- $pages := where $pages "Date" "ne" nil -}}
+    {{- range $pages -}}
+      {{- if .Date.IsZero -}}
+        {{- errorf "%s: у гиста нет обязательного атрибута date (с минутами и секундами, например 2026-09-21T15:30:00+07:00)" .File.Path -}}
+      {{- end -}}
+    {{- end -}}
+    {{- range first 10 (sort $pages "Date" "desc") -}}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- end -}}
+  </ul>
+</section>
+{{ end }}

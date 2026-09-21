@@ -1,0 +1,11 @@
+# Hugo: результат сборки (HTML/CSS/JS) — в гит не нужен,
+# сайт собирается на GitHub Actions из исходников.
+/public/
+/resources/
+
+# Временные файлы Hugo
+.hugo_build.lock
+
+# Системный мусор (Windows)
+.DS_Store
+Thumbs.db

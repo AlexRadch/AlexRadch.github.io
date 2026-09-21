@@ -1,0 +1,41 @@
+{{/*
+  menu-section.html — ПЕРЕОПРЕДЕЛЕНИЕ темы (лежит в проекте, тему не трогаем).
+
+  Тема рендерит в боковое меню ОДНУ секцию на весь сайт, заданную в
+  hugo.toml параметром BookSection. Нам нужно несколько независимых
+  «книг»: чтобы каждый верхний каталог имел своё меню.
+
+  Решение: BookSection берётся не только из сайта, но и из front matter
+  текущего раздела (bookSection: 'gists'). А кешируется меню отдельно
+  для каждого раздела — один раз на каталог, а не на каждую страницу.
+
+  Контекст: это переопределение вызывается из ДВУХ мест темы:
+    1) menu-filetree.html   — мы его тоже переопределили, передаём страницу
+    2) prev-next.html, список тегов — вызывает тема как partialCached .Site
+       (то есть контекст — сайт, а не страница). Поэтому .Param "bookSection"
+       тут не сработает, откатываемся к Site.Params — как в теме.
+       См. https://gohugo.io/functions/partialcached/ —
+       "use a variant based on section so that the partial is only
+        rendered once per section"
+*/}}
+{{ if eq (printf "%T" .) "*page.siteWrapper" }}
+  {{/* Вызов из темы: контекст — сайт. Берём BookSection из настроек. */}}
+  {{ $bookSection := .Params.BookSection | default "/" }}
+  {{ if eq $bookSection "*" }}{{ $bookSection = "/" }}{{ end }}
+  {{ $section := .GetPage $bookSection }}
+  {{ with $section }}
+    {{ return . }}
+  {{ else }}
+    {{ errorf "%s: Section '%s' not found, check BookSection theme parameter" $ $bookSection }}
+  {{ end }}
+{{ else }}
+  {{/* Наш вызов из menu-filetree: контекст — страница. */}}
+  {{ $bookSection := default .Site.Params.BookSection (.Param "bookSection") | default "/" }}
+  {{ if eq $bookSection "*" }}{{ $bookSection = "/" }}{{ end }}
+  {{ $section := .Site.GetPage $bookSection }}
+  {{ with $section }}
+    {{ return . }}
+  {{ else }}
+    {{ errorf "%s: Section '%s' not found, check BookSection theme parameter" $ $bookSection }}
+  {{ end }}
+{{ end }}

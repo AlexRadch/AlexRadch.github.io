@@ -1,0 +1,32 @@
+{{/*
+  Шорткод {{< gists >}} — вставляет список гистов прямо в текст страницы,
+  в любом месте, сколько угодно раз.
+
+  Пример (в .md файле):
+      Здесь вступительный текст.
+
+      {{< gists >}}
+
+      А здесь продолжение текста.
+
+  Список собирается автоматически: все страницы из content/, от свежих
+  к старым. Управление датой и часовым поясом — см.
+  layouts/_partials/docs/inject/content-after.html.
+
+  Принимает необязательный лимит (по умолчанию 10):
+      {{< gists limit="5" >}}
+*/}}
+{{- $limit := default 10 (int (.Get "limit")) -}}
+{{- $pages := where .Site.RegularPages "Date" "ne" nil -}}
+{{- range $pages -}}
+  {{- if .Date.IsZero -}}
+    {{- errorf "%s: у гиста нет обязательного атрибута date (с минутами и секундами, например 2026-09-21T15:30:00+07:00)" .File.Path -}}
+  {{- end -}}
+{{- end -}}
+<section class="gists-recent">
+  <ul>
+    {{- range first $limit (sort $pages "Date" "desc") -}}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- end -}}
+  </ul>
+</section>

@@ -1,0 +1,11 @@
+{{/*
+  Точка расширения темы: код в конце <body> на каждой странице.
+  Тема рендерит его, если файл лежит в проекте (исходники темы не трогаем).
+  См. https://book.alxs.dev/docs/getting-started/configuration/#inject-partials
+*/}}
+{{ with resources.Get "scripts/theme-switcher.js" | resources.Minify }}
+  <script>{{ .Content | safeJS }}</script>
+{{ end }}
+{{ with resources.Get "scripts/layout-topbar.js" | resources.Minify }}
+  <script>{{ .Content | safeJS }}</script>
+{{ end }}
