@@ -8,7 +8,7 @@ images: ["https://habrastorage.org/r/w1560/getpro/habr/upload_files/f51/636/698/
 
 # Катастрофа человека ≠ катастрофа человечества
 
-{{< figure src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f51/636/698/f516366989609455b196cc03d8592931.png" alt="Иллюстрация из статьи МТС про сверх-ИИ" link="https://habr.com/ru/companies/ru_mts/articles/1083898/" >}}
+{{< figure src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/f51/636/698/f516366989609455b196cc03d8592931.png" alt="Иллюстрация из статьи МТС про сверх-ИИ" link="https://habr.com/ru/companies/ru_mts/articles/1083898/" class="figure-right" >}}
 
 Комментарий к статье [«Человечество, ослепленное чуждой силой. Что сверх-ИИ грядущий нам готовит?»](https://habr.com/ru/companies/ru_mts/articles/1083898/) (Блог МТС, Хабр).
 
