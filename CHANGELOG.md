@@ -6,6 +6,50 @@
 переходы (новая версия Hugo, смена темы и т.п.). Факт назначения
 фиксируется строкой в записи за дату: «Версия 0.1.0».
 
+## 2026-09-23 (вечер)
+
+- Крошки по логике темы из main-ветки: корень цепочки — ближайший
+  предок с `bookBreadcrumbRoot: true` (у `gists/` стоит), плюс «Главная»
+  впереди. Без контента — без ссылки, на корне — прячутся.
+  Разделитель — теминая иконка chevron-right (скачана в assets),
+  фолбэк — символ ›. Разметка и CSS — байт в байт из темы.
+- Крошки переехали из `<article>` в `.book-page` (как у темы).
+- Подвал на главной: свой `layouts/landing.html` (теминый гасит
+  футер). Дата + «Edit this page» как везде.
+- Сайт на русском: `defaultContentLanguage = 'ru'` (теминый перевод:
+  «Редактировать эту страницу» и др.). Рядом `locale = 'ru-ru'`.
+- Иконки: `backward`/`forward` (стрелки prev/next) скачаны в assets,
+  `chevron-right` — тоже (её не было в v0.15.0).
+
+## 2026-09-23
+
+- Хлебные крошки: свой partial `docs/breadcrumbs` (тема Book v0.15.0
+  их не имеет, `BookBreadcrumbs` — мёртвый параметр, удалён).
+  Цепочка от «Главной» через `.Ancestors.Reverse`, текущая — без ссылки.
+- Шорткод `section-tree`: дерево страниц раздела (depth, summary,
+  сортировка Weight → Date → Title). Теминый `section` задепрекейчен,
+  наш от него не зависит. Старый `gists.html` удалён.
+- Лимиты списков: `bookSectionLimit` (левое меню) и `bookListLimit`
+  (список в центре) — независимые, из front matter каждой секции.
+  У `gists/` оба по 30.
+- Левое меню: вложенная структура как у темы (`<ul>` в `<li>`),
+  рекурсия с глубиной `bookSectionDepth` (у `gists/` = 2, по умолчанию
+  бесконечно). Жирность/интервал через теминый `bookFlatSection`,
+  иконка раздела через `bookIcon` (scroll-text, Lucide, скачан
+  в `assets/icons/`). Аккордеон книг через `bookCollapseSection`
+  (чистый CSS темы, без JS).
+- Теминые параметры сгруппированы в `params:` (оформление отдельно
+  от контента). Наш `bookSection` — тоже туда.
+- Лицензии: код — MIT (`LICENSE`, GitHub распознаёт), тексты —
+  CC BY 4.0. Футер: «AlexRadch — © CC BY 4.0, код MIT» (название
+  из `.Site.Title`, меняется само).
+- Дата + «Edit this page» в подвале: раскомментированы `BookRepo`,
+  `BookEditLink`, `BookLastChangeLink`. Дата по-русски из коробки
+  (`locale = 'ru-ru'`). Ссылка правки чинена под Windows своим
+  `links/edit.html` (path.Clean + отрезка `content/`).
+- `article:section` — русский титул раздела (свой opengraph.html).
+- Картинка Pirate Face справа с обтеканием (figure + `.figure-right`).
+
 ## 2026-09-22
 
 - Статья Pirate Face: ссылки на Hugging Face, лицензии Apache-2.0/MIT,

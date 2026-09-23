@@ -1,0 +1,23 @@
+{{/*
+  Отладка левого меню. ВСЕГДА в коде — глушится одной строкой в hugo.toml:
+
+      [params]
+        DebugBookMenu = true
+
+  ВНИМАНИЕ: HTML-комментарии (<!-- -->) Hugo вырезает из шаблона
+  ещё до рендеринга — поэтому отладка выводится обычным текстом в
+  <div style="display:none">. В DevTools он виден, на странице нет.
+
+  Вызывается из menu-filetree.html, получает dict:
+    "Page"        — текущая страница
+    "BookSection" — секция, которую мы собираемся рисовать
+*/}}
+{{ if .Page.Site.Params.DebugBookMenu }}
+<div style="display:none" data-menu-debug>
+DEBUG-MENU:
+  Page: {{ .Page.RelPermalink }} (Kind={{ .Page.Kind }}, Section={{ .Page.Section }})
+  CurrentSection: {{ with .Page.CurrentSection }}{{ .RelPermalink }}{{ else }}(нет){{ end }}
+  Param bookSection: {{ with .Page.Param "bookSection" }}{{ . }}{{ else }}(нет){{ end }}
+  Menu section (выбрана): {{ .BookSection }}
+</div>
+{{ end }}

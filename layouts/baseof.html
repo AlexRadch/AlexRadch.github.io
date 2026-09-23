@@ -12,7 +12,31 @@
       <span class="topbar-name">AlexRadch</span>
     </a>
     <span class="topbar-spacer"></span>
-    <button class="theme-btn" id="theme-cycle" title="Переключить тему" aria-label="Переключить тему" hidden></button>
+{{/*
+  Иконки переключателя темы — отдельные SVG-файлы:
+  assets/icons/sun.svg, moon.svg, sun-moon.svg
+  Иконки НЕ зашиты в шаблон: заменить = перезаписать файл, код сайта
+  не трогать. Внутри SVG задан stroke="currentColor", поэтому иконка
+  сама следует за цветом темы.
+
+  Каждая иконка — отдельный <span>, содержимое SVG инлайнится НА СБОРКЕ
+  (Hugo читает файл и вставляет разметку). Не используем <img>: тот
+  грузится асинхронно, и пока SVG не пришёл, браузер рисует значок
+  «битой картинки» — отсюда мерцание.
+
+  Какую иконку показывать — решает ТЕМА (data-theme на <html>) через
+  CSS, а не скрипт. data-theme ставится синхронным скриптом в <head>
+  ещё до первой отрисовки, поэтому нужная иконка видна сразу.
+  Скрипт только меняет data-theme по клику.
+*/}}
+{{- $iAuto  := resources.Get "icons/sun-moon.svg" | resources.Minify -}}
+{{- $iLight := resources.Get "icons/sun.svg"     | resources.Minify -}}
+{{- $iDark  := resources.Get "icons/moon.svg"    | resources.Minify -}}
+    <button class="theme-btn" id="theme-cycle" title="Переключить тему" aria-label="Переключить тему">
+      <span class="theme-icon theme-icon-auto">{{ $iAuto.Content | safeHTML }}</span>
+      <span class="theme-icon theme-icon-light">{{ $iLight.Content | safeHTML }}</span>
+      <span class="theme-icon theme-icon-dark">{{ $iDark.Content | safeHTML }}</span>
+    </button>
   </nav>
   <main class="container flex">
     {{ template "menu-container" . }} <!-- Left menu -->
@@ -22,7 +46,7 @@
         {{ template "header" . }} <!-- Mobile layout header -->
       </header>
 
-      {{ partial "docs/inject/content-before" . }}
+      {{ partial "docs/breadcrumbs" . }}
       {{ template "main" . }} <!-- Page Content -->
       {{ partial "docs/inject/content-after" . }}
 

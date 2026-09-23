@@ -1,0 +1,33 @@
+{{/*
+  Точка расширения темы: код внутри <head> на каждой странице.
+
+  Раннее применение темы — БЕЗ моргания. Тема по умолчанию в baseof.html
+  всегда светлая, а сохранённая применяется только скриптом в конце <body>.
+  Из-за этого при перезагрузке и переходах страница на миг светлая,
+  потом тёмная.
+
+  Этот скрипт синхронный и лежит в <head>: он выполняется ДО отрисовки
+  тела страницы и сразу ставит data-theme на <html>. Браузер сразу
+  рисует в нужной теме.
+
+  Логика кнопок и живое отслеживание системной темы — в конце <body>,
+  скрипт assets/scripts/theme-switcher.js.
+
+  ОТЛАДКА ШИРИНЫ: если в hugo.toml задан DebugTopbarCss = true,
+  на <html> вешается класс debug-width — включаются фоновые подсветки
+  границ в custom.css. Глушится параметром, код лежит всегда.
+*/}}
+{{ if .Site.Params.DebugTopbarCss }}<script>document.documentElement.classList.add("debug-width");</script>{{ end }}
+<script>
+(function () {
+  var KEY = 'theme';
+  var MODES = ['auto', 'light', 'dark'];
+  try {
+    var t = localStorage.getItem(KEY) || 'auto';
+    if (MODES.indexOf(t) < 0) t = 'auto';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'auto');
+  }
+})();
+</script>

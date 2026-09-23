@@ -1,0 +1,53 @@
+{{/*
+  Хлебные крошки: от корня-книги через .Ancestors.Reverse.
+  Логика — как у темы в main-ветке (файла нет в нашей v0.15.0):
+  без контента — без ссылки, текущая — без ссылки, заголовки через
+  docs/title, разделитель — иконка chevron-right с фолбэком на ›
+  (иконки chevron-right нет в нашей версии темы).
+
+  Корень цепочки: ближайший предок (или сама страница) с
+  bookBreadcrumbRoot: true в front matter. Нет такого —
+  откатываемся к главной (site.Home).
+  На главной не рисуются.
+*/}}
+{{- if not .IsHome }}
+{{- $rootSection := site.Home -}}
+{{- range .Ancestors.Reverse -}}
+  {{- if .Param "bookBreadcrumbRoot" }}{{ $rootSection = . }}{{ end -}}
+{{- end -}}
+{{- if .Param "bookBreadcrumbRoot" }}{{ $rootSection = . }}{{ end -}}
+
+{{- $breadcrumbs := slice -}}
+{{- range .Ancestors.Reverse -}}
+  {{- if or (eq . $rootSection) (.IsDescendant $rootSection) -}}
+    {{- $breadcrumbs = $breadcrumbs | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- $breadcrumbs = $breadcrumbs | append . -}}
+
+{{/* «Главную» — всегда первой (кроме неё самой): корень — это начало
+  книги, а не замена главной. Иначе на самом корне цепочка из одного
+  пункта и прячется правилом ниже. */}}
+{{- if not $rootSection.IsHome }}
+  {{- $breadcrumbs = slice site.Home | append $breadcrumbs -}}
+{{- end }}
+
+{{- if gt (len $breadcrumbs) 1 }}
+<nav class="book-breadcrumbs" aria-label="breadcrumbs">
+  <ul class="flex flex-wrap">
+    {{- range $index, $page := $breadcrumbs -}}
+    <li class="flex align-center">
+      {{- if $index }}
+      {{- with resources.GetMatch "icons/chevron-right.*" }}
+      <img src="{{ .RelPermalink }}" class="book-icon" alt="›"/>
+      {{- else }}
+      <span aria-hidden="true">›</span>
+      {{- end }}
+      {{- end }}
+      <a {{ if eq . $ }}aria-current="page"{{ else if $page.Content }}href="{{ $page.RelPermalink }}"{{ end }} >{{ partial "docs/title" $page }}</a>
+    </li>
+    {{- end }}
+  </ul>
+</nav>
+{{- end }}
+{{- end }}

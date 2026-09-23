@@ -1,11 +1,14 @@
 # ============================================================
-# AlexRadch.github.io — личный сайт-витрина для гистов/статей
+# AlexRadch.github.io — личный сайт-витрина для фрагментов/статей
 # Тема: hugo-book v0.15.0 (фиксированный релиз)
 # ============================================================
 
 baseURL = 'https://alexradch.github.io/'
-title = 'AlexRadch — заметки и обзоры'
-locale = 'ru-ru'                  # язык сайта по умолчанию (Hugo ≥0.158)
+title = 'AlexRadch'
+defaultContentLanguage = 'ru'       # язык сайта: берёт i18n/ru.yaml темы
+defaultContentLanguageInSubdir = false
+locale = 'ru-ru'                    # локаль: русские даты (Hugo ≥0.158)
+copyright = '© [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ru), код [MIT](https://github.com/AlexRadch/AlexRadch.github.io/blob/main/LICENSE)'
 theme = 'hugo-book'
 timeZone = 'Etc/UTC'              # часовой пояс для дат БЕЗ смещения (+07:00 и т.п. уважаются)
 enableGitInfo = true            # дата последнего изменения из git
@@ -29,6 +32,14 @@ disablePathToLower = true       # сохранять регистр в URL (ре
 # Параметры темы hugo-book
 # ============================================================
 [params]
+  # ОТЛАДКА ЛЕВОГО МЕНЮ: включить HTML-комментарий с диагностикой
+  # (видно в DevTools на любой странице). Выключить = false.
+  DebugBookMenu = false
+
+  # ОТЛАДКА ШИРИНЫ: подсветить фон топбара и контентной зоны,
+  # чтобы видеть границы контейнеров. Выключить = false.
+  DebugTopbarCss = false
+
   # Светлая/тёмная тема: light | dark | auto (переключатель на лету)
   BookTheme = 'auto'
 
@@ -37,25 +48,23 @@ disablePathToLower = true       # сохранять регистр в URL (ре
   BookToC = true
 
   # Какую секцию рендерить как боковое меню по умолчанию.
+  # '.' = текущий каталог (переносится в CurrentSection в menu-filetree.html)
   # '/' = все верхние секции сайта.
-  # Благодаря нашему переопределённому menu-filetree.html это
-  # значение переопределяется в front matter каждого раздела:
+  # Можно переопределить в front matter раздела:
   #   bookSection = 'gists'  →  в меню только этот раздел
-  BookSection = '/'
+  BookSection = '.'
 
   # Хлебные крошки сверху страницы
-  BookBreadcrumbs = true
-
   # Включить полнотекстовый поиск (MiniSearch)
   BookSearch = true
 
-  # Дата в подвале (формат Go)
-  BookDateFormat = 'January 2, 2006'
+  # Дата в подвале (формат Go: точка отсчёта 02.01.2006 15:04)
+  BookDateFormat = '2 January 2006'
 
   # Репозиторий — для кнопок «Изменить на GitHub» / «Последнее изменение»
-  # BookRepo = 'https://github.com/AlexRadch/AlexRadch.github.io'
-  # BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/content/{{ .Path }}'
-  # BookLastChangeLink = '{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}'
+  BookRepo = 'https://github.com/AlexRadch/AlexRadch.github.io'
+  BookEditLink = '{{ .Site.Params.BookRepo }}/edit/main/content/{{ .Path }}'
+  BookLastChangeLink = '{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}'
 
 # ============================================================
 # Постоянные меню — те самые «общие» ссылки для всего сайта.

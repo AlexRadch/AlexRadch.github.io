@@ -1,0 +1,7 @@
+{{/*
+  Рисует левое меню для секции из .Section.
+  Некэшируемый: CurrentPage у каждого вызова свой, по нему
+  подсвечивается активный пункт. Вызывается из menu-filetree.html.
+  Один уровень: сама секция + её прямые дети, без рекурсии.
+*/}}
+{{ template "book-section-children" (dict "Section" .Section "CurrentPage" .CurrentPage "Depth" .Depth) }}

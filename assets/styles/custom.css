@@ -25,27 +25,84 @@
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
   font-size: var(--font-size-smaller, 0.875rem);
 
-  /* Содержимое панели выравнивается строго по краям контейнера темы
-     (--container-max-width), на узких — не меньше 1rem.
-     На очень широких экранах main добавляет своё поле (--space-16),
-     поэтому там добавляем его и здесь. */
+  /* Те же три свойства, что у main.container ниже: центрирование
+     плавной формулой (без скачка, как у темы) + ползущие gap/padding.
+     Было одной формулой padding-inline — не сходилось: у топбара свой
+     gap .5rem и другая база (100% топбара vs 100vw), края ехали
+     быстрее контента. Теперь механика одна — скорости совпадают. */
+  margin: 0 max(
+    0rem,
+    calc((100% - var(--container-max-width)) / 2)
+  );
+  gap: clamp(
+    0.5rem,
+    calc(0.5rem + (100vw - 90rem) * 0.8),
+    calc(0.5rem + var(--space-16))
+  );
   padding-inline: max(
     1rem,
-    calc((100% - var(--container-max-width)) / 2)
+    calc(var(--space-16) + clamp(
+      0rem,
+      calc((100vw - 90rem) * 0.8),
+      var(--space-16)
+    ))
   );
 }
 
-@media screen and (min-width: 90rem) {
-  .topbar {
-    padding-inline: calc(
-      (100% - var(--container-max-width)) / 2 + var(--space-16)
-    );
-  }
+/* Картинка справа с обтеканием текстом — для шорткода figure:
+   {{< figure src="..." class="figure-right" >}}. Встроенный figure
+   уже умеет class, переопределять шорткод не надо.
+   Вложено в .markdown, как темино figure — иначе специфичность
+   темы (.markdown figure) перебивает боковые отступы. */
+.markdown figure.figure-right {
+  float: right;
+  margin: 0 0 0 var(--space-16);
+  max-width: 40%;
+}
+.markdown .figure-right img { max-width: 100%; }
+
+/* Центрирование main — как у темы (.container: max-width + margin auto),
+   но БЕЗ СКАЧКА на границе 90rem. У темы margin: 0 auto даёт резкий
+   переход: контент стоит, стоит — а потом хоп. Здесь та же геометрия,
+   но плавной формулой: отступ сам ползёт к нулю по мере сужения окна,
+   как у нашего топбара. */
+main.container {
+  margin: 0 max(
+    0rem,
+    calc((100% - var(--container-max-width)) / 2)
+  );
+  /* gap/padding темы включаются скачком на 90rem — переопределяем
+     плавной формулой: от 90rem к 110rem доползают от 0 до полных. */
+  gap: clamp(
+    0rem,
+    calc((100vw - 90rem) * 0.8),
+    var(--space-16)
+  );
+  padding: clamp(
+    0rem,
+    calc((100vw - 90rem) * 0.8),
+    var(--space-16)
+  );
+}
+
+/* Плавное появление теминого отступа боковых панелей на широких экранах.
+   У темы padding-top: 32px включается скачком на границе 90rem —
+   меню прыгает вниз в один кадр. Здесь те же 32px (переопределяем
+   темино правило — наш файл позже в каскаде), но формулой: от 90rem
+   к 110rem отступ доползает от 0 до полного. Ниже 90 — ноль,
+   выше 110 — полные 32px, между — пропорционально. */
+.book-menu .book-menu-content,
+.book-toc .book-toc-content {
+  padding-top: clamp(
+    var(--space-16),
+    calc(var(--space-16) + (100vw - 90rem)),
+    calc(var(--space-16) * 2)
+  );
 }
 
 /* Фиксированные боковые панели темы (book.css: top:0; bottom:0) привязаны
    к верху экрана. Без верхней панели это правильно. С нашей панелью они
-   налезали бы на неё, поэтому отодвигаем вниз на высоту панели.
+   налезали бы на неё, поэтому отодвигаем вниз на высоту панели (см. ниже).
 
    Как только панель уходит с экрана при прокрутке наверх, скрипт
    layout-topbar.js снимает этот отступ — менюшки поднимаются к краю
@@ -68,13 +125,54 @@
   display: none;
 }
 
-/* У гиста левого меню нет — кнопка-гамбургер в мобильном хедере
-   убрана, её место занимает распорка, чтобы заголовок остался по центру. */
-.gist-spacer {
-  display: block;
-  width: 2rem;
-  flex: 0 0 auto;
+/* Хлебные крошки над статьёй, СНАРУЖИ article (как у темы: baseof
+   рисует их в .book-page до main). Стили — байт в байт из темы
+   main-ветки assets/styles/book.css, их нет в нашей v0.15.0. */
+.book-breadcrumbs {
+  font-size: var(--font-size-smaller);
 }
+.book-breadcrumbs a {
+  padding: 0;
+}
+.book-breadcrumbs ul {
+  list-style: none;
+  padding-inline-start: 0;
+  margin-bottom: var(--space-8);
+}
+.book-breadcrumbs ul,
+.book-breadcrumbs li {
+  gap: var(--space-4);
+}
+/* Размер шеврона: теминое a .book-icon{1em} не действует — наш img
+   лежит РЯДОМ со ссылкой, а не внутри. Без этого правила img
+   рисуется в натуральные 24px. */
+.book-breadcrumbs .book-icon {
+  height: 1em;
+  width: 1em;
+}
+
+/* Первый элемент статьи без верхнего отступа (как у темы в main-ветке:
+   их нет в нашей v0.15.0). Крошки теперь СНАРУЖИ article — первым
+   идёт заголовок, ему и снимаем отступ. */
+.markdown > :first-child {
+  margin-top: 0;
+}
+
+/* У фрагмента левого меню нет — кнопка-гамбургер в мобильном хедере
+   убрана, заголовок прижат влево, распорка не нужна.
+   Темино .book-header h3 даёт отступы с обеих сторон (под гамбургер
+   и кнопку оглавления) — у фрагмента гамбургера нет, левый убираем.
+   Только для layout gist (класс book-layout-gist на body). */
+.book-layout-gist .book-header h3 {
+  margin-left: 0;
+}
+
+/* ОТЛАДКА ШИРИНЫ (DebugTopbarCss = true в hugo.toml): красит фон топбара
+   и контентной зоны, чтобы видеть границы контейнеров. Правила лежат
+   всегда, включаются классом debug-width на <html> (см. inject/head.html).
+   Выключить = DebugTopbarCss: false. */
+.debug-width .topbar { background: rgba(255, 0, 0, 0.12); }
+.debug-width main.container { background: rgba(0, 0, 255, 0.12); }
 
 /* Мобильные: укорачиваем заголовок */
 @media (max-width: 40rem) {
@@ -97,10 +195,34 @@
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.theme-btn svg {
+.theme-btn svg,
+.theme-btn .theme-icon {
   display: block;
   pointer-events: none;
 }
+
+.theme-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Какую иконку показывать — решает ТЕМА (data-theme на <html>), не скрипт.
+   Все три иконки лежат в кнопке одновременно, лишние скрыты.
+   data-theme ставится синхронным скриптом в <head> до первой отрисовки,
+   поэтому правильная иконка видна сразу — без моргания.
+
+   СПЕЦИФИЧНОСТЬ: выше стоит .theme-btn .theme-icon{display:block}
+   со специфичностью (0,2,0). Простое .theme-icon{display:none} (0,1,0)
+   ПРОИГРЫВАЕТ ему — порядок в CSS тут не помогает, побеждает
+   специфичность. Поэтому берём ту же силу, что и у block:
+   .theme-btn .theme-icon (0,2,0) — теперь ничья, а так как наше
+   правило стоит НИЖЕ, оно и побеждает. !important не используем.
+*/
+.theme-btn .theme-icon { display: none; }
+
+:root[data-theme="auto"]  .theme-btn .theme-icon-auto  { display: block; }
+:root[data-theme="light"] .theme-btn .theme-icon-light { display: block; }
+:root[data-theme="dark"]  .theme-btn .theme-icon-dark  { display: block; }
 
 .theme-btn:hover {
   background: rgba(128, 128, 128, 0.14);
@@ -141,6 +263,21 @@
 }
 
 .topbar-spacer { flex: 1 1 auto; }
+
+/* Стрелки prev/next: иконки переопределены с fill="currentColor",
+   поэтому следуют за цветом ссылки. Инверсию темы для них снимаем —
+   она рассчитана на чёрные иконки, а синий через неё превращается
+   в грязно-белый. */
+.book-icon.arrow-icon { filter: none; }
+
+/* Стрелки prev/next инлайнятся (SVG внутри <span>), а не через <img>.
+   Правило темы a .book-icon{height:1em} рассчитано на <img> и на сам
+   SVG не действует — у него свои height/width 24px. Задаём размер
+   явно SVG внутри, иначе стрелки крупные и съезжают со строки. */
+a .book-icon svg {
+  height: 1em;
+  width: 1em;
+}
 
 /* Мобильные: укорачиваем заголовок */
 @media (max-width: 40rem) {

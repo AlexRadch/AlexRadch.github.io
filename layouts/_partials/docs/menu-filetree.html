@@ -1,41 +1,129 @@
 {{/*
-  menu-filetree.html — ПЕРЕОПРЕДЕЛЕНИЕ темы (лежит в проекте, тему не трогаем).
+  menu-filetree.html — ПЕРЕОПРЕДЕЛЕНИЕ темы (тему не трогаем).
 
-  Единственное отличие от темы: ключ кеширования.
-  Было:  {{ partialCached "docs/menu-section" .Site }}
-  Стало: {{ partialCached "docs/menu-section" . .Section }}
+  Тема рисует одно меню на весь сайт (BookSection из hugo.toml).
+  У нас каждый каталог — со своим меню.
 
-  Без ключа-варианта меню считается ОДИН раз на весь сайт (контекст .Site).
-  С ключом .Section меню считается один раз на РАЗДЕЛ — то, что нужно для
-  независимых «книг». Передаём страницу (.), а не сайт — чтобы внутри
-  menu-section работало разрешение bookSection из front matter раздела.
+  ПРАВИЛО:
+    меню = ТЕКУЩИЙ КАТАЛОГ + всё, что в нём лежит, ОДНИМ УРОВНЕМ.
 
-  См. https://gohugo.io/functions/partialcached/ —
-  "use a variant based on section so that the partial is only
-   rendered once per section"
+    pirateface.md          (одна страница)   → меню нет вообще
+                                                 (layout: gist гасит
+                                                 menu-container)
+    pirateface2/_index.md  (книга из 1 стр.) → меню: титул книги
+    test-book/             (книга + главы)   → титул книги + главы,
+                                               все на одном уровне
+    /gists/                (раздел)          → титул раздела + фрагменты,
+                                               без глав книг
+
+  СЕКЦИЯ — какой каталог рисовать:
+    Kind=page    (глава) → CurrentSection (её каталог).
+                 .Param "bookSection" тут НЕЛЬЗЯ доверять: Hugo
+                 наследует параметры от родительских _index.md
+                 (Param cascade) — глава получит чужое значение.
+    Kind=section (индекс) → bookSection из front matter,
+                 иначе CurrentSection.
+    иначе                  → Site.Params.BookSection.
+
+    "." = текущий каталог (как в путях файловой системы).
+          Hugo ищет секции по URL, а не по путям файлов, поэтому
+          точку сами заменяем на CurrentSection.
+    "*" = устаревший синтаксис темы, означает "/".
+
+  КЕШИРОВАНИЕ: menu-section вызываем обычным partial (он дёшев —
+  один GetPage). Разметку рисует menu-filetree-render НЕкэшируемым:
+  partialCached вернул бы всем страницам разметку первой,
+  с чужой подсветкой активного пункта.
+
+  ОТЛАДКА: DebugBookMenu = true в hugo.toml — на каждой странице
+  <div data-menu-debug> (см. menu-debug.html).
 */}}
-{{ with (partialCached "docs/menu-section" . .Section) }}
-  {{ template "book-section-children" (dict "Section" . "CurrentPage" $) }}
+
+{{/* ── какой каталог рисовать ── */}}
+{{ $bookSection := "" }}
+{{ if eq .Kind "page" }}
+  {{ with .CurrentSection }}{{ $bookSection = .RelPermalink }}{{ end }}
+{{ else }}
+  {{ $bookSection = .Param "bookSection" }}
+  {{ if not $bookSection }}
+    {{ with .CurrentSection }}{{ $bookSection = .RelPermalink }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ $bookSection := $bookSection | default .Site.Params.BookSection | default "/" }}
+{{ if eq $bookSection "*" }}{{ $bookSection = "/" }}{{ end }}
+{{ if eq $bookSection "." }}
+  {{ with .CurrentSection }}{{ $bookSection = .RelPermalink }}{{ end }}
+  {{ if eq $bookSection "." }}{{ $bookSection = "/" }}{{ end }}
 {{ end }}
 
-{{ define "book-section-children" }}{{/* (dict "Section" .Section "CurrentPage" .CurrentPage) */}}
+{{ partial "docs/menu-debug" (dict "Page" $ "BookSection" $bookSection) }}
+{{ with (partial "docs/menu-section" (dict "Page" . "BookSection" $bookSection)) }}
+  {{ partial "docs/menu-filetree-render" (dict "Section" . "CurrentPage" $ "Depth" ($.Param "bookSectionDepth")) }}
+{{ end }}
+
+{{/* ── отрисовка: текущий каталог + его содержимое, как у темы ──
+  Первый пункт — сама секция (титул её _index.md: обложка книги).
+  Дети — ВЛОЖЕННЫЙ <ul> внутри <li> секции (как теминый шаблон),
+  чтобы теминый CSS .book-section-flat работал как задуман:
+  жирная ссылка, дети без сдвига, отбивка группы целиком.
+  Отличие от темы: секция одна (текущий каталог), глубина рекурсии
+  регулируется параметром bookSectionDepth из front matter секции
+  (сколько уровней детей вниз, 1 = только прямые дети).
+  Нет параметра — бесконечно, как у темы.
+*/}}
+{{ define "book-section-children" }}{{/* (dict "Section" "CurrentPage" "Depth") */}}
+  {{ $depth := .Depth | default 999 }}
+  {{ $pages := .Section.Pages }}
+  {{ with .Section.Params.bookSectionLimit }}
+    {{ $pages = first (int .) $pages }}
+  {{ end }}
   <ul>
-    {{ range (where .Section.Pages "Params.bookHidden" "ne" true) }}
-      {{ if .IsSection }}
-        <li {{- if .Params.BookFlatSection }} class="book-section-flat" {{ end -}}>
-          {{ template "book-page-link" (dict "Page" . "CurrentPage" $.CurrentPage) }}
-          {{ template "book-section-children" (dict "Section" . "CurrentPage" $.CurrentPage) }}
-        </li>
-      {{ else if and .IsPage .Content }}
+    <li {{- if .Section.Params.BookFlatSection }} class="book-section-flat" {{ end -}}>
+      {{ template "book-page-link" (dict "Page" .Section "CurrentPage" .CurrentPage) }}
+      {{ if gt $depth 0 }}
+      <ul>
+        {{ range (where $pages "Params.bookHidden" "ne" true) }}
+          {{ if or .IsSection (and .IsPage .Content) }}
+            <li>
+              {{ template "book-page-link" (dict "Page" . "CurrentPage" $.CurrentPage) }}
+              {{ if and .IsSection .Pages }}
+                {{ template "book-section-nodes" (dict "Section" . "CurrentPage" $.CurrentPage "Depth" (sub $depth 1)) }}
+              {{ end }}
+            </li>
+          {{ end }}
+        {{ end }}
+      </ul>
+      {{ end }}
+    </li>
+  </ul>
+{{ end }}
+
+{{/* Рекурсия вглубь: дети ребёнка — вложенным <ul>. Без flat-класса:
+  жирным выделяется только корень секции. Лимит меню — из front matter
+  КАЖДОЙ секции (bookSectionLimit), НЕ зависит от bookListLimit
+  (тот — для шорткода section-tree, список в центре страницы). */}}
+{{ define "book-section-nodes" }}{{/* (dict "Section" "CurrentPage" "Depth") */}}
+  {{ $pages := .Section.Pages }}
+  {{ with .Section.Params.bookSectionLimit }}
+    {{ $pages = first (int .) $pages }}
+  {{ end }}
+  {{ if and (gt .Depth 0) $pages }}
+  <ul>
+    {{ range (where $pages "Params.bookHidden" "ne" true) }}
+      {{ if or .IsSection (and .IsPage .Content) }}
         <li>
           {{ template "book-page-link" (dict "Page" . "CurrentPage" $.CurrentPage) }}
+          {{ if and .IsSection .Pages }}
+            {{ template "book-section-nodes" (dict "Section" . "CurrentPage" $.CurrentPage "Depth" (sub .Depth 1)) }}
+          {{ end }}
         </li>
       {{ end }}
     {{ end }}
   </ul>
+  {{ end }}
 {{ end }}
 
-{{ define "book-page-link" }}{{/* (dict "Page" .Page "CurrentPage" .CurrentPage) */}}
+{{ define "book-page-link" }}{{/* (dict "Page" "CurrentPage") */}}
   {{ $current := eq .CurrentPage .Page }}
   {{ $ancestor := .Page.IsAncestor .CurrentPage }}
 

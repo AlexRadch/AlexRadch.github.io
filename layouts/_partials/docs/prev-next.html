@@ -1,0 +1,39 @@
+{{/*
+  prev-next.html — ПЕРЕОПРЕДЕЛЕНИЕ темы (тему не трогаем).
+
+  Кнопки «назад/вперёд» внизу страницы. Отличия от темы:
+  1. Подпись стрелок — юникод «←»/«→» вместо слов Backward/Forward.
+  2. SVG инлайнится НА СБОРКЕ (resources.Get + safeHTML), а не через
+     <img>: только инлайн позволяет fill="currentColor" следовать
+     за цветом ссылки. Внешняя картинка (<img>) — отдельный документ,
+     CSS страницы внутрь неё не проникает, и currentColor падает
+     на чёрный дефолт.
+*/}}
+{{- $iBackward := resources.Get "icons/backward.svg" | resources.Minify -}}
+{{- $iForward := resources.Get "icons/forward.svg" | resources.Minify -}}
+{{- with (partialCached "docs/menu-section" .Site) -}}
+  {{- $pages := partialCached "docs/menu-section-pages" . -}}
+  {{- $prev := $pages.Next $ -}}
+  {{- $next := $pages.Prev $ -}}
+
+  {{- if or $prev $next -}}
+  <div class="flex flex-wrap justify-between">
+    <span>
+    {{ with $prev }}
+      <a href="{{ .RelPermalink }}" class="flex align-center">
+        <span class="book-icon arrow-icon" role="img" aria-label="←">{{ $iBackward.Content | safeHTML }}</span>
+        <span>{{ partial "docs/title" . }}</span>
+      </a>
+    {{ end }}
+    </span>
+    <span>
+    {{ with $next }}
+      <a href="{{ .RelPermalink }}" class="flex align-center">
+        <span>{{ partial "docs/title" . }}</span>
+        <span class="book-icon arrow-icon" role="img" aria-label="→">{{ $iForward.Content | safeHTML }}</span>
+      </a>
+    {{ end }}
+    </span>
+  </div>
+  {{- end -}}
+{{- end -}}

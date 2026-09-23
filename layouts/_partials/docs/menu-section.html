@@ -22,20 +22,38 @@
   {{/* Вызов из темы: контекст — сайт. Берём BookSection из настроек. */}}
   {{ $bookSection := .Params.BookSection | default "/" }}
   {{ if eq $bookSection "*" }}{{ $bookSection = "/" }}{{ end }}
+  {{ if eq $bookSection "." }}
+    {{/* Точка = текущий каталог. Сайт не знает «текущего», для него
+         точка бессмысленна — откатываемся к корню. */}}
+    {{ $bookSection = "/" }}
+  {{ end }}
   {{ $section := .GetPage $bookSection }}
   {{ with $section }}
     {{ return . }}
   {{ else }}
     {{ errorf "%s: Section '%s' not found, check BookSection theme parameter" $ $bookSection }}
   {{ end }}
-{{ else }}
-  {{/* Наш вызов из menu-filetree: контекст — страница. */}}
-  {{ $bookSection := default .Site.Params.BookSection (.Param "bookSection") | default "/" }}
+{{ else if not (eq (printf "%T" .) "*page.Page") }}
+  {{/*
+    Наш вызов из menu-filetree: приходит dict {"Page" "BookSection"}.
+    Принимаем bookSection из него — menu-filetree уже разрешает его
+    правильно (см. там комментарий про Param cascade).
+    Откаты остаются на случай прямого вызова без dict.
+  */}}
+  {{ $bookSection := .BookSection | default (.Page.Param "bookSection") }}
+  {{ if not $bookSection }}
+    {{ with .Page.CurrentSection }}{{ $bookSection = .RelPermalink }}{{ end }}
+  {{ end }}
+  {{ $bookSection := $bookSection | default .Page.Site.Params.BookSection | default "/" }}
   {{ if eq $bookSection "*" }}{{ $bookSection = "/" }}{{ end }}
-  {{ $section := .Site.GetPage $bookSection }}
+  {{ if eq $bookSection "." }}
+    {{ with .Page.CurrentSection }}{{ $bookSection = .RelPermalink }}{{ end }}
+    {{ if eq $bookSection "." }}{{ $bookSection = "/" }}{{ end }}
+  {{ end }}
+  {{ $section := .Page.Site.GetPage $bookSection }}
   {{ with $section }}
     {{ return . }}
   {{ else }}
-    {{ errorf "%s: Section '%s' not found, check BookSection theme parameter" $ $bookSection }}
+    {{ errorf "%s: Section '%s' not found, check BookSection theme parameter" .Page $bookSection }}
   {{ end }}
 {{ end }}

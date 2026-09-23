@@ -1,0 +1,48 @@
+{{/*
+  Шорткод {{< section-tree >}} — дерево страниц текущего раздела.
+
+  Зачем свой, если у темы есть {{< section >}}: теминый идёт только
+  на 1 уровень вглубь, без лимитов и без сортировки по дате. Этот умеет:
+  - depth: глубина вложенности (по умолчанию 1 — как теминый);
+  - лимит пунктов на уровень — из front matter КАЖДОЙ страницы
+    (bookListLimit), у каждого раздела свой. Нет параметра — без лимита;
+  - сортировка штатная Hugo: Weight → Date → Title (при равных весах
+    свежие сверху);
+  - summary: показать описания (как у теминого {{< section summary >}}).
+
+  Примеры:
+      {{< section-tree >}}                    — дети, без лимита, 1 уровень
+      {{< section-tree depth="2" >}}          — + внуки
+      {{< section-tree depth="2" summary >}}  — + описания
+
+  Теминый section задепрекейчен (warnf в исходнике), но пока работает.
+  Этот шорткод от него не зависит — переживёт удаление теминого.
+*/}}
+{{- $depth := default 1 (.Get "depth") -}}
+{{- $showSummary := default false (.Get "summary") -}}
+{{- template "section-tree-nodes" (dict "Page" .Page "Depth" $depth "ShowSummary" $showSummary) -}}
+
+{{- define "section-tree-nodes" -}}
+  {{- $page := .Page -}}
+  {{- $depth := .Depth -}}
+  {{- $showSummary := .ShowSummary -}}
+  {{- $pages := $page.Pages -}}
+  {{- with $page.Params.bookListLimit -}}
+    {{- $pages = first (int .) $pages -}}
+  {{- end -}}
+  {{- if and $pages (gt $depth 0) }}
+<ul>
+    {{- range $pages }}
+  <li>
+    <a href="{{ .RelPermalink }}">{{ partial "docs/title" . }}</a>
+      {{- if $showSummary }}
+    <br>{{- or .Description .Summary site.Params.description | plainify | htmlUnescape }}
+      {{- end }}
+      {{- if .Pages }}
+        {{- template "section-tree-nodes" (dict "Page" . "Depth" (sub $depth 1) "ShowSummary" $showSummary) -}}
+      {{- end }}
+  </li>
+    {{- end }}
+</ul>
+  {{- end -}}
+{{- end -}}

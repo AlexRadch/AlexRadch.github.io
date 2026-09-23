@@ -1,0 +1,15 @@
+{{/*
+  ПЕРЕОПРЕДЕЛЕНИЕ теминого links/edit (themes/hugo-book/.../links/edit.html).
+  Исходник берёт .Page.File.Filename минус hugo.WorkingDir — на Windows
+  остаются бэкслэши (\content\gists\x.md), ссылка битая. Чиним штатным
+  path.Clean (меняет \ на /). Префикс content/ отрезаем: шаблон BookEditLink
+  его уже содержит (edit/main/content/...), иначе двоится.
+*/}}
+{{- $path := strings.TrimPrefix hugo.WorkingDir .Page.File.Filename -}}
+{{- $path = path.Clean $path -}}
+{{- $path = strings.TrimPrefix "content/" (strings.TrimPrefix "/content/" $path) -}}
+{{- return (partial "docs/text/template" (dict "Template" .Site.Params.BookEditLink "Context" (dict
+  "Site" .Site
+  "Page" .Page
+  "Path" $path
+)) | urls.JoinPath) -}}

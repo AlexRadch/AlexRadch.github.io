@@ -1,11 +1,16 @@
 ---
-title: "Тест: гист с книгой"
+title: "Тест: фрагмент с книгой"
+description: "Тестовая книга для проверки меню и структуры разделов."
 date: 2020-01-01T00:00:00+07:00
 weight: 2
-bookSection: "/gists/test-book"
+cascade:
+  draft: true
+params:
+  bookSection: "."
+  bookCollapseSection: true
 ---
 
-# Тест: гист с книгой (в каталоге gists)
+# Тест: фрагмент с книгой (в каталоге gists)
 
 Это тестовая страница: она живёт в каталоге `gists/`, и у неё **есть** левое меню-книга.
 
