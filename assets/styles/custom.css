@@ -161,10 +161,16 @@ main.container {
 /* У фрагмента левого меню нет — кнопка-гамбургер в мобильном хедере
    убрана, заголовок прижат влево, распорка не нужна.
    Темино .book-header h3 даёт отступы с обеих сторон (под гамбургер
-   и кнопку оглавления) — у фрагмента гамбургера нет, левый убираем.
-   Только для layout gist (класс book-layout-gist на body). */
+   и кнопку оглавления). Классы no-menu-btn / no-toc-btn на строке
+   хедера снимают отступ с той стороны, где кнопки нет.
+   Специфичность как у темы: .book-header + h3.
+   Пока жив layout gist — действует и старый класс book-layout-gist. */
+.book-header .no-menu-btn h3,
 .book-layout-gist .book-header h3 {
   margin-left: 0;
+}
+.book-header .no-toc-btn h3 {
+  margin-right: 0;
 }
 
 /* ОТЛАДКА ШИРИНЫ (DebugTopbarCss = true в hugo.toml): красит фон топбара

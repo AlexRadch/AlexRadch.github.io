@@ -69,11 +69,14 @@
 </html>
 
 {{ define "menu-container" }}
+{{/* Глубина 0 и ниже = левого меню нет вообще (как layout: gist). */}}
+{{ if gt (partial "docs/menu-depth" .) 0 }}
 <aside class="book-menu">
   <div class="book-menu-content">
     {{ template "menu" . }}
   </div>
 </aside>
+{{ end }}
 {{ end }}
 
 {{ define "menu" }}

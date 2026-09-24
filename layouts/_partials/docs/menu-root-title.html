@@ -1,0 +1,28 @@
+{{/* menu-root-title.html — титул корня левого меню для текущей страницы.
+
+  Тот же корень, откуда menu-filetree рисует меню:
+    Kind=page    → CurrentSection (книга главы)
+    иначе        → bookSection из front matter / CurrentSection / сайт
+    "." и "*"    → как в menu-filetree.
+
+  Возвращает строку-титул (через docs/title) либо ничего (вне каталога —
+  тогда вызывающий оставит .Site.Title).
+*/}}
+{{ $bookSection := "" }}
+{{ if eq .Kind "page" }}
+  {{ with .CurrentSection }}{{ $bookSection = .RelPermalink }}{{ end }}
+{{ else }}
+  {{ $bookSection = .Param "bookSection" }}
+  {{ if not $bookSection }}
+    {{ with .CurrentSection }}{{ $bookSection = .RelPermalink }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ $bookSection := $bookSection | default .Site.Params.BookSection | default "/" }}
+{{ if eq $bookSection "*" }}{{ $bookSection = "/" }}{{ end }}
+{{ if eq $bookSection "." }}
+  {{ with .CurrentSection }}{{ $bookSection = .RelPermalink }}{{ end }}
+  {{ if eq $bookSection "." }}{{ $bookSection = "/" }}{{ end }}
+{{ end }}
+{{ with .Site.GetPage $bookSection }}
+  {{ return (partial "docs/title" .) }}
+{{ end }}

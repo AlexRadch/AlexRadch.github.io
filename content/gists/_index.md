@@ -5,7 +5,7 @@ weight: 10
 params:
   bookSection: "."
   bookBreadcrumbRoot: true
-  bookSectionDepth: 2
+  bookSectionDepth: 1
   bookSectionLimit: 30
   bookFlatSection: true
   bookIcon: scroll-text

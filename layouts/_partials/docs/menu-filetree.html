@@ -57,8 +57,12 @@
 {{ end }}
 
 {{ partial "docs/menu-debug" (dict "Page" $ "BookSection" $bookSection) }}
+{{/* Глубина 0 и ниже = левого меню нет вообще (ни себя, ни детей). */}}
+{{ $menuDepth := partial "docs/menu-depth" $ }}
+{{ if gt $menuDepth 0 }}
 {{ with (partial "docs/menu-section" (dict "Page" . "BookSection" $bookSection)) }}
-  {{ partial "docs/menu-filetree-render" (dict "Section" . "CurrentPage" $ "Depth" ($.Param "bookSectionDepth")) }}
+  {{ partial "docs/menu-filetree-render" (dict "Section" . "CurrentPage" $ "Depth" $menuDepth) }}
+{{ end }}
 {{ end }}
 
 {{/* ── отрисовка: текущий каталог + его содержимое, как у темы ──
@@ -70,9 +74,12 @@
   регулируется параметром bookSectionDepth из front matter секции
   (сколько уровней детей вниз, 1 = только прямые дети).
   Нет параметра — бесконечно, как у темы.
+  Глубина 0 и ниже сюда не доходит: вызов выше уже ничего не рисует
+  (ни себя, ни детей). Отрицательные = то же, что 0.
 */}}
 {{ define "book-section-children" }}{{/* (dict "Section" "CurrentPage" "Depth") */}}
-  {{ $depth := .Depth | default 999 }}
+  {{ $depth := .Depth }}
+  {{ if eq $depth nil }}{{ $depth = 999 }}{{ end }}
   {{ $pages := .Section.Pages }}
   {{ with .Section.Params.bookSectionLimit }}
     {{ $pages = first (int .) $pages }}

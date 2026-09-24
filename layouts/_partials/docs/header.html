@@ -1,16 +1,31 @@
-<div class="flex align-center justify-between">
+{{ $hasMenu := gt (partial "docs/menu-depth" .) 0 }}
+{{ $showToc := .Param "BookToC" | default true }}
+{{ $tocCount := len (findRE "<li" .TableOfContents) }}
+{{ $hasToc := and $showToc (gt $tocCount 1) }}
+{{/* Заголовок узкого хедера — корень левого меню (как у темы:
+     там всегда название книги, а не страницы). menu-section уже
+     разрешает его из bookSection/CurrentSection — берём титул
+     оттуда, а не из CurrentSection напрямую: у главы CurrentSection
+     может указывать не на книгу. Вне каталога — титул сайта. */}}
+{{ $rootTitle := .Site.Title }}
+{{ with (partial "docs/menu-root-title" .) }}
+  {{ $rootTitle = . }}
+{{ end }}
+<div class="flex align-center justify-between{{ if not $hasMenu }} no-menu-btn{{ end }}{{ if not $hasToc }} no-toc-btn{{ end }}">
+  {{/* Глубина 0 и ниже = левого меню нет: гамбургер не рисуем,
+       иначе он откроет пустоту. */}}
+  {{ if $hasMenu }}
   <input type="checkbox" class="toggle" id="menu-control" />
   <label for="menu-control">
     <img src="{{ partial "docs/icon" "menu" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Menu" }}" />
   </label>
+  {{ end }}
 
-  <h3>{{ partial "docs/title" . }}</h3>
+  <h3>{{ $rootTitle }}</h3>
 
   {{/* Правая кнопка оглавления — только когда в ToC больше одного пункта.
        Одинокий H1 вверху страницы не считается навигацией. */}}
-  {{ $showToc := .Param "BookToC" | default true }}
-  {{ $tocCount := len (findRE "<li" .TableOfContents) }}
-  {{ if and $showToc (gt $tocCount 1) }}
+  {{ if $hasToc }}
   <input type="checkbox" class="toggle" id="toc-control" />
   <label for="toc-control">
     <img src="{{ partial "docs/icon" "toc" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Table of Contents" }}" />
