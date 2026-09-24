@@ -1,0 +1,16 @@
+{{/* docs/brand.html — оверрайд теминого (в теме выключателя нет,
+   рисуется всегда). У нас ссылка на главную уже есть в топбаре,
+   поэтому бренд в левом меню дублирует и съедает место.
+   Выключатель в нашей философии Book-параметров: default true
+   (показывать, как у темы), гасится на весь сайт через
+   BookBrand = false в hugo.toml или точечно через front matter. */}}
+{{- if .Param "BookBrand" | default true }}
+<h2 class="book-brand">
+  <a class="flex align-center" href="{{ partial "docs/links/home" . }}">
+    {{- with .Site.Params.BookLogo -}}
+    <img src="{{ . | relURL }}" alt="{{ partial "docs/text/i18n" "Logo" }}" />
+    {{- end -}}
+    <span>{{ .Site.Title }}</span>
+  </a>
+</h2>
+{{- end }}
