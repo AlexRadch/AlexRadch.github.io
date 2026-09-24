@@ -1,0 +1,42 @@
+{{/* docs/toc.html — как в main-ветке темы (в нашей v0.15.0 этого нет):
+   под оглавлением — входящие/исходящие ссылки страницы.
+   Собираются хуком render-link, только когда BookPageLinks включён
+   (default false — и в шаблоне, и в hugo.toml).
+   Когда выключено, Scratch пуст и вывод байт в байт как у темы v0.15.0. */}}
+{{ partial "docs/inject/toc-before" . }}
+{{ .TableOfContents }}
+{{ partial "docs/inject/toc-after" . }}
+
+{{ with (.Scratch.Get "bookBacklinks") | uniq }}
+<div class="flex book-toc-section">
+<img src="{{ partial "docs/icon" "incoming" }}" class="book-icon" />
+<nav class="flex">
+  <ul>
+  {{ range . }}
+    <li>
+    <a href="{{ .RelPermalink }}">
+      {{- partial "docs/title" .Page -}}
+    </a>
+    </li>
+  {{ end }}
+  </ul>
+</nav>
+</div>
+{{ end }}
+
+{{ with (.Scratch.Get "bookLinks") | uniq }}
+<div class="flex book-toc-section">
+<img src="{{ partial "docs/icon" "outgoing" }}" class="book-icon" />
+<nav class="flex">
+  <ul>
+  {{ range . }}
+  <li>
+    <a href="{{ .RelPermalink }}">
+      {{- partial "docs/title" .Page -}}
+    </a>
+  </li>
+  {{ end }}
+  </ul>
+</nav>
+</div>
+{{ end }}

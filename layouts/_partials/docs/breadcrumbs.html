@@ -9,8 +9,15 @@
   bookBreadcrumbRoot: true в front matter. Нет такого —
   откатываемся к главной (site.Home).
   На главной не рисуются.
+
+  Выключатель как в main-ветке темы (там default false):
+  BookBreadcrumbs включает крошки — на весь сайт через [params]
+  в hugo.toml или точечно через front matter / cascade.
+  .Param сам смотрит сначала страницу, потом сайт — так у всех
+  Book-параметров темы (философия: default в шаблоне, включение
+  в конфиге).
 */}}
-{{- if not .IsHome }}
+{{- if and (.Param "BookBreadcrumbs" | default false) (not .IsHome) }}
 {{- $rootSection := site.Home -}}
 {{- range .Ancestors.Reverse -}}
   {{- if .Param "bookBreadcrumbRoot" }}{{ $rootSection = . }}{{ end -}}

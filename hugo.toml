@@ -47,6 +47,16 @@ disablePathToLower = true       # сохранять регистр в URL (ре
   # можно выключить на отдельной странице: bookToC: false
   BookToC = true
 
+  # Хлебные крошки сверху страницы (как в main-ветке темы: default false).
+  # Включено на весь сайт, чтобы сохранить текущий вид; выключить можно
+  # точечно: bookBreadcrumbs: false во front matter страницы.
+  BookBreadcrumbs = true
+
+  # Входящие/исходящие ссылки под оглавлением (как в main-ветке темы:
+  # default false). Включается на весь сайт (true здесь) или точечно
+  # через front matter / cascade.
+  BookPageLinks = false
+
   # Какую секцию рендерить как боковое меню по умолчанию.
   # '.' = текущий каталог (переносится в CurrentSection в menu-filetree.html)
   # '/' = все верхние секции сайта.

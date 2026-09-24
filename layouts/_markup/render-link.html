@@ -1,0 +1,21 @@
+{{/* link render hook — как в main-ветке темы (в нашей v0.15.0 этого нет).
+   Когда BookPageLinks включён (default false), каждая ссылка на
+   внутреннюю страницу запоминается: у текущей — в bookLinks
+   (исходящие), у целевой — в bookBacklinks (входящие).
+   Отрисовываются в docs/toc.html под оглавлением.
+   Вторая половина (BookPortableLinks) — тоже из main-ветки, частичка
+   layouts/_partials/docs/links/portable-link.html в теме уже есть. */}}
+{{- $destination := .Destination -}}
+
+{{- if .Page.Param "BookPageLinks" | default false -}}
+{{- with .Page.GetPage $destination -}}
+  {{- $.Page.Store.Add "bookLinks" (slice .Page) -}}
+  {{-  .Page.Store.Add "bookBacklinks" (slice $.Page) -}}
+{{- end -}}
+{{- end -}}
+
+{{- if .Page.Site.Params.BookPortableLinks -}}
+  {{- $destination = partial "docs/links/portable-link" . -}}
+{{- end -}}
+<a href="{{ $destination | safeURL }}"{{ with .Title}} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- /**/ -}}

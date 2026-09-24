@@ -316,6 +316,16 @@ a .book-icon svg {
   }
 }
 
+/* Секции входящих/исходящих ссылок под оглавлением (BookPageLinks,
+   как в main-ветке темы — там .book-toc-section, в нашей v0.15.0 нет).
+   Иконки incoming/outgoing — из main-ветки. */
+.book-toc-section {
+  gap: .5em;
+}
+.book-toc-section > .book-icon {
+  margin: .5em 0;
+}
+
 /* Мобильные: укорачиваем заголовок */
 @media (max-width: 40rem) {
   .topbar { padding: 0 0.5rem; }

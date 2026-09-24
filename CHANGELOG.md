@@ -8,6 +8,13 @@
 
 ## 2026-09-24
 
+- Параметры из main-ветки темы (у нас v0.15.0, их там нет):
+  `BookBreadcrumbs` (default false, у нас включён в hugo.toml —
+  вид не поменялся, точечно гасится `bookBreadcrumbs: false`)
+  и `BookPageLinks` (default false — входящие/исходящие ссылки под
+  оглавлением; код toc.html и render-link один в один из main-ветки,
+  иконки incoming/outgoing и CSS .book-toc-section оттуда же).
+  Проверено пробой на двух связанных страницах, проба снесена.
 - Layout `gist` удалён: та же «страница без левого меню» получается
   глубиной `bookSectionDepth: 0` в обычном шаблоне. Три фрагмента
   переведены с `layout: gist` на глубину 0, хвосты `book-layout-gist`
