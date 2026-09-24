@@ -19,7 +19,10 @@
 {{ define "header" }}
 <div class="flex align-center">
   <h3>{{ partial "docs/title" . }}</h3>
-  {{ if .Param "BookToC" | default true }}
+  {{/* Кнопка оглавления у фрагмента — только когда в ToC больше одного пункта. */}}
+  {{ $showToc := .Param "BookToC" | default true }}
+  {{ $tocCount := len (findRE "<li" .TableOfContents) }}
+  {{ if and $showToc (gt $tocCount 1) }}
   <input type="checkbox" class="toggle" id="toc-control" />
   <label for="toc-control">
     <img src="{{ partial "docs/icon" "toc" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Table of Contents" }}" />

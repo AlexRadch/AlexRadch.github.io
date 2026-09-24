@@ -83,7 +83,9 @@
 {{ define "header" }}
   {{ partial "docs/header" . }}
 
-  {{ if .Param "BookToC" | default true}}
+  {{ $showToc := .Param "BookToC" | default true }}
+  {{ $tocCount := len (findRE "<li" .TableOfContents) }}
+  {{ if and $showToc (gt $tocCount 1) }}
   <aside class="hidden">
     {{ template "toc" . }}
   </aside>
@@ -123,7 +125,9 @@
 {{ end }}
 
 {{ define "toc-container" }}
-  {{ if .Param "BookToC" | default true }}
+  {{ $showToc := .Param "BookToC" | default true }}
+  {{ $tocCount := len (findRE "<li" .TableOfContents) }}
+  {{ if and $showToc (gt $tocCount 1) }}
   <aside class="book-toc">
     <div class="book-toc-content">
       {{ template "toc" . }}

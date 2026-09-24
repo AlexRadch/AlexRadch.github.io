@@ -1,0 +1,19 @@
+<div class="flex align-center justify-between">
+  <input type="checkbox" class="toggle" id="menu-control" />
+  <label for="menu-control">
+    <img src="{{ partial "docs/icon" "menu" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Menu" }}" />
+  </label>
+
+  <h3>{{ partial "docs/title" . }}</h3>
+
+  {{/* Правая кнопка оглавления — только когда в ToC больше одного пункта.
+       Одинокий H1 вверху страницы не считается навигацией. */}}
+  {{ $showToc := .Param "BookToC" | default true }}
+  {{ $tocCount := len (findRE "<li" .TableOfContents) }}
+  {{ if and $showToc (gt $tocCount 1) }}
+  <input type="checkbox" class="toggle" id="toc-control" />
+  <label for="toc-control">
+    <img src="{{ partial "docs/icon" "toc" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Table of Contents" }}" />
+  </label>
+  {{ else }}<div></div>{{ end }}
+</div>
