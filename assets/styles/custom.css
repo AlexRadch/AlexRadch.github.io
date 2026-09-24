@@ -285,6 +285,30 @@ a .book-icon svg {
   width: 1em;
 }
 
+/* Узкий экран: строка с кнопками меню/оглавления прилипает к верху
+   (position: sticky, только CSS). В потоке остаётся — текст ниже не
+   перекрывается и не прыгает. На десктопе хедер скрыт, правило молчит.
+   Фон обязателен: иначе статья просвечивает сквозь прилипшую строку.
+   И раскрытое правое оглавление тоже прилипает (top = высота строки):
+   у него position: fixed + top: 0 из темы — на узком экране перекрыло
+   бы кнопки, и оглавление не закрыть. Специфичность как у темы:
+   body:has + .book-header aside. */
+@media screen and (max-width: 56rem) {
+  .book-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--body-background);
+  }
+
+  body:has(#toc-control:checked) .book-header aside {
+    position: sticky;
+    top: var(--book-header-height, 2.5rem);
+    z-index: 1;
+    background: var(--body-background);
+  }
+}
+
 /* Мобильные: укорачиваем заголовок */
 @media (max-width: 40rem) {
   .topbar { padding: 0 0.5rem; }
