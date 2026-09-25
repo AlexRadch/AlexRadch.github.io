@@ -2,8 +2,6 @@
 title: "Pirate Face"
 description: "Открытый каталог, который превращает бесплатные AI-модели с Hugging Face в торренты."
 date: 2026-09-21T10:00:00+07:00
-params:
-  bookSectionDepth: 0
 images: ["https://pirateface.co/og/home"]
 ---
 

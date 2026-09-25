@@ -1,0 +1,18 @@
+{{/*
+  ПЕРЕОПРЕДЕЛЕНИЕ теминого docs/text/template
+  (themes/hugo-book/layouts/_partials/docs/text/template.html).
+
+  Исходник считает checksum через `. | encoding.Jsonify`: весь dict
+  (включая .Page/.Site/.GitInfo) сериализуется в JSON, а сериализация
+  страницы внутри Hugo дёргает устаревший .Page.IsNode — отсюда WARN
+  на каждой сборке (Hugo ≥ v0.163.0, метод IsNode переименован в IsBranch).
+
+  Здесь checksum считается от строки .Template ПЛЮС готовых скалярных
+  значений контекста (.Path для edit-ссылки, .GitInfo.Hash для commit-ссылки).
+  Сами объекты .Page/.Site/.GitInfo в checksum не входят и не проходят
+  через Jsonify — WARN ушёл, а ссылки остались разными для каждой страницы.
+*/}}
+{{- $checksum := printf "%s|%s|%s" .Template (.Context.Path | default "") (.Context.GitInfo.Hash | default "") | crypto.SHA1 | printf "book-%x" -}}
+{{- $template := resources.FromString $checksum .Template -}}
+{{- $template = $template | resources.ExecuteAsTemplate $checksum .Context -}}
+{{- return $template.Content -}}

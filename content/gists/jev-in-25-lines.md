@@ -3,8 +3,6 @@ title: "Jev за 25 строк на Python"
 description: "Перевод поста NobodyWho: Jev — как локальный классификатор на логитах, 25 строк кода на Python."
 date: 2026-09-24T02:46:20+07:00
 images: ["https://www.nobodywho.ai/assets/images/blog/2026/jev-in-25-lines/jev.png"]
-params:
-  bookSectionDepth: 0
 ---
 
 # Jev за 25 строк на Python

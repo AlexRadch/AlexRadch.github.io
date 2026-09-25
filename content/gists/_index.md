@@ -10,6 +10,12 @@ params:
   bookFlatSection: true
   bookIcon: scroll-text
   bookListLimit: 30
+cascade:
+  - target:
+      kind: page
+      path: '/gists/*'
+    params:
+      bookSectionDepth: 0
 ---
 
 # Фрагменты
