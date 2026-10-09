@@ -385,19 +385,30 @@ body.book-layout-storybook .storybook-nav {
 }
 .storybook-book {
   /* Лента: страницы в ряд, сколько влезет по ширине.
-     Колонки строго нужной ширины — свободное место есть,
-     центрирование работает. */
+     Колонка грида — измеритель: ширина колонки честная всегда,
+     движок её не меняет. Страница и шрифт пляшут от неё. */
   display: grid;
-  grid-template-columns: repeat(auto-fill, calc(var(--page-h) * 2 / 3));
+  /* Почему колонка строгой ширины var(--sb-page-w), без minmax и без 1fr:
+     1fr делает колонку гибкой — она тянется на всё свободное место ряда,
+     страница внутри (width 100%) тянется за ней, а высота через aspect-ratio
+     растёт следом и уходит выше экрана. Поэтому ширину держит переменная
+     --sb-page-w, а не грид. Узкий экран жмёт сама --sb-page-h (min из высоты
+     и ширины), грид тут ни при чём. */
+  grid-template-columns: repeat(auto-fill, var(--sb-page-w));
   justify-content: center;
-  gap: 1.5rem;
+  gap: var(--sb-gap);
   width: 100%;
   margin: 0 auto;
-  /* Высота страницы — одна переменная, от неё пляшет всё.
-     Остаток: экран минус две шапки (шапка + верх книжки).
-     Твоя формула, оставляем. */
-  --page-h: calc(100vh - var(--topbar-height) * 2);
-  --page-h: calc(100dvh - var(--topbar-height) * 2);
+  /* Все числа книжки — в одном месте, по шагам. Каждая строка видит
+     предыдущую (каскад), читать сверху вниз. */
+  --sb-gap: 1.5rem;
+  --sb-aspect: 2 / 3;
+  --sb-aspect-inv: 3 / 2;
+  --sb-page-h-min: 320px;
+  --sb-vh: 100vh;
+  --sb-vh: 100dvh;
+  --sb-page-h: max(var(--sb-page-h-min), min(calc(var(--sb-vh) - var(--topbar-height) * 2), calc((100% - var(--sb-gap)) * var(--sb-aspect-inv))));
+  --sb-page-w: calc(var(--sb-page-h) * var(--sb-aspect));
 }
 body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .storybook-book {
   /* Рамка остатка: всё, что дала колонка. Лишнее — внутрь, не вниз. */
@@ -408,23 +419,29 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
 }
 .storybook-book .storybook-page {
   overflow: hidden;
-  /* Ширина — колонка грида, высота сама через aspect-ratio 2/3. */
+  /* Ширина — колонка грида, высота через аспект (та же переменная).
+     Шрифт — от ширины страницы, движок её не трогает. */
   width: 100%;
   height: auto;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: var(--sb-aspect);
   box-sizing: border-box;
   margin: 0 auto;
   /* Отступы маленькие, чтобы картинки были большими. */
   padding: 3%;
-  /* Шрифт — доля от высоты страницы (волшебное число).
-     Высота × 2/3 = ширина, от неё 3.75%. Напрямую от переменной. */
-  font-size: calc(var(--page-h) * 2 / 3 * 0.0375);
+  /* Страница — измеритель своей ширины. Шрифт висит НЕ здесь,
+     а на внутренности: cqw меряет предка-контейнера,
+     сам себя элемент померить не может. */
+  container-type: inline-size;
   line-height: 1.42;
 }
 .storybook-book .storybook-page:has(.storybook-cover) {
   padding: 0;
 }
 .storybook-book .storybook-inner {
+  /* Шрифт — доля от ширины страницы-родителя.
+     Движок ширину страницы меняет — шрифт едет за ней.
+     Никаких констант. */
+  font-size: calc(100cqw * 0.0375);
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -474,16 +491,14 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
 .storybook-book .storybook-cover figure img {
   display: block;
   position: absolute;
-  /* В файле 1487x1800: рисунок со скруглёнными углами на чёрном поле,
-     полосы сверху ~2%, снизу ~3% (замер по настоящему файлу).
-     Тянем на 1800/1710 (~105%) и сдвигаем вверх на 36/1710. */
-  top: calc(-100% * 36 / 1710);
-  height: calc(100% * 1800 / 1710);
+  /* Файл с чёрными полосками сверху/снизу (~2-3% каждая).
+     Всё в процентах: тянем на 107%, сдвигаем вверх на 3.5%.
+     Пикселей нет — на любом экране одинаково. */
+  top: -3.5%;
+  height: 107%;
   width: auto;
   max-width: none;
   max-height: none;
-  left: 50%;
-  translate: -48.4% 0;
   margin: 0;
 }
 .storybook-book .storybook-cover-title {
