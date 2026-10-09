@@ -15,10 +15,15 @@
   --topbar-height: 3rem;
 }
 
+/* Сторибук — во всю ширину экрана. Остальные макеты живут
+   на потолке темы (90rem), их не трогаем. */
+body.book-layout-storybook {
+  --container-max-width: 100%;
+}
+
 .topbar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   height: var(--topbar-height);
   background: var(--body-background);
   color: var(--body-font-color);
@@ -33,11 +38,6 @@
   margin: 0 max(
     0rem,
     calc((100% - var(--container-max-width)) / 2)
-  );
-  gap: clamp(
-    0.5rem,
-    calc(0.5rem + (100vw - 90rem) * 0.8),
-    calc(0.5rem + var(--space-16))
   );
   padding-inline: max(
     1rem,
@@ -190,6 +190,7 @@ main.container {
   justify-content: center;
   width: 2rem;
   height: 2rem;
+  flex: none;
   padding: 0;
   border: 1px solid rgba(128, 128, 128, 0.3);
   border-radius: var(--border-radius, 0.25rem);
@@ -197,6 +198,22 @@ main.container {
   color: var(--body-font-color);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 1;
+}
+/* Красная кнопка отладки: скрипты выключены (?nojs). Клик — вернуть (?js). */
+.debug-js {
+  background: #c0392b;
+  border-color: #c0392b;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: 0.25rem;
+}
+.debug-js:hover {
+  background: #e74c3c;
+  color: #fff;
 }
 
 .theme-btn svg,
@@ -325,6 +342,218 @@ a .book-icon svg {
 .book-toc-section > .book-icon {
   margin: .5em 0;
 }
+
+/* Книжка-читалка: картинки вписываются в страницу, а не торчат целиком.
+   Бумага как у них: тёплый кремовый градиент от корешка к краю.
+   Красим саму страницу (.storybook-page) — она есть всегда, а классы
+   движка (stf__block/st-page) появляются только со скриптами. */
+.storybook-book .storybook-page,
+.storybook-book .stf__block,
+.storybook-book .stf__item,
+.storybook-book .st-page {
+  --paper: #f5eedd;
+  --paper-hi: #faf6ea;
+  --paper-lo: #ece3cc;
+  background: linear-gradient(90deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 72%, #f0e8d4 100%);
+  color: #2b2118;
+}
+/* Только сторибук: обычная страница, растёт вниз сколько надо.
+   Лента без скриптов (?nojs) — страницы 2:3 друг за другом.
+   Рамку-остаток на высоту экрана ставит движок (класс storybook-live),
+   когда скрипты живы: тогда книга листается, а не тянется вниз. */
+body.book-layout-storybook .book-page {
+  min-width: 0;
+}
+body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) {
+  height: calc(100vh - var(--topbar-height));
+  height: calc(100dvh - var(--topbar-height));
+}
+body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .book-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) article.storybook {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+body.book-layout-storybook .storybook-nav {
+  flex: none;
+}
+.storybook-book {
+  /* Лента: страницы в ряд, сколько влезет по ширине.
+     Колонки строго нужной ширины — свободное место есть,
+     центрирование работает. */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, calc(var(--page-h) * 2 / 3));
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  margin: 0 auto;
+  /* Высота страницы — одна переменная, от неё пляшет всё.
+     Остаток: экран минус две шапки (шапка + верх книжки).
+     Твоя формула, оставляем. */
+  --page-h: calc(100vh - var(--topbar-height) * 2);
+  --page-h: calc(100dvh - var(--topbar-height) * 2);
+}
+body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .storybook-book {
+  /* Рамка остатка: всё, что дала колонка. Лишнее — внутрь, не вниз. */
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.storybook-book .storybook-page {
+  overflow: hidden;
+  /* Ширина — колонка грида, высота сама через aspect-ratio 2/3. */
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  box-sizing: border-box;
+  margin: 0 auto;
+  /* Отступы маленькие, чтобы картинки были большими. */
+  padding: 3%;
+  /* Шрифт — доля от высоты страницы (волшебное число).
+     Высота × 2/3 = ширина, от неё 3.75%. Напрямую от переменной. */
+  font-size: calc(var(--page-h) * 2 / 3 * 0.0375);
+  line-height: 1.42;
+}
+.storybook-book .storybook-page:has(.storybook-cover) {
+  padding: 0;
+}
+.storybook-book .storybook-inner {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.storybook-book .storybook-page figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.storybook-book .storybook-page figure img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 72%;
+  object-fit: contain;
+}
+.storybook-book .storybook-page p {
+  margin: 0.5em 0;
+}
+.storybook-book .storybook-page p:first-child {
+  margin-top: 0;
+}
+.storybook-book .storybook-page p:last-child {
+  margin-bottom: 0;
+}
+.storybook-book .storybook-page p:has(figure) {
+  margin: 0;
+}
+.storybook-book .storybook-center {
+  text-align: center;
+}
+.storybook-book .storybook-cover {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+.storybook-book .storybook-cover figure {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+.storybook-book .storybook-cover figure img {
+  display: block;
+  position: absolute;
+  /* В файле 1487x1800: рисунок со скруглёнными углами на чёрном поле,
+     полосы сверху ~2%, снизу ~3% (замер по настоящему файлу).
+     Тянем на 1800/1710 (~105%) и сдвигаем вверх на 36/1710. */
+  top: calc(-100% * 36 / 1710);
+  height: calc(100% * 1800 / 1710);
+  width: auto;
+  max-width: none;
+  max-height: none;
+  left: 50%;
+  translate: -48.4% 0;
+  margin: 0;
+}
+.storybook-book .storybook-cover-title {
+  position: absolute;
+  z-index: 2;
+  top: 12%;
+  left: 10%;
+  right: 10%;
+  margin: 0;
+  font-size: 2.2em;
+  font-weight: 700;
+  text-align: center;
+  text-wrap: balance;
+  line-height: 1.1;
+}
+.storybook-book .storybook-cover-byline {
+  position: absolute;
+  z-index: 2;
+  bottom: 6%;
+  left: 10%;
+  right: 10%;
+  text-align: center;
+  font-size: 1.05em;
+}
+.storybook-book .storybook-cover-byline p {
+  margin: 0.15em 0;
+}
+
+/* Кнопки-листалки как у них: круглые, со стрелкой. Текст виден только
+   читалкам (переводы подставляет скрипт из story-ui). */
+/* Навигация-листалка скрыта, пока движок не ожил.
+   Движок ставит .storybook-nav-live — тогда показываем.
+   Без скриптов все страницы видны лентой, листать нечего. */
+.storybook-nav {
+  display: none;
+}
+.storybook-nav.storybook-nav-live {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+  margin-top: 12px;
+}
+.storybook-arrow {
+  appearance: none;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border, #ccc);
+  background: none;
+  color: inherit;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+}
+.storybook-arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.storybook-arrow:hover { border-color: currentColor; opacity: 0.85; }
+.storybook-arrow:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.storybook-arrow:disabled { opacity: 0.18; cursor: default; }
+.storybook-counter { min-width: 4em; text-align: center; }
 
 /* Мобильные: укорачиваем заголовок */
 @media (max-width: 40rem) {

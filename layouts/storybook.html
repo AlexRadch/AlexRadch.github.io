@@ -1,0 +1,76 @@
+{{ define "main" }}
+<article class="storybook">
+  {{- $story := .Params.story }}
+  <div class="storybook-book" id="storybook">
+    {{- if $story }}
+      {{- $cover := index $story "cover-image" }}
+      {{- if not $cover }}{{ $cover = $story.coverimage }}{{ end }}
+    <div class="storybook-page">
+      <div class="storybook-inner storybook-cover">
+        {{- with $cover }}
+        <figure><img src="{{ . }}" alt="{{ $story.title }}" loading="eager"></figure>
+        {{- end }}
+        {{- with $story.title }}
+        <h1 class="storybook-cover-title">{{ . }}</h1>
+        {{- end }}
+        <div class="storybook-cover-byline">
+          {{- with $story.author }}<p>{{ . | markdownify }}</p>{{- end }}
+          {{- with $story.artist }}<p>{{ . | markdownify }}</p>{{- end }}
+          {{- with $story.translator }}<p>{{ . | markdownify }}</p>{{- end }}
+        </div>
+      </div>
+    </div>
+    {{- end }}
+    {{- $norm := replaceRE "(?m)^[ \t]*-{3,}[ \t]*$" "\n§STORYBOOK-SEP§\n" .RawContent }}
+    {{- $secs := split $norm "§STORYBOOK-SEP§" }}
+    {{- range $secs }}
+      {{- $sec := trim . " \t\r\n" }}
+      {{- if $sec }}
+        {{- /* Убрать управляющую строку center из шапки куска. */}}
+        {{- $body := replaceRE "(?m)\\A((?:[^\\S\\r\\n]*\\r?\\n)*)[Cc][Ee][Nn][Tt][Ee][Rr][^\\S\\r\\n]*\\r?\\n" "$1" $sec }}
+        {{- $center := ne $body $sec }}
+    <div class="storybook-page">
+      <div class="storybook-inner">
+        {{- if $center }}<div class="storybook-center">{{ end }}
+        {{ $body | markdownify }}
+        {{- if $center }}</div>{{ end }}
+      </div>
+    </div>
+      {{- end }}
+    {{- end }}
+  </div>
+  <nav class="storybook-nav">
+    <button class="storybook-arrow storybook-prev" id="storybook-prev" type="button" aria-label="← Previous page" title="← Previous page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    </button>
+    <span class="storybook-counter" id="storybook-counter"></span>
+    <button class="storybook-arrow storybook-next" id="storybook-next" type="button" aria-label="Next page →" title="Next page →">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+    </button>
+  </nav>
+  <script type="application/json" id="storybook-ui">{{ index .Params "story-ui" | jsonify | safeJS }}</script>
+</article>
+{{/* Без скриптов навигация скрыта CSS (.storybook-nav: display none).
+   Движок ставит .storybook-nav-live — тогда показываем.
+   Бумагу страниц красим всегда (движка может не быть). */}}
+<noscript>
+  <style>
+    .storybook-book .storybook-page {
+      overflow: hidden;
+      margin-bottom: 0;
+      border: 1px solid var(--border, #ccc);
+      border-radius: 4px;
+      background: linear-gradient(90deg, #ece3cc 0%, #faf6ea 8%, #f5eedd 26%, #f5eedd 72%, #f0e8d4 100%);
+      color: #2b2118;
+    }
+    .storybook-book .storybook-page:has(.storybook-cover) {
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+  <p><a href="#storybook">↑ Back to top</a></p>
+</noscript>
+{{/* Грузилка движка: ?nojs — книга стоит лентой. Глобальный флаг
+   window.__NOJS__ ставит head на всех страницах. F5 сохраняет. */}}
+<script src="{{ "js/storybook-loader.js" | relURL }}"></script>
+{{ end }}

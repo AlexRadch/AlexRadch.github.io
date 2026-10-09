@@ -4,11 +4,11 @@
   См. https://book.alxs.dev/docs/getting-started/configuration/#inject-partials
 */}}
 {{ with resources.Get "scripts/theme-switcher.js" | resources.Minify }}
-  <script>{{ .Content | safeJS }}</script>
+  <script>if(!window.__NOJS__){ {{ .Content | safeJS }} }</script>
 {{ end }}
 {{ with resources.Get "scripts/layout-topbar.js" | resources.Minify }}
-  <script>{{ .Content | safeJS }}</script>
+  <script>if(!window.__NOJS__){ {{ .Content | safeJS }} }</script>
 {{ end }}
 {{ with resources.Get "scripts/toc-autoclose.js" | resources.Minify }}
-  <script>{{ .Content | safeJS }}</script>
+  <script>if(!window.__NOJS__){ {{ .Content | safeJS }} }</script>
 {{ end }}

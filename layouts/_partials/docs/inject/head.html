@@ -1,3 +1,7 @@
+{{/* Сторож отладки: ?nojs — все остальные скрипты молчат.
+   ?js — вернуть. Сторожа обходить ЗАПРЕЩЕНО: без скриптов
+   кнопка темы мертва, тема системная — так и надо. */}}
+<script>(function(){try{var h=location.search;var q=/(?:\?|&)nojs(?:&|$)/.test(h);if(/(?:\?|&)js(?:&|$)/.test(h)){q=false;try{sessionStorage.removeItem('nojs')}catch(e){}}if(q){try{sessionStorage.setItem('nojs','1')}catch(e){}}var s=false;try{s=sessionStorage.getItem('nojs')==='1'}catch(e){}window.__NOJS__=q||s;}catch(e){window.__NOJS__=/(?:\?|&)nojs(?:&|$)/.test(location.search);}})();</script>
 {{/*
   Точка расширения темы: код внутри <head> на каждой странице.
 
@@ -22,8 +26,25 @@
 (function () {
   var KEY = 'theme';
   var MODES = ['auto', 'light', 'dark'];
+  function fromQuery() {
+    var m = /(?:\?|&)theme=(auto|light|dark)(?:&|$)/.exec(location.search);
+    return m ? m[1] : null;
+  }
+  function fromCookie() {
+    var m = /(?:^|;\s*)theme=(auto|light|dark)(?:;|$)/.exec(document.cookie || '');
+    return m ? m[1] : null;
+  }
   try {
-    var t = localStorage.getItem(KEY) || 'auto';
+    /* Тема: сначала параметр ?theme= в адресе, иначе кука, иначе память.
+       Параметр пишем в куку (живёт без скриптов на всём сайте, год) —
+       дальше ссылки без параметра тему не роняют. */
+    var t = fromQuery();
+    if (t) {
+      try { localStorage.setItem(KEY, t); } catch (e) {}
+      try { document.cookie = 'theme=' + t + ';path=/;max-age=31536000;SameSite=Lax'; } catch (e) {}
+    } else {
+      t = fromCookie() || localStorage.getItem(KEY) || 'auto';
+    }
     if (MODES.indexOf(t) < 0) t = 'auto';
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {

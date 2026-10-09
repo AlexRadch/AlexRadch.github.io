@@ -37,6 +37,11 @@
       <span class="theme-icon theme-icon-light">{{ $iLight.Content | safeHTML }}</span>
       <span class="theme-icon theme-icon-dark">{{ $iDark.Content | safeHTML }}</span>
     </button>
+    {{/* Красная кнопка отладки: видна только когда сторож выключил скрипты.
+       Клик — вернуть скрипты (?js). Без скриптов красится CSS по data-атрибуту,
+       который ставит сторож до неё — обхода нет, сторож идёт первым. */}}
+    <a class="theme-btn debug-js" id="debug-js" href="?js" title="Скрипты выключены (?nojs) — клик: вернуть">JS✕</a>
+    <script>(function(){if(window.__NOJS__){document.documentElement.setAttribute('data-nojs','1');}var d=document.getElementById('debug-js');if(!window.__NOJS__&&d){d.style.display='none';}})();</script>
   </nav>
   <main class="container flex">
     {{ template "menu-container" . }} <!-- Left menu -->
