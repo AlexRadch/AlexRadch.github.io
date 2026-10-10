@@ -38,22 +38,39 @@
     return m ? (+m[1]) : 0;
   }
 
+  /* Книга живая: размер меряет движок от родителя (stretch).
+     width/height не задаём — движок считает сам.
+     Метку ставим ДО создания движка: он меряет родителя при загрузке,
+     зажим колонки должен стоять уже тогда.
+     Минимумы — личные с книги (#storybook-size из шаблона:
+     общие из конфига, поверх личные из шапки). 2/3 нет —
+     ширину берём прямо из личных, аспект не нужен.
+     Максимумы — размер родителя, но не меньше минимумов. */
+  var sizeEl = document.getElementById('storybook-size');
+  var sizeConf = {};
+  try { sizeConf = JSON.parse(sizeEl.textContent); } catch (e) { sizeConf = {}; }
+  var minH = sizeConf.minHeight > 0 ? sizeConf.minHeight : 300;
+  var minW = sizeConf.minWidth > 0 ? sizeConf.minWidth : 200;
+  bookEl.classList.add('storybook-live');
+  var navEl = document.querySelector('.storybook-nav');
+  if (navEl) navEl.classList.add('storybook-nav-live');
+  var parent = bookEl.parentElement;
+  var maxH = parent && parent.clientHeight > minH ? parent.clientHeight : minH;
+  var maxW = parent && parent.clientWidth > minW ? parent.clientWidth : minW;
   var flip = new St.PageFlip(bookEl, {
-    width: 400,
-    height: 600,
-    size: 'fixed',
+    size: 'stretch',
+    minWidth: minW,
+    minHeight: minH,
+    maxWidth: maxW,
+    maxHeight: maxH,
     drawShadow: true,
     flippingTime: 800,
     usePortrait: true,
     showCover: true,
     showPageCorners: false
   });
-  /* Движок ожил — ставим метку: CSS даёт рамку-остаток на высоту экрана.
-     Без скриптов метки нет — лента растёт вниз сколько надо.
-     Навигацию показываем только здесь: листалка жива, есть что листать. */
-  bookEl.classList.add('storybook-live');
-  var navEl = document.querySelector('.storybook-nav');
-  if (navEl) navEl.classList.add('storybook-nav-live');
+  /* Метка уже стоит (выше). Без скриптов метки нет —
+     лента растёт вниз сколько надо. */
 
   var nodes = Array.prototype.slice.call(bookEl.querySelectorAll(':scope > .storybook-page'));
   flip.loadFromHTML(nodes);

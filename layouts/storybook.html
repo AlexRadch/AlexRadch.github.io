@@ -1,7 +1,15 @@
 {{ define "main" }}
 <article class="storybook">
   {{- $story := .Params.story }}
-  <div class="storybook-book" id="storybook">
+  {{/* Личные размеры книги: сначала общие из конфига, поверх — личные
+     из шапки страницы (если есть). Личное побеждает, общего хватает всем.
+     Аспект нигде не пишем — считаем из этих двух чисел. */}}
+  {{- $sbConf := site.Params.storybook }}
+  {{- $sbPage := .Params.storybook }}
+  {{- $minW := $sbConf.minWidth }}
+  {{- $minH := $sbConf.minHeight }}
+  {{- with $sbPage }}{{ with .minWidth }}{{ $minW = . }}{{ end }}{{ with .minHeight }}{{ $minH = . }}{{ end }}{{ end }}
+  <div class="storybook-book" id="storybook" style="--sb-min-w: {{ $minW }}px; --sb-min-h: {{ $minH }}px; --sb-aw: {{ $minW }}; --sb-ah: {{ $minH }};">
     {{- if $story }}
       {{- $cover := index $story "cover-image" }}
       {{- if not $cover }}{{ $cover = $story.coverimage }}{{ end }}
@@ -49,6 +57,7 @@
     </button>
   </nav>
   <script type="application/json" id="storybook-ui">{{ index .Params "story-ui" | jsonify | safeJS }}</script>
+  <script type="application/json" id="storybook-size">{{ dict "minWidth" $minW "minHeight" $minH | jsonify | safeJS }}</script>
 </article>
 {{/* Без скриптов навигация скрыта CSS (.storybook-nav: display none).
    Движок ставит .storybook-nav-live — тогда показываем.

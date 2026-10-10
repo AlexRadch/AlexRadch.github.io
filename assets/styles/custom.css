@@ -364,10 +364,10 @@ a .book-icon svg {
 body.book-layout-storybook .book-page {
   min-width: 0;
 }
-body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) {
-  height: calc(100vh - var(--topbar-height));
-  height: calc(100dvh - var(--topbar-height));
-}
+/* Живой движок колонку на высоту экрана НЕ жмёт: движок на готовых
+   размерах (400×600), родителя не меряет — зажим ему не нужен,
+   а подвал из-за него ложился поверх низа книги.
+   Без зажима подвал течёт за книгой, низ идёт скроллом. */
 body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .book-page {
   display: flex;
   flex-direction: column;
@@ -399,16 +399,18 @@ body.book-layout-storybook .storybook-nav {
   gap: var(--sb-gap);
   width: 100%;
   margin: 0 auto;
-  /* Все числа книжки — в одном месте, по шагам. Каждая строка видит
-     предыдущую (каскад), читать сверху вниз. */
+  /* Все числа книжки — личные с книги (шаблон положил из конфига
+     и шапки страницы), общих чисел здесь нет. Промежуточных нет —
+     высота и ширина считаются одним выражением прямо из личных. */
   --sb-gap: 1.5rem;
-  --sb-aspect: 2 / 3;
-  --sb-aspect-inv: 3 / 2;
-  --sb-page-h-min: 320px;
+  /* Высота viewport дважды: сначала 100vh (старые браузеры, которые
+     не знают dvh — им остаётся первая строка), потом 100dvh (новые:
+     вычитает шторки телефона, перебивает первую). Удалять первую
+     строку НЕЛЬЗЯ — старые браузеры останутся без высоты вообще. */
   --sb-vh: 100vh;
   --sb-vh: 100dvh;
-  --sb-page-h: max(var(--sb-page-h-min), min(calc(var(--sb-vh) - var(--topbar-height) * 2), calc((100% - var(--sb-gap)) * var(--sb-aspect-inv))));
-  --sb-page-w: calc(var(--sb-page-h) * var(--sb-aspect));
+  --sb-page-h: max(var(--sb-min-h), min(calc(var(--sb-vh) - var(--topbar-height) * 2), calc((100% - var(--sb-gap)) * var(--sb-ah) / var(--sb-aw))));
+  --sb-page-w: calc(var(--sb-page-h) * var(--sb-aw) / var(--sb-ah));
 }
 body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .storybook-book {
   /* Рамка остатка: всё, что дала колонка. Лишнее — внутрь, не вниз. */
@@ -423,7 +425,7 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
      Шрифт — от ширины страницы, движок её не трогает. */
   width: 100%;
   height: auto;
-  aspect-ratio: var(--sb-aspect);
+  aspect-ratio: var(--sb-aw) / var(--sb-ah);
   box-sizing: border-box;
   margin: 0 auto;
   /* Отступы маленькие, чтобы картинки были большими. */
