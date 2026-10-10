@@ -6,8 +6,16 @@ weight: 2
 layout: "storybook"
 story:
   title: "Frog and Toad and the Increasingly Capable Machines"
-  author: "written by [Elizabeth Van Nostrand](https://acesounderglass.com/about-me-2/)"
-  artist: "drawn by [HungerArtist](https://www.deviantart.com/hungerartist)"
+  coverTitle:
+    - kind: "main"
+      text: "Frog and Toad"
+    - kind: "sub"
+      text: "and the Increasingly Capable Machines"
+  authors:
+    - role: "Written by"
+      name: "[Elizabeth Van Nostrand](https://acesounderglass.com/about-me-2/)"
+    - role: "Drawn by"
+      name: "[HungerArtist](https://www.deviantart.com/hungerartist)"
   coverImage: "https://www.frogandtoad.ai/illustrations/web/1-FAT-title-final.webp"
 storyUi:
   chapter: "Chapter {n}"

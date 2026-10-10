@@ -1,4 +1,13 @@
 {{ define "main" }}
+{{/* Шрифт книжки: всем по умолчанию Noto Serif с Google Fonts.
+   Личные добавки — списком полных ссылок в storybook.fontLinks
+   (шапка или каскад): хоть с Google, хоть со своего сайта. */}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+{{- with (.Param "storybook") }}{{ with .fontLinks }}{{ range . }}
+<link href="{{ . }}" rel="stylesheet">
+{{- end }}{{ end }}{{ end }}
 <article class="storybook">
   {{- $story := .Params.story }}
   {{/* Размеры книги одним вызовом: .Param "storybook" идёт по цепочке
@@ -8,43 +17,71 @@
   {{- $sb := .Param "storybook" }}
   {{- $minW := 200 }}
   {{- $minH := 300 }}
-  {{- with $sb }}{{ with .minWidth }}{{ $minW = . }}{{ end }}{{ with .minHeight }}{{ $minH = . }}{{ end }}{{ end }}
-  <div class="storybook-book" id="storybook" style="--sb-aw: {{ $minW }}; --sb-ah: {{ $minH }};">
+  {{- $zoom := 1.5 }}
+  {{- $coverInk := "" }}
+  {{- with $sb }}{{ with .minWidth }}{{ $minW = . }}{{ end }}{{ with .minHeight }}{{ $minH = . }}{{ end }}{{ with .coverZoom }}{{ $zoom = . }}{{ end }}{{ with .coverInk }}{{ $coverInk = . }}{{ end }}{{ end }}
+  <div class="storybook-book" id="storybook" style="--sb-aw: {{ $minW }}; --sb-ah: {{ $minH }}; --sb-cover-zoom: {{ $zoom }};{{ with $coverInk }} --cover-ink: {{ . }};{{ end }}">
     {{- if $story }}
       {{- $cover := $story.coverImage }}
       {{- if not $cover }}{{ $cover = index $story "coverImage" }}{{ end }}
+    {{/* Обложка — разворот из одной страницы. */}}
+    <div class="storybook-spread">
+    <div class="storybook-measurer">
     <div class="storybook-page">
       <div class="storybook-inner storybook-cover">
         {{- with $cover }}
-        <figure><img src="{{ . }}" alt="{{ $story.title }}" loading="eager"></figure>
+        <figure><img src="{{ . }}" alt="{{ with $story.title }}{{ if reflect.IsSlice . }}{{ range . }}{{ .text }} {{ end }}{{ else }}{{ . }}{{ end }}{{ end }}" loading="eager"></figure>
         {{- end }}
-        {{- with $story.title }}
-        <h1 class="storybook-cover-title">{{ . }}</h1>
+        {{- /* Cover-заголовок: если есть coverTitle — бьём на блоки,
+           нет — печатаем обычный title одной строкой. */}}
+        {{- $ct := or $story.coverTitle $story.covertitle $story.title $story.Title }}
+        {{- with $ct }}
+        <h1 class="storybook-cover-title">{{ if reflect.IsSlice . }}{{ range . }}<span class="{{ .kind }}">{{ .text }}</span>{{ end }}{{ else }}{{ . }}{{ end }}</h1>
         {{- end }}
         <div class="storybook-cover-byline">
-          {{- with $story.author }}<p>{{ . | markdownify }}</p>{{- end }}
-          {{- with $story.artist }}<p>{{ . | markdownify }}</p>{{- end }}
-          {{- with $story.translator }}<p>{{ . | markdownify }}</p>{{- end }}
+          {{- with $story.authors }}{{ range . }}<p>{{ .role }} {{ (replaceRE "</?p[^>]*>" "" (.name | markdownify)) | safeHTML }}</p>{{ end }}{{ end }}
         </div>
       </div>
+    </div>
+    </div>
     </div>
     {{- end }}
     {{- $norm := replaceRE "(?m)^[ \t]*-{3,}[ \t]*$" "\n§STORYBOOK-SEP§\n" .RawContent }}
     {{- $secs := split $norm "§STORYBOOK-SEP§" }}
+    {{/* Собираем страницы в список, потом кладём парами по разворотам. */}}
+    {{- $pages := slice }}
     {{- range $secs }}
       {{- $sec := trim . " \t\r\n" }}
       {{- if $sec }}
-        {{- /* Убрать управляющую строку center из шапки куска. */}}
         {{- $body := replaceRE "(?m)\\A((?:[^\\S\\r\\n]*\\r?\\n)*)[Cc][Ee][Nn][Tt][Ee][Rr][^\\S\\r\\n]*\\r?\\n" "$1" $sec }}
         {{- $center := ne $body $sec }}
-    <div class="storybook-page">
-      <div class="storybook-inner">
-        {{- if $center }}<div class="storybook-center">{{ end }}
-        {{ $body | markdownify }}
-        {{- if $center }}</div>{{ end }}
-      </div>
-    </div>
+        {{- $pages = $pages | append (dict "body" $body "center" $center) }}
       {{- end }}
+    {{- end }}
+    {{- $n := len $pages }}
+    {{- range $i, $p := $pages }}
+      {{- $odd := eq (mod $i 2) 0 }}
+      {{- $last := eq (add $i 1) $n }}
+      {{- $lone := and $odd $last }}
+      {{- if $odd }}<div class="storybook-spread">{{ end }}
+    <div class="storybook-measurer">
+    {{- if $lone }}
+    <div class="storybook-page storybook-page-lone">
+    {{- else if $odd }}
+    <div class="storybook-page storybook-page-left">
+    {{- else }}
+    <div class="storybook-page storybook-page-right">
+    {{- end }}
+      <div class="storybook-inner">
+        {{- if $p.center }}<div class="storybook-center">{{ end }}
+        {{ $p.body | markdownify }}
+        {{- if $p.center }}</div>{{ end }}
+      </div>
+    <div class="storybook-folio">{{ add $i 1 }}</div>
+    </div>
+    </div>
+      {{- if not $odd }}</div>{{ end }}
+      {{- if and $odd (eq (add $i 1) $n) }}</div>{{ end }}
     {{- end }}
   </div>
   <nav class="storybook-nav">

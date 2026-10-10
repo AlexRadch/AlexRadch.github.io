@@ -354,8 +354,20 @@ a .book-icon svg {
   --paper: #f5eedd;
   --paper-hi: #faf6ea;
   --paper-lo: #ece3cc;
+  --ink: #2a2318;
+  --ink-soft: #7b6c55;
+  /* Шрифт книжки: Noto Serif всем, запасные системные.
+     Личные шрифты едут отдельными линками (storybook.fontLinks),
+     в цепочку их пишем первыми. */
+  --book-font: "Noto Serif", Georgia, serif;
   background: linear-gradient(90deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 72%, #f0e8d4 100%);
-  color: #2b2118;
+  color: var(--ink);
+  font-family: var(--book-font);
+}
+/* Цвет заголовка обложки: по умолчанию как обычный текст.
+   Личное с книги (--cover-ink на книге) перебивает. */
+.storybook-book {
+  --cover-ink: var(--ink);
 }
 /* Только сторибук: обычная страница, растёт вниз сколько надо.
    Лента без скриптов (?nojs) — страницы 2:3 друг за другом.
@@ -384,17 +396,11 @@ body.book-layout-storybook .storybook-nav {
   flex: none;
 }
 .storybook-book {
-  /* Лента: страницы в ряд, сколько влезет по ширине.
-     Колонка грида — измеритель: ширина колонки честная всегда,
-     движок её не меняет. Страница и шрифт пляшут от неё. */
-  display: grid;
-  /* Почему колонка строгой ширины var(--sb-page-w), без minmax и без 1fr:
-     1fr делает колонку гибкой — она тянется на всё свободное место ряда,
-     страница внутри (width 100%) тянется за ней, а высота через aspect-ratio
-     растёт следом и уходит выше экрана. Поэтому ширину держит переменная
-     --sb-page-w, а не грид. Узкий экран жмёт сама --sb-page-h (min из высоты
-     и ширины), грид тут ни при чём. */
-  grid-template-columns: repeat(auto-fill, var(--sb-page-w));
+  /* Лента: цепочка разворотов в ряд, сколько влезет.
+     Флекс с переносом: не влез — разворот падает вниз целиком,
+     не рвётся. Зазор только между разворотами, со всех сторон. */
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: var(--sb-gap);
   width: 100%;
@@ -409,7 +415,7 @@ body.book-layout-storybook .storybook-nav {
      строку НЕЛЬЗЯ — старые браузеры останутся без высоты вообще. */
   --sb-vh: 100vh;
   --sb-vh: 100dvh;
-  --sb-page-h: max(calc(var(--sb-ah) * 1px), min(calc(var(--sb-vh) - var(--topbar-height) * 2), calc((100% - var(--sb-gap)) * var(--sb-ah) / var(--sb-aw))));
+  --sb-page-h: max(calc(var(--sb-ah) * 1px), calc(var(--sb-vh) - var(--topbar-height) * 2));
   --sb-page-w: calc(var(--sb-page-h) * var(--sb-aw) / var(--sb-ah));
 }
 body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .storybook-book {
@@ -419,17 +425,40 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   min-width: 0;
   overflow: hidden;
 }
+.storybook-book .storybook-spread {
+  /* Разворот — неделимый блок: не влез целиком — падает вниз всем
+     составом, не рвётся. Внутри страницы тоже с переносом: на мобилке
+     складываются вниз (тогда их разделяет зазор). Сам не сжимается. */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+.storybook-book .storybook-measurer {
+  /* Измеритель: жёсткая коробка для внешнего флекса.
+     Здесь НЕТ container-type — флекс считает ширину без сбоев.
+     Без min-width и без max-width — как в прототипе, иначе круг. */
+  flex: 0 0 auto;
+  width: var(--sb-page-w);
+  height: var(--sb-page-h);
+  max-width: 100%;
+}
 .storybook-book .storybook-page {
   overflow: hidden;
-  /* Ширина — колонка грида, высота через аспект (та же переменная).
-     Шрифт — от ширины страницы, движок её не трогает. */
+  /* Страница тянется на весь измеритель.
+     Здесь живёт container-type для шрифтов — внутри уже
+     зафиксированной ширины, конфликта с флексом нет. */
   width: 100%;
-  height: auto;
+  height: 100%;
   aspect-ratio: var(--sb-aw) / var(--sb-ah);
   box-sizing: border-box;
-  margin: 0 auto;
-  /* Отступы маленькие, чтобы картинки были большими. */
-  padding: 3%;
+  margin: 0;
+  /* Поля как у них: сверху 11, по бокам 11, снизу 15 (в процентах).
+     У корешка страница разъезжается: левая слева 10 справа 12,
+     правая наоборот (ниже). */
+  padding: 11% 11% 15%;
   /* Страница — измеритель своей ширины. Шрифт висит НЕ здесь,
      а на внутренности: cqw меряет предка-контейнера,
      сам себя элемент померить не может. */
@@ -439,11 +468,36 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
 .storybook-book .storybook-page:has(.storybook-cover) {
   padding: 0;
 }
+/* У корешка разъезжаются: левая слева 10 справа 12, правая наоборот.
+   Одиночка посередине — ровные 11 с боков (общее правило выше). */
+.storybook-book .storybook-page-left {
+  padding-left: 10%;
+  padding-right: 12%;
+}
+.storybook-book .storybook-page-right {
+  padding-left: 12%;
+  padding-right: 10%;
+}
+/* Номер страницы снизу по центру, как у них (folio).
+   Ширина у нас есть (--sb-page-w), от неё и считаем. */
+.storybook-book .storybook-page {
+  position: relative;
+}
+.storybook-book .storybook-folio {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--sb-page-w) * 0.06);
+  text-align: center;
+  font-size: calc(var(--sb-page-w) * 0.032);
+  font-variant-numeric: lining-nums;
+  color: var(--ink-soft);
+}
 .storybook-book .storybook-inner {
-  /* Шрифт — доля от ширины страницы-родителя.
-     Движок ширину страницы меняет — шрифт едет за ней.
-     Никаких констант. */
-  font-size: calc(100cqw * 0.0375);
+  /* Шрифт — доля от ширины страницы (та же переменная, не cqw).
+     cqw здесь не нужен: ширина известна заранее, а на старых
+     браузерах cqw вообще нет — шрифт бы упал. */
+  font-size: calc(var(--sb-page-w) * 0.0375);
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -482,6 +536,8 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   position: relative;
   height: 100%;
   overflow: hidden;
+  /* Зум личный с книги (--sb-cover-zoom из шаблона: общее из конфига,
+     личное из шапки). Середина кадра по центру сама. */
 }
 .storybook-book .storybook-cover figure {
   position: absolute;
@@ -489,18 +545,17 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   margin: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 .storybook-book .storybook-cover figure img {
   display: block;
-  position: absolute;
-  /* Файл с чёрными полосками сверху/снизу (~2-3% каждая).
-     Всё в процентах: тянем на 107%, сдвигаем вверх на 3.5%.
-     Пикселей нет — на любом экране одинаково. */
-  top: -3.5%;
-  height: 107%;
-  width: auto;
-  max-width: none;
-  max-height: none;
+  /* Зум одним свойством: картинка больше рамки, центр сам по центру. */
+  width: 100%;
+  height: 100%;
+  scale: var(--sb-cover-zoom);
   margin: 0;
 }
 .storybook-book .storybook-cover-title {
@@ -511,10 +566,24 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   right: 10%;
   margin: 0;
   font-size: 2.2em;
-  font-weight: 700;
+  font-weight: 600;
   text-align: center;
   text-wrap: balance;
-  line-height: 1.1;
+  line-height: 1.05;
+  color: var(--cover-ink);
+}
+/* Главное и подзаголовки, как у них: main крупно в одну строку,
+   sub ниже мелко. Порядок и число — из шапки списком. */
+.storybook-book .storybook-cover-title .main {
+  display: block;
+  font-size: 1.5em;
+  white-space: nowrap;
+}
+.storybook-book .storybook-cover-title .sub {
+  display: block;
+  margin-top: 0.3em;
+  font-size: 0.9em;
+  line-height: 1.15;
 }
 .storybook-book .storybook-cover-byline {
   position: absolute;
@@ -527,6 +596,10 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
 }
 .storybook-book .storybook-cover-byline p {
   margin: 0.15em 0;
+}
+/* Первые буквы строк подписи — заглавные, как у них. */
+.storybook-book .storybook-cover-byline p::first-letter {
+  text-transform: uppercase;
 }
 
 /* Кнопки-листалки как у них: круглые, со стрелкой. Текст виден только
