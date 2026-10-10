@@ -562,10 +562,10 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   position: absolute;
   z-index: 2;
   top: 12%;
-  left: 10%;
-  right: 10%;
+  left: 5%;
+  right: 5%;
   margin: 0;
-  font-size: 2.2em;
+  font-size: 2em;
   font-weight: 600;
   text-align: center;
   text-wrap: balance;
@@ -593,6 +593,9 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   right: 10%;
   text-align: center;
   font-size: 1.05em;
+  /* Подпись темнее заголовка, как у них: тот же cover-ink,
+     но смешанный с чёрным — задаём один раз, темнеет сам. */
+  color: color-mix(in srgb, var(--cover-ink) 70%, black);
 }
 .storybook-book .storybook-cover-byline p {
   margin: 0.15em 0;
@@ -600,6 +603,18 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
 /* Первые буквы строк подписи — заглавные, как у них. */
 .storybook-book .storybook-cover-byline p::first-letter {
   text-transform: uppercase;
+}
+/* Ссылки в подписи, как у них: имя жирно, ещё темнее подписи,
+   подчёрк тонкий полупрозрачный, при наведении — в цвет текста. */
+.storybook-book .storybook-cover-byline a {
+  font-weight: 600;
+  color: color-mix(in srgb, var(--cover-ink) 55%, black);
+  text-decoration: underline 1px color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.18em;
+}
+.storybook-book .storybook-cover-byline a:hover {
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
 }
 
 /* Кнопки-листалки как у них: круглые, со стрелкой. Текст виден только

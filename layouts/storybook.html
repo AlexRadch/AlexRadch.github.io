@@ -1,51 +1,52 @@
 {{ define "main" }}
 {{/* Шрифт книжки: всем по умолчанию Noto Serif с Google Fonts.
-   Личные добавки — списком полных ссылок в storybook.fontLinks
+   Личные добавки — списком полных ссылок в storyFontLinks
    (шапка или каскад): хоть с Google, хоть со своего сайта. */}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-{{- with (.Param "storybook") }}{{ with .fontLinks }}{{ range . }}
+{{- with (.Param "storyFontLinks") }}{{ range . }}
 <link href="{{ . }}" rel="stylesheet">
-{{- end }}{{ end }}{{ end }}
+{{- end }}{{ end }}
 <article class="storybook">
-  {{- $story := .Params.story }}
-  {{/* Размеры книги одним вызовом: .Param "storybook" идёт по цепочке
-     шапка страницы → каскады предков (индексники выше) → конфиг сайта.
-     Личное перебивает общее всей картой (пишем оба числа парой).
-     Ключи верблюдом, как у темы (BookSection): minWidth/minHeight. */}}
-  {{- $sb := .Param "storybook" }}
+  {{- /* Всё плоское верблюдом: storyTitle/storyCoverTitle/storyAuthors
+     из шапки, coverImage/coverZoom/coverInk из каскада.
+     Читаем каждый ключ своим .Param — как Хуго велит. */}}
+  {{- $storyTitle := .Param "storyTitle" }}
+  {{- $storyCoverTitle := .Param "storyCoverTitle" }}
+  {{- $storyAuthors := .Param "storyAuthors" }}
+  {{/* Размеры оттуда же: minWidth/minHeight рядом с остальным.
+     Личное перебивает общее, пишем оба числа парой.
+     Ключи верблюдом, как у темы (BookSection). */}}
   {{- $minW := 200 }}
   {{- $minH := 300 }}
   {{- $zoom := 1.5 }}
   {{- $coverInk := "" }}
-  {{- with $sb }}{{ with .minWidth }}{{ $minW = . }}{{ end }}{{ with .minHeight }}{{ $minH = . }}{{ end }}{{ with .coverZoom }}{{ $zoom = . }}{{ end }}{{ with .coverInk }}{{ $coverInk = . }}{{ end }}{{ end }}
+  {{- $zoom := .Param "coverZoom" | default 1.5 }}
+  {{- $coverInk := .Param "coverInk" | default "" }}
   <div class="storybook-book" id="storybook" style="--sb-aw: {{ $minW }}; --sb-ah: {{ $minH }}; --sb-cover-zoom: {{ $zoom }};{{ with $coverInk }} --cover-ink: {{ . }};{{ end }}">
-    {{- if $story }}
-      {{- $cover := $story.coverImage }}
-      {{- if not $cover }}{{ $cover = index $story "coverImage" }}{{ end }}
+    {{- $cover := .Param "coverImage" }}
     {{/* Обложка — разворот из одной страницы. */}}
     <div class="storybook-spread">
     <div class="storybook-measurer">
     <div class="storybook-page">
       <div class="storybook-inner storybook-cover">
         {{- with $cover }}
-        <figure><img src="{{ . }}" alt="{{ with $story.title }}{{ if reflect.IsSlice . }}{{ range . }}{{ .text }} {{ end }}{{ else }}{{ . }}{{ end }}{{ end }}" loading="eager"></figure>
+        <figure><img src="{{ . }}" alt="{{ $storyTitle }}" loading="eager"></figure>
         {{- end }}
-        {{- /* Cover-заголовок: если есть coverTitle — бьём на блоки,
-           нет — печатаем обычный title одной строкой. */}}
-        {{- $ct := or $story.coverTitle $story.covertitle $story.title $story.Title }}
+        {{- /* Cover-заголовок: если есть storyCoverTitle — бьём на блоки,
+           нет — печатаем storyTitle одной строкой. */}}
+        {{- $ct := or $storyCoverTitle $storyTitle }}
         {{- with $ct }}
         <h1 class="storybook-cover-title">{{ if reflect.IsSlice . }}{{ range . }}<span class="{{ .kind }}">{{ .text }}</span>{{ end }}{{ else }}{{ . }}{{ end }}</h1>
         {{- end }}
         <div class="storybook-cover-byline">
-          {{- with $story.authors }}{{ range . }}<p>{{ .role }} {{ (replaceRE "</?p[^>]*>" "" (.name | markdownify)) | safeHTML }}</p>{{ end }}{{ end }}
+          {{- with $storyAuthors }}{{ range . }}<p>{{ .role }} {{ (replaceRE "</?p[^>]*>" "" (.name | markdownify)) | safeHTML }}</p>{{ end }}{{ end }}
         </div>
       </div>
     </div>
     </div>
     </div>
-    {{- end }}
     {{- $norm := replaceRE "(?m)^[ \t]*-{3,}[ \t]*$" "\n§STORYBOOK-SEP§\n" .RawContent }}
     {{- $secs := split $norm "§STORYBOOK-SEP§" }}
     {{/* Собираем страницы в список, потом кладём парами по разворотам. */}}
@@ -93,7 +94,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
     </button>
   </nav>
-  <script type="application/json" id="storybook-ui">{{ .Param "storyUi" | jsonify | safeJS }}</script>
+  {{/* Слова читалки плоскими ключами: каждое слово своим .Param,
+     низ перебивает верх точечно, ничего не пропадает. */}}
+  {{- $ui := dict "chapter" (.Param "storyUiChapter") "contents" (.Param "storyUiContents") "cover" (.Param "storyUiCover") "page" (.Param "storyUiPage") "pages" (.Param "storyUiPages") "whereOfTotal" (.Param "storyUiWhereOfTotal") "jumpBefore" (.Param "storyUiJumpBefore") "jumpAfter" (.Param "storyUiJumpAfter") "jumpHint" (.Param "storyUiJumpHint") "jumpLabel" (.Param "storyUiJumpLabel") "previous" (.Param "storyUiPrevious") "next" (.Param "storyUiNext") "fullscreen" (.Param "storyUiFullscreen") "exitFullscreen" (.Param "storyUiExitFullscreen") "illustration" (.Param "storyUiIllustration") "missing" (.Param "storyUiMissing") "language" (.Param "storyUiLanguage") "about" (.Param "storyUiAbout") "contact" (.Param "storyUiContact") }}
+  <script type="application/json" id="storybook-ui">{{ $ui | jsonify | safeJS }}</script>
   <script type="application/json" id="storybook-size">{{ dict "minWidth" $minW "minHeight" $minH | jsonify | safeJS }}</script>
 </article>
 {{/* Без скриптов навигация скрыта CSS (.storybook-nav: display none).
