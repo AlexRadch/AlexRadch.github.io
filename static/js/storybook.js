@@ -13,8 +13,7 @@
   var UI = {};
   try { UI = JSON.parse(uiEl.textContent); } catch (e) { UI = {}; }
 
-  /* Хуго складывает все ключи в нижний регистр (whereOfTotal→whereoftotal),
-     поэтому читаем оба варианта. */
+  /* Ключи верблюдом (whereOfTotal), Хуго их нижнит — читаем оба. */
   function tu(key, vars) {
     var v = UI[key] || UI[key.toLowerCase()] || key;
     return String(v).replace(/\{(\w+)\}/g, function (m, name) {

@@ -8,8 +8,8 @@ story:
   title: "Frog and Toad and the Increasingly Capable Machines"
   author: "written by [Elizabeth Van Nostrand](https://acesounderglass.com/about-me-2/)"
   artist: "drawn by [HungerArtist](https://www.deviantart.com/hungerartist)"
-  cover-image: "https://www.frogandtoad.ai/illustrations/web/1-FAT-title-final.webp"
-story-ui:
+  coverImage: "https://www.frogandtoad.ai/illustrations/web/1-FAT-title-final.webp"
+storyUi:
   chapter: "Chapter {n}"
   contents: "Contents"
   cover: "Cover"
