@@ -409,7 +409,7 @@ body.book-layout-storybook .storybook-nav {
      строку НЕЛЬЗЯ — старые браузеры останутся без высоты вообще. */
   --sb-vh: 100vh;
   --sb-vh: 100dvh;
-  --sb-page-h: max(var(--sb-min-h), min(calc(var(--sb-vh) - var(--topbar-height) * 2), calc((100% - var(--sb-gap)) * var(--sb-ah) / var(--sb-aw))));
+  --sb-page-h: max(calc(var(--sb-ah) * 1px), min(calc(var(--sb-vh) - var(--topbar-height) * 2), calc((100% - var(--sb-gap)) * var(--sb-ah) / var(--sb-aw))));
   --sb-page-w: calc(var(--sb-page-h) * var(--sb-aw) / var(--sb-ah));
 }
 body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .storybook-book {
