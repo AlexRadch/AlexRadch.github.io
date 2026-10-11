@@ -121,7 +121,7 @@
         <li>
           {{ template "book-page-link" (dict "Page" . "CurrentPage" $.CurrentPage) }}
           {{ if and .IsSection .Pages }}
-            {{ template "book-section-nodes" (dict "Section" . "CurrentPage" $.CurrentPage "Depth" (sub .Depth 1)) }}
+            {{ template "book-section-nodes" (dict "Section" . "CurrentPage" $.CurrentPage "Depth" (sub $.Depth 1)) }}
           {{ end }}
         </li>
       {{ end }}

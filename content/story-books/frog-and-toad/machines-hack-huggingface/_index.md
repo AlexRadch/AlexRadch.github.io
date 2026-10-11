@@ -1,5 +1,5 @@
 ---
-title: "Frog and Toad hack the Hugging Face"
+title: "Квак и Жаб взламымают мистера Обнимашку"
 cascade:
   coverImage: "https://www.frogandtoad.ai/illustrations/web/1-FAT-title-final.webp"
   coverZoom: 1.48 

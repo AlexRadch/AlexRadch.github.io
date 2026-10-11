@@ -15,6 +15,8 @@ storyAuthors:
     name: "[Элизабет Ван Ностранд](https://acesounderglass.com/about-me-2/)"
   - role: "Нарисовал"
     name: "[HungerArtist](https://www.deviantart.com/hungerartist)"
+  - role: "Перевел"
+    name: "[Александр Радченко](https://github.com/AlexRadch)"
 storyUiChapter: "Глава {n}"
 storyUiContents: "Содержание"
 storyUiCover: "Обложка"
