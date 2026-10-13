@@ -51,7 +51,13 @@
       <span aria-hidden="true">›</span>
       {{- end }}
       {{- end }}
-      <a {{ if eq . $ }}aria-current="page"{{ else if $page.Content }}href="{{ $page.RelPermalink }}"{{ end }} >{{ partial "docs/title" $page }}</a>
+{{/*
+  Пустой _index.md тоже считается содержимым: baseof сам рисует
+  оглавление (заголовок + список детей), поэтому раздел с файлом
+  всегда ссылка. Раздела без файла (авто-секция Хуго, .File пуст) —
+  как раньше, без ссылки.
+*/}}
+      <a {{ if eq . $ }}aria-current="page"{{ else if or $page.Content (and (eq $page.Kind "section") $page.File) }}href="{{ $page.RelPermalink }}"{{ end }} >{{ partial "docs/title" $page }}</a>
     </li>
     {{- end }}
   </ul>

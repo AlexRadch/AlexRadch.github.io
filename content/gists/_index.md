@@ -1,7 +1,7 @@
 ---
 title: "Фрагменты"
 description: "Небольшие обзоры и исследования."
-weight: 10
+weight: 2000
 params:
   bookSection: "."
   bookBreadcrumbRoot: true

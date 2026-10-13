@@ -1,0 +1,33 @@
+{{- /* Правило картинок для карточки — копия свежего Хуго.
+  Откуда брать: сначала images из шапки страницы,
+  потом картинка с именем feature/cover/thumbnail рядом,
+  потом общая картинка сайта. Чужую ссылку отдаём как есть. */}}
+{{- $imgs := slice }}
+{{- $imgParams := .Params.images }}
+{{- $resources := .Resources.ByType "image" -}}
+{{- if not $imgParams }}
+  {{- $featured := $resources.GetMatch "*feature*" -}}
+  {{- if not $featured }}{{ $featured = $resources.GetMatch "{*cover*,*thumbnail*}" }}{{ end -}}
+  {{- with $featured }}
+    {{- $imgs = $imgs | append (dict "Image" . "RelPermalink" .RelPermalink "Permalink" .Permalink) }}
+  {{- end }}
+{{- end }}
+{{- if and (not $imgParams) (not $imgs) }}
+  {{- with site.Params.images }}
+    {{- $imgParams = first 1 . }}
+  {{- end }}
+{{- end }}
+{{- range $imgParams }}
+  {{- $img := . }}
+  {{- $url := urls.Parse $img }}
+  {{- if eq $url.Scheme "" }}
+    {{- with or ($resources.GetMatch $img) (resources.GetMatch $img) -}}
+      {{- $imgs = $imgs | append (dict "Image" . "RelPermalink" .RelPermalink "Permalink" .Permalink) }}
+    {{- else }}
+      {{- $imgs = $imgs | append (dict "RelPermalink" (relURL $img) "Permalink" (absURL $img)) }}
+    {{- end }}
+  {{- else }}
+    {{- $imgs = $imgs | append (dict "RelPermalink" $img "Permalink" $img) }}
+  {{- end }}
+{{- end }}
+{{- return $imgs }}

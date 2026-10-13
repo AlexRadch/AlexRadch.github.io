@@ -128,7 +128,20 @@
 
 {{ define "main" }}
   <article class="markdown book-article">
-    {{- .Content -}}
+    {{- if .Content -}}
+      {{- .Content -}}
+    {{- else if eq .Kind "section" -}}
+      {{/* Пустой _index.md: заголовок из title + список прямых детей.
+        Только для разделов (Kind section), обычные страницы не трогаем. */}}
+      <h1>{{ .Title }}</h1>
+      {{- with .Pages }}
+      <ul>
+        {{- range . }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Description }} — {{ . }}{{ end }}</li>
+        {{- end }}
+      </ul>
+      {{- end -}}
+    {{- end -}}
   </article>
 {{ end }}
 
