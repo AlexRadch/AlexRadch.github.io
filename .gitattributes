@@ -1,0 +1,3 @@
+# Hugo content: Go-template regexes (storybook page splitter) match LF only.
+# Keep blobs LF and don't let checkout conversion sneak CRs into .RawContent.
+content/**/*.md text eol=lf

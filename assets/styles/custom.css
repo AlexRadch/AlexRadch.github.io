@@ -15,11 +15,6 @@
   --topbar-height: 3rem;
 }
 
-/* Сторибук — во всю ширину экрана. Остальные макеты живут
-   на потолке темы (90rem), их не трогаем. */
-body.book-layout-storybook {
-  --container-max-width: 100%;
-}
 
 .topbar {
   display: flex;
@@ -343,6 +338,61 @@ a .book-icon svg {
   margin: .5em 0;
 }
 
+/* СТРАНИЦА КНИГИ (layout storybook): рамка сайта вокруг книги.
+   body.book-layout-storybook ставит тема из имени шаблона. */
+body.book-layout-storybook {
+  --container-max-width: 100%;
+}
+body.book-layout-storybook .book-page {
+  min-width: 0;
+}
+body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .book-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .storybook-nav {
+  flex: none;
+}
+body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .storybook-book {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ============================================================
+   КНИГА (.storybook-book): всё ниже — только про саму книгу.
+   Имена классов не менять: .storybook-book ищут стили и скрипты.
+   ============================================================ */
+.storybook-book {
+  /* Все константы книги — здесь, одним блоком. Числа из шаблона
+     (--sb-aw/--sb-ah/--sb-cover-zoom/--cover-ink) приходят инлайном
+     на элементе и здесь не дублируются. */
+  --cover-ink: #343a40;
+  --sb-font-bold: 700;
+  --sb-font-normal: 500;
+  --paper: #f5eedd;
+  --paper-hi: #faf6ea;
+  --paper-lo: #ece3cc;
+  --ink: #2a2318;
+  --ink-soft: #7b6c55;
+  --book-font: "Noto Serif", Georgia, serif;
+  --sb-gap: 1.5rem;
+  --sb-vh: 100vh;
+  --sb-vh: 100dvh;
+  --sb-page-h: max(calc(var(--sb-ah) * 1px), calc(var(--sb-vh) - var(--topbar-height) * 2));
+  --sb-page-w: calc(var(--sb-page-h) * var(--sb-aw) / var(--sb-ah));
+  font-weight: var(--sb-font-normal);
+}
+.storybook-book .storybook-page,
+.storybook-book .stf__block,
+.storybook-book .stf__item,
+.storybook-book .st-page {
+  background: linear-gradient(90deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 72%, #f0e8d4 100%);
+  color: var(--ink);
+  font-family: var(--book-font);
+}
 /* Книжка-читалка: картинки вписываются в страницу, а не торчат целиком.
    Бумага как у них: тёплый кремовый градиент от корешка к краю.
    Красим саму страницу (.storybook-page) — она есть всегда, а классы
@@ -351,50 +401,22 @@ a .book-icon svg {
 .storybook-book .stf__block,
 .storybook-book .stf__item,
 .storybook-book .st-page {
-  --paper: #f5eedd;
-  --paper-hi: #faf6ea;
-  --paper-lo: #ece3cc;
-  --ink: #2a2318;
-  --ink-soft: #7b6c55;
-  /* Шрифт книжки: Noto Serif всем, запасные системные.
-     Личные шрифты едут отдельными линками (storybook.fontLinks),
-     в цепочку их пишем первыми. */
-  --book-font: "Noto Serif", Georgia, serif;
   background: linear-gradient(90deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 72%, #f0e8d4 100%);
   color: var(--ink);
   font-family: var(--book-font);
-}
-/* Цвет заголовка обложки: по умолчанию как обычный текст.
-   Личное с книги (--cover-ink на книге) перебивает. */
-.storybook-book {
-  --cover-ink: var(--ink);
 }
 /* Только сторибук: обычная страница, растёт вниз сколько надо.
    Лента без скриптов (?nojs) — страницы 2:3 друг за другом.
    Рамку-остаток на высоту экрана ставит движок (класс storybook-live),
    когда скрипты живы: тогда книга листается, а не тянется вниз. */
-body.book-layout-storybook .book-page {
-  min-width: 0;
-}
+
 /* Живой движок колонку на высоту экрана НЕ жмёт: движок на готовых
    размерах (400×600), родителя не меряет — зажим ему не нужен,
    а подвал из-за него ложился поверх низа книги.
    Без зажима подвал течёт за книгой, низ идёт скроллом. */
-body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .book-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) article.storybook {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  min-height: 0;
-  min-width: 0;
-}
-body.book-layout-storybook .storybook-nav {
-  flex: none;
-}
+
+
+
 .storybook-book {
   /* Лента: цепочка разворотов в ряд, сколько влезет.
      Флекс с переносом: не влез — разворот падает вниз целиком,
@@ -405,26 +427,9 @@ body.book-layout-storybook .storybook-nav {
   gap: var(--sb-gap);
   width: 100%;
   margin: 0 auto;
-  /* Все числа книжки — личные с книги (шаблон положил из конфига
-     и шапки страницы), общих чисел здесь нет. Промежуточных нет —
-     высота и ширина считаются одним выражением прямо из личных. */
-  --sb-gap: 1.5rem;
-  /* Высота viewport дважды: сначала 100vh (старые браузеры, которые
-     не знают dvh — им остаётся первая строка), потом 100dvh (новые:
-     вычитает шторки телефона, перебивает первую). Удалять первую
-     строку НЕЛЬЗЯ — старые браузеры останутся без высоты вообще. */
-  --sb-vh: 100vh;
-  --sb-vh: 100dvh;
-  --sb-page-h: max(calc(var(--sb-ah) * 1px), calc(var(--sb-vh) - var(--topbar-height) * 2));
-  --sb-page-w: calc(var(--sb-page-h) * var(--sb-aw) / var(--sb-ah));
+  /* Высота viewport дважды: 100vh для старых браузеров, 100dvh для новых. Первую не удалять. */
 }
-body.book-layout-storybook main.container:has(> .book-page > article > .storybook-live) .storybook-book {
-  /* Рамка остатка: всё, что дала колонка. Лишнее — внутрь, не вниз. */
-  flex: 1 1 auto;
-  min-height: 0;
-  min-width: 0;
-  overflow: hidden;
-}
+
 .storybook-book .storybook-spread {
   /* Разворот — неделимый блок: не влез целиком — падает вниз всем
      составом, не рвётся. Внутри страницы тоже с переносом: на мобилке
@@ -562,11 +567,11 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   position: absolute;
   z-index: 2;
   top: 12%;
-  left: 5%;
-  right: 5%;
+  left: 15%;
+  right: 15%;
   margin: 0;
-  font-size: 2em;
-  font-weight: 600;
+  font-size: 1.8em;
+  font-weight: var(--sb-font-bold);
   text-align: center;
   text-wrap: balance;
   line-height: 1.05;
@@ -592,7 +597,7 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   left: 10%;
   right: 10%;
   text-align: center;
-  font-size: 1.05em;
+  font-size: 1em;
   /* Подпись темнее заголовка, как у них: тот же cover-ink,
      но смешанный с чёрным — задаём один раз, темнеет сам. */
   color: color-mix(in srgb, var(--cover-ink) 70%, black);
@@ -604,17 +609,18 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
 .storybook-book .storybook-cover-byline p::first-letter {
   text-transform: uppercase;
 }
-/* Ссылки в подписи, как у них: имя жирно, ещё темнее подписи,
-   подчёрк тонкий полупрозрачный, при наведении — в цвет текста. */
-.storybook-book .storybook-cover-byline a {
-  font-weight: 600;
-  color: color-mix(in srgb, var(--cover-ink) 55%, black);
+/* Ссылки книги: текст в цвет, подчёрк полупрозрачный; при наведении подчёрк в цвет текста. */
+.storybook-book a {
+  color: currentColor;
   text-decoration: underline 1px color-mix(in srgb, currentColor 45%, transparent);
-  text-underline-offset: 0.18em;
+  text-underline-offset: .18em;
 }
-.storybook-book .storybook-cover-byline a:hover {
-  text-decoration-color: currentColor;
+.storybook-book a:hover {
   text-decoration-thickness: 2px;
+}
+/* Ссылки подписи на обложке — жирным. */
+.storybook-book .storybook-cover-byline a {
+  font-weight: var(--sb-font-bold);
 }
 
 /* Кнопки-листалки как у них: круглые, со стрелкой. Текст виден только
@@ -665,3 +671,4 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   .topbar { padding: 0 0.5rem; }
   .topbar-home { max-width: 9rem; }
 }
+
