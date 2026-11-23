@@ -1,7 +1,7 @@
 ---
 title: "Silversand Resort на Кох Самет"
 description: "Заметки по фотографиям небольшого отеля на пляже Ао Пхай: номера, территория, еда и то, что стоит знать перед поездкой."
-bookHidden: true
+bookHidden: false
 bookBreadcrumbs: false
 bookToC: false
 standalonePage: true
