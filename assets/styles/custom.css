@@ -696,44 +696,7 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   object-fit: contain;
   border-radius: 3px;
 }
-.ss-slide figcaption {
-  max-width: 52rem;
-  font-size: var(--font-size-smaller, 0.875rem);
-  line-height: 1.45;
-  text-align: center;
-  opacity: 0.8;
-}
-.ss-slide-group {
-  display: block;
-  font-size: 0.75em;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
 
-.ss-controls {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-16);
-}
-.ss-controls button {
-  display: grid;
-  place-items: center;
-  width: 2.4rem;
-  height: 2.4rem;
-  padding: 0;
-  border: 1px solid rgba(128, 128, 128, 0.45);
-  border-radius: 50%;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-}
-.ss-controls button:hover { border-color: currentColor; }
-.ss-controls button:focus-visible,
 .ss-dot:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 .ss-counter {
   min-width: 4.5em;
@@ -758,7 +721,6 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
 }
 .ss-dot.is-active { background: currentColor; }
 
-.ss-gallery.is-ready .ss-controls { display: flex; }
 .ss-gallery.is-ready .ss-dots { margin-top: var(--space-8); }
 .ss-gallery.is-ready .ss-slide { display: none; margin: 0; }
 .ss-gallery.is-ready .ss-slide.is-active { display: flex; }
