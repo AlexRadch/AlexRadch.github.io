@@ -129,17 +129,17 @@ HTML-разметка с текстом. Тогда текст нельзя пр
 `custom.css`. В front matter страницы пишем:
 
 ```yaml
-pageStyle: "silversand-taste"
+pageStyle: "silversand"
 ```
 
 Дальше всё строится от этого слага автоматически:
 
-- `baseof.html` оборачивает контент в `<div class="page-silversand-taste">`;
-- `inject/head.html` подключает `assets/styles/page-silversand-taste.css`;
-- `inject/body.html` подключает `assets/scripts/page-silversand-taste.js`.
+- `baseof.html` оборачивает контент в `<div class="page-silversand">`;
+- `inject/head.html` подключает `assets/styles/page-silversand.css`;
+- `inject/body.html` подключает `assets/scripts/page-silversand.js`.
 
 Правило имён: `page-<slug>`, файлы `page-<slug>.css` и `page-<slug>.js`.
-Слаг — это имя страницы (`silversand-taste`), а не сокращение.
+Слаг — это имя страницы (`silversand`), а не сокращение.
 Никаких `ss-`, `ts-` и прочих ребусов: через месяц по ним не вспомнить,
 что это за страница.
 
@@ -148,6 +148,26 @@ pageStyle: "silversand-taste"
 
 Классы общих компонентов (например, карусель `.ss-gallery`,
 `.ss-slide`) остаются на уровне компонента: это не стиль страницы.
+
+## Переезд страницы — ресурсы едут вместе с ней
+
+Страница меняет слаг (адрес) — её ресурсы переименовываются под новый
+слаг в том же заходе:
+
+```sh
+git mv assets/styles/page-<было>.css assets/styles/page-<стало>.css
+git mv assets/scripts/page-<было>.js  assets/scripts/page-<стало>.js
+```
+
+Плюс `pageStyle` в шапке, селекторы в CSS и JS и строки сверки слага
+в `layouts/_markup/render-image.html` и `inject/head.html`. Забыть хоть
+одно — страница тихо теряет свои стили и шрифты.
+
+Если рядом остаётся жить старая страница (держим до проверки), ей тоже
+ставим новый `pageStyle`: файлы-то уже переехали.
+
+Общие кадры (`assets/silversand`) не переименовываем — имена у них одни
+на все витрины.
 
 ## Удаление страницы — вместе с её ресурсами
 

@@ -1,4 +1,4 @@
-{{- if eq (.Page.Param "pageStyle") "silversand-taste" -}}
+{{- if eq (.Page.Param "pageStyle") "silversand" -}}
 <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" width="1600" height="900" fetchpriority="high" decoding="async">
 {{- else -}}
 <figure><img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" loading="lazy"></figure>

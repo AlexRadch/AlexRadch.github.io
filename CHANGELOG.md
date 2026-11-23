@@ -35,6 +35,9 @@
   с подписями в `custom.css` (`.ss-controls`, `.ss-slide figcaption`,
   `.ss-slide-group`). Общие классы карусели (`.ss-gallery`, `.ss-slide`,
   `.ss-dot`) остались — ими пользуется новая витрина.
+- Ресурсы страницы переименованы под новый адрес: `page-silversand.css`
+  и `page-silversand.js`, класс `.page-silversand`, `pageStyle: "silversand"`.
+  Кадры в `assets/silversand` общие — их не трогали.
 - У страниц Silversand появилась дата в шапке: без `date` список
   «Фрагментов» ставил их в самый низ, а не вверх. Правило записано
   в README («Дата страницы — обязательно»).

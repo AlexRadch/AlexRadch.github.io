@@ -1,5 +1,5 @@
 (function () {
-  var roots = Array.prototype.slice.call(document.querySelectorAll('.page-silversand-taste [data-gallery]'));
+  var roots = Array.prototype.slice.call(document.querySelectorAll('.page-silversand [data-gallery]'));
   if (!roots.length) return;
 
   var galleries = roots.map(function (root) {

@@ -7,7 +7,7 @@ bookBreadcrumbs: false
 bookToC: false
 standalonePage: true
 robotsNoindex: true
-pageStyle: "silversand-taste"
+pageStyle: "silversand"
 ---
 
 ![Белые зонты и шезлонги на песке пляжа Ао Пхай](/silversand/hero.jpg)

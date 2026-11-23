@@ -4,7 +4,7 @@
 {{/* Паутина искать не должна: у отдельной витрины свой адрес и свой noindex. */}}
 {{- if .Param "robotsNoindex" }}<meta name="robots" content="noindex, nofollow">{{- end }}
 {{- with .Param "pageStyle" }}
-{{- if eq . "silversand-taste" }}
+{{- if eq . "silversand" }}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..600&family=Hanken+Grotesk:wght@400..600&display=swap" rel="stylesheet">
