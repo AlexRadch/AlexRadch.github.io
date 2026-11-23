@@ -3,10 +3,15 @@
    кнопка темы мертва, тема системная — так и надо. */}}
 {{/* Паутина искать не должна: у отдельной витрины свой адрес и свой noindex. */}}
 {{- if .Param "robotsNoindex" }}<meta name="robots" content="noindex, nofollow">{{- end }}
-{{- if .Param "ssTaste" }}
+{{- with .Param "pageStyle" }}
+{{- if eq . "silversand-taste" }}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..600&family=Hanken+Grotesk:wght@400..600&display=swap" rel="stylesheet">
+{{- end }}
+{{- with resources.Get (printf "styles/page-%s.css" .) }}
+<link rel="stylesheet" href="{{ .RelPermalink }}">
+{{- end }}
 {{- end }}
 <script>(function(){try{var h=location.search;var q=/(?:\?|&)nojs(?:&|$)/.test(h);if(/(?:\?|&)js(?:&|$)/.test(h)){q=false;try{sessionStorage.removeItem('nojs')}catch(e){}}if(q){try{sessionStorage.setItem('nojs','1')}catch(e){}}var s=false;try{s=sessionStorage.getItem('nojs')==='1'}catch(e){}window.__NOJS__=q||s;}catch(e){window.__NOJS__=/(?:\?|&)nojs(?:&|$)/.test(location.search);}})();</script>
 {{/*

@@ -1,0 +1,44 @@
+{{/*
+  Карусель фотографий витрины Silver Sand.
+  Первый параметр — ключ галереи в data/silversand.yaml, второй
+  (необязательный) — подпись раздела для screen reader'а.
+  Разметка одна на все разделы: свой счётчик, свои точки, свой кадр.
+*/}}
+{{- $id := .Get 0 -}}
+{{- $label := .Get 1 | default "Фотографии" -}}
+{{- $slides := index hugo.Data.silversand $id -}}
+{{- if not $slides }}{{ errorf "Silver Sand: нет галереи %q в data/silversand.yaml" $id }}{{ end -}}
+<div class="wrap">
+  <div class="silversand-carousel ss-gallery" data-gallery aria-label="Фотографии: {{ $label }}">
+    <div class="silversand-frame">
+      <div class="ss-stage">
+      {{- $idx := 0 -}}
+      {{- range $slide := $slides }}
+        {{- $img := resources.Get (printf "silversand/%s" $slide.file) -}}
+        {{- if not $img }}{{ errorf "Silver Sand: нет изображения %s" $slide.file }}{{ end -}}
+        {{- $dims := "1600x" -}}
+        {{- if lt $img.Width $img.Height }}{{ $dims = "x1600" }}{{ end -}}
+        {{- $jpg := $img.Resize (printf "%s jpg q80" $dims) -}}
+        {{- $webp := $img.Resize (printf "%s webp q80" $dims) -}}
+        {{- $idx = add $idx 1 -}}
+        <figure class="ss-slide{{ if eq $idx 1 }} is-active{{ end }}" data-index="{{ $idx }}">
+          <div class="ss-media">
+            <picture>
+              <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
+              <img src="{{ $jpg.RelPermalink }}" alt="{{ $slide.alt }}" width="{{ $jpg.Width }}" height="{{ $jpg.Height }}" loading="lazy" decoding="async">
+            </picture>
+          </div>
+        </figure>
+      {{- end }}
+      </div>
+    </div>
+    <div class="silversand-gallery-foot">
+      <span class="ss-counter" aria-live="polite">1 / {{ len $slides }}</span>
+      <div class="ss-dots" role="group" aria-label="Выбрать фотографию">
+        {{- range $i := seq 1 (len $slides) }}
+        <button type="button" class="ss-dot{{ if eq $i 1 }} is-active{{ end }}" data-go="{{ $i }}" aria-label="Фотография {{ $i }}"{{ if eq $i 1 }} aria-current="true"{{ end }}></button>
+        {{- end }}
+      </div>
+    </div>
+  </div>
+</div>

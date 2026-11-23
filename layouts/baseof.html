@@ -136,7 +136,7 @@
 {{ define "main" }}
   <article class="markdown book-article">
     {{- if .Content -}}
-      {{- .Content -}}
+      {{- if .Param "pageStyle" -}}<div class="page-{{ .Param "pageStyle" }}">{{ .Content }}</div>{{- else -}}{{- .Content -}}{{- end -}}
     {{- else if eq .Kind "section" -}}
       {{/* Пустой _index.md: заголовок из title + список прямых детей.
         Только для разделов (Kind section), обычные страницы не трогаем. */}}

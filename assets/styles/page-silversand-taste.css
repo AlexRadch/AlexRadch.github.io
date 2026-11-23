@@ -1,0 +1,198 @@
+/* ============================================================
+   Страница page-silversand-taste: место, linen-harbour,
+   Newsreader + Hanken Grotesk. Подключается из inject/head.html
+   по front matter pageStyle — на других страницах этих правил нет.
+   ============================================================ */
+body:has(.page-silversand-taste) { background: #f3f1ec; color: #1d2530; }
+body:has(.page-silversand-taste) main.container,
+body:has(.page-silversand-taste) .book-page,
+body:has(.page-silversand-taste) article.markdown {
+  display: block;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+.page-silversand-taste {
+  --silversand-bg: #f3f1ec;
+  --silversand-surface: #e6e2d9;
+  --silversand-ink: #1d2530;
+  --silversand-muted: #5a6270;
+  --silversand-action: #2c5877;
+  --silversand-gut: 120px;
+  /* Посещённая ссылка не меняет цвет: теме (hugo-book) цвет задаёт
+     --color-visited-link, подменяем её значение на цвет текста — это
+     работает независимо от специфичности её селектора. */
+  --color-visited-link: var(--silversand-ink);
+  background: var(--silversand-bg);
+  color: var(--silversand-ink);
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.page-silversand-taste .wrap {
+  width: min(100% - 2 * var(--silversand-gut), 960px);
+  margin-inline: auto;
+}
+.page-silversand-taste p { font-size: 16px; line-height: 1.6; margin: 0 0 1em; }
+.page-silversand-taste :is(h1, h2) {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  margin: 0;
+}
+.page-silversand-taste :focus-visible { outline: 2px solid var(--silversand-action); outline-offset: 3px; }
+
+/* Текст разделов живёт в Markdown: ширину и ритм задаём прямым детям. */
+.page-silversand-taste > :is(h2, p) {
+  width: min(100% - 2 * var(--silversand-gut), 960px);
+  margin-inline: auto;
+}
+.page-silversand-taste > h2 { margin: 24px auto 0; font-size: 32px; line-height: 1.25; }
+.page-silversand-taste > h2:first-of-type { margin-top: 12px; }
+.page-silversand-taste > p { margin: 8px auto 12px; }
+
+/* Hero: обычная картинка Markdown, оформленная по месту в странице. */
+.page-silversand-taste > p:first-child {
+  width: min(100% - 2 * var(--silversand-gut), 960px);
+  margin: 0 auto;
+  line-height: 0;
+}
+.page-silversand-taste > p:first-child img {
+  display: block;
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  background: var(--silversand-surface);
+  animation: silversand-enter 0.8s ease-out both;
+}
+@keyframes silversand-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+.page-silversand-taste > h1 {
+  width: min(100% - 2 * var(--silversand-gut), 960px);
+  margin: 40px auto 0;
+  font-size: 48px;
+  line-height: 1.1;
+}
+.page-silversand-taste > h1 + p {
+  width: min(100% - 2 * var(--silversand-gut), 960px);
+  margin: 8px auto 18px;
+  color: var(--silversand-muted);
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+/* Разделы: заголовок, текст, своя карусель. */
+.page-silversand-taste .silversand-carousel { margin: 0; }
+.page-silversand-taste .silversand-frame {
+  position: relative;
+  height: clamp(360px, 56vh, 560px);
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--silversand-surface);
+}
+/* Все кадры живут в коробке одной высоты: перелистывание не двигает текст. */
+.page-silversand-taste .silversand-frame .ss-stage { height: 100%; }
+.page-silversand-taste .silversand-frame .ss-slide { height: 100%; margin: 0; }
+.page-silversand-taste .silversand-frame .ss-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+.page-silversand-taste .silversand-frame picture { display: block; width: 100%; height: 100%; }
+.page-silversand-taste .silversand-carousel:not(.is-ready) .silversand-frame { height: auto; overflow: visible; }
+.page-silversand-taste .silversand-carousel:not(.is-ready) .ss-slide,
+.page-silversand-taste .silversand-carousel:not(.is-ready) .ss-media,
+.page-silversand-taste .silversand-carousel:not(.is-ready) img { height: auto; }
+.page-silversand-taste .silversand-frame .ss-slide { align-items: center; }
+.page-silversand-taste .silversand-frame img {
+  border-radius: 0;
+  transition: transform 0.4s ease;
+}
+.page-silversand-taste .silversand-frame:hover .ss-slide.is-active img { transform: scale(1.02); }
+.silversand-gallery-foot {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 16px;
+}
+.page-silversand-taste .ss-counter {
+  min-width: 4.5em;
+  color: var(--silversand-muted);
+  font-size: 14px;
+  text-align: left;
+}
+.page-silversand-taste .ss-dots { display: flex; flex-wrap: wrap; gap: 0; margin: 0; }
+/* Кнопка точки — квадрат 44px для пальца, сама точка рисуется псевдоэлементом. */
+.page-silversand-taste .ss-dot {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.page-silversand-taste .ss-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--silversand-ink);
+  border-radius: 50%;
+}
+.page-silversand-taste .ss-dot.is-active::after {
+  border-color: var(--silversand-action);
+  background: var(--silversand-action);
+}
+
+/* Закрытие: последний абзац Markdown — полоса на всю ширину. */
+.page-silversand-taste > p:last-child {
+  width: 100%;
+  margin: 40px 0 0;
+  padding: 40px max(var(--silversand-gut), calc((100% - 960px) / 2)) 32px;
+  background: var(--silversand-surface);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.page-silversand-taste > p:last-child strong {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  font-size: 20px;
+}
+/* Посещённая ссылка остаётся того же цвета, что и обычная: тема
+   (hugo-book) перекрашивает a[href]:visited в свой фиолетовый, здесь это
+   перекрыто по специфичности. Только color — другое браузер на :visited
+   всё равно не применяет. */
+.page-silversand-taste > p:last-child a,
+.page-silversand-taste > p:last-child a:visited {
+  color: var(--silversand-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+@media (max-width: 40rem) {
+  .page-silversand-taste { --silversand-gut: 24px; }
+  .page-silversand-taste > p:first-child img { height: clamp(240px, 60vw, 360px); }
+  .page-silversand-taste > h1 { margin-top: 24px; font-size: 32px; line-height: 1.15; }
+  .page-silversand-taste > h1 + p { font-size: 18px; margin-bottom: 14px; }
+  .page-silversand-taste > h2 { font-size: 24px; }
+  .page-silversand-taste .silversand-frame { height: clamp(240px, 44svh, 360px); }
+  .silversand-gallery-foot { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .page-silversand-taste > p:last-child { margin-top: 24px; padding: 32px var(--silversand-gut) 24px; }
+  .page-silversand-taste > p:last-child strong { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-silversand-taste *, .page-silversand-taste *::before, .page-silversand-taste *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -12,8 +12,8 @@
 {{ with resources.Get "scripts/toc-autoclose.js" | resources.Minify }}
   <script>if(!window.__NOJS__){ {{ .Content | safeJS }} }</script>
 {{ end }}
-{{ if .Param "ssTaste" }}
-{{ with resources.Get "scripts/ss-taste.js" | resources.Minify }}
+{{ with .Param "pageStyle" }}
+{{ with resources.Get (printf "scripts/page-%s.js" .) | resources.Minify }}
   <script>if(!window.__NOJS__){ {{ .Content | safeJS }} }</script>
 {{ end }}
 {{ end }}

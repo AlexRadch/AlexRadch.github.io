@@ -1,5 +1,5 @@
 (function () {
-  var roots = Array.prototype.slice.call(document.querySelectorAll('.ss-taste [data-gallery]'));
+  var roots = Array.prototype.slice.call(document.querySelectorAll('.page-silversand-taste [data-gallery]'));
   if (!roots.length) return;
 
   var galleries = roots.map(function (root) {
@@ -82,12 +82,8 @@
     var root = owner(event.target);
     var gallery = root && byRoot(root);
     if (!gallery || Date.now() < gallery.suppress()) return;
-    var prev = event.target.closest('.ts-prev');
-    var next = event.target.closest('.ts-next');
     var dot = event.target.closest('.ss-dot');
-    if (prev) gallery.step(-1);
-    else if (next) gallery.step(1);
-    else if (dot) gallery.go(Number(dot.getAttribute('data-go')));
+    if (dot) gallery.go(Number(dot.getAttribute('data-go')));
     else if (event.target.closest('.ss-stage')) {
       /* Клик по краю кадра: левые 45% — назад, правые 45% — вперёд. */
       var stage = gallery.root.querySelector('.ss-stage');
