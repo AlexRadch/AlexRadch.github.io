@@ -798,6 +798,10 @@ body:has(.ss-taste) article.markdown {
   --ts-muted: #5a6270;
   --ts-action: #2c5877;
   --ts-gut: 120px;
+  /* Посещённая ссылка не меняет цвет: теме (hugo-book) цвет задаёт
+     --color-visited-link, подменяем её значение на цвет текста — это
+     работает независимо от специфичности её селектора. */
+  --color-visited-link: var(--ts-ink);
   background: var(--ts-bg);
   color: var(--ts-ink);
   font-family: "Hanken Grotesk", system-ui, sans-serif;
@@ -946,7 +950,8 @@ body:has(.ss-taste) article.markdown {
   padding-block: 40px 32px;
   background: var(--ts-surface);
 }
-.ss-taste .ts-close-name { display: inline-block; color: var(--ts-ink); font-size: 20px; text-decoration: none; }
+.ss-taste .ts-close-name,
+.ss-taste .ts-close-name:visited { display: inline-block; color: var(--ts-ink); font-size: 20px; text-decoration: none; }
 .ss-taste .ts-close-name:hover { text-decoration: underline; text-underline-offset: 0.18em; }
 .ts-close-links {
   display: flex;
@@ -954,7 +959,12 @@ body:has(.ss-taste) article.markdown {
   gap: 10px;
   margin-top: 12px;
 }
-.ts-close-links a {
+/* Посещённая ссылка остаётся того же цвета, что и обычная: тема
+   (hugo-book) перекрашивает a[href]:visited в свой фиолетовый, здесь это
+   перекрыто по специфичности. Только color — другое браузер на :visited
+   всё равно не применяет. */
+.ss-taste .ts-close-links a,
+.ss-taste .ts-close-links a:visited {
   color: var(--ts-ink);
   font-size: 14px;
   text-decoration: underline;
