@@ -1,6 +1,6 @@
 ---
-title: "Silversand Resort, Koh Samet"
-description: "Photo notes on a low-rise beachfront resort on Ao Phai Beach, Koh Samet: rooms, grounds, food and the practical bits."
+title: "Silversand Resort на Кох Самет"
+description: "Заметки по фотографиям небольшого отеля на пляже Ао Пхай: номера, территория, еда и то, что стоит знать перед поездкой."
 bookHidden: true
 bookBreadcrumbs: false
 bookToC: false
@@ -8,34 +8,34 @@ standalonePage: true
 robotsNoindex: true
 ---
 
-# Silversand Resort, Koh Samet
+# Silversand Resort на Кох Самет
 
 {{< silversand >}}
 
-## The place
+## Отель
 
-Silversand Resort — also written as Silver Sand Hotel — is on Koh Samet (Ko Samed), an island off Rayong on Thailand's eastern coast. The address is 92 Moo 4, Phe, Mueang Rayong District, Rayong 21160. It is a three-star property on Ao Phai Beach, around 2 km from Nadan Pier, where the ferry from the mainland docks, and from Khao Laem Ya–Mu Ko Samet National Park. The buildings are low and the scale is small: the sea is the reason to come, and it is never far from the room.
+Silversand Resort — его также называют Silver Sand Hotel — находится на острове Кох Самет (Ко Самед) у восточного побережья Таиланда, в провинции Районг. Адрес: 92 Moo 4, Phe, Mueang Rayong District, Rayong 21160. Это трёхзвёздочный отель прямо на пляже Ао Пхай, примерно в двух километрах от причала Надан, куда приходит паром с материка, и от национального парка Кхао Лэм Я — Му Ко Самет. Здания низкие, территория небольшая: море здесь главная причина поездки, и оно почти всегда рядом с номером.
 
-## The beach
+## Пляж
 
-Ao Phai here is a working strip of sand rather than a postcard. Rows of loungers and white umbrellas stand under trees, with wooden tables set close to the water in the late afternoon. The sand is pale and fine; the water turns turquoise in the shallows and darkens further out. One frame catches a small boat on the horizon, another a sunset with dark rocks in the foreground. It is a narrow beach and it is shared, so expect other guests, especially where the restaurant spreads onto the sand. The beach bar and the evening lights sit at one end of the same strip.
+Ао Пхай здесь не открыточная картинка, а самый обычный пляж со своей повседневной жизнью. Под деревьями рядами стоят шезлонги и белые зонты, а ближе к вечеру у самой воды расставляют деревянные столики. Песок светлый и мелкий, у берега вода бирюзовая, а дальше быстро темнеет. На одном кадре видна лодка на горизонте, на другом — закат с тёмными камнями на берегу. Пляж узкий и общий, поэтому других гостей хватает, особенно там, где ресторан выходит прямо на песок. Бар и вечерние огни — в том же конце пляжа.
 
-## Rooms and bungalows
+## Номера и бунгало
 
-Accommodation is bungalow-style: single-storey and two-storey white blocks with terracotta roofs, not a tower. Interiors are plain and bright, with white linen, framed pictures, air conditioning and large sliding glass doors that open toward a balcony or the garden. One room has a cushioned seat by the window, enough for reading. Outside, units have a small porch with a daybed, separated from the path by a low concrete wall and planted with palms, cacti and orchids. It reads as an older, well-used resort rather than a new design hotel; the draw is a door straight out to the garden or the beach, not the furniture.
+Жильё здесь в стиле бунгало: одно- и двухэтажные белые корпуса с черепичными крышами, не высотка. Внутри просто и светло — белое постельное бельё, рамки на стенах, кондиционер и большие раздвижные двери, которые ведут на балкон или в сад. В одном номере у окна мягкое сиденье, как раз для того, чтобы почитать. Снаружи у бунгало небольшое крыльцо с лежаком; от дорожки его отделяет низкий бетонный бордюр, а вокруг посажены пальмы, кактусы и орхидеи. Это скорее старый обжитый отель, чем новый дизайнерский: ценность не в мебели, а в двери прямо в сад или на пляж.
 
-## Grounds
+## Территория
 
-Paths are paved and wind between planted beds, with low buildings half hidden by palms. There is a shaded patio under big trees, wicker chairs on a patch of turf under umbrellas, and a restaurant terrace with cage lanterns hung from the branches. After dark those lanterns and strings of coloured bulbs do most of the decorating. A round Silver Sand sign marks the entrance, with scooters parked beside it. The pool, fitness centre and laundry are listed on site, though the photographs show the garden and the sand far more often than those facilities.
+Мощёные дорожки вьются между клумбами, низкие корпуса наполовину спрятаны за пальмами. Есть тенистая терраса под большими деревьями, плетёные кресла под зонтами на площадке с травой и терраса ресторана с фонариками в металлических клетках, развешанными на ветвях. После наступления темноты именно эти фонари и гирлянды цветных лампочек берут на себя весь декор. У входа — круглый знак Silver Sand, рядом парковка с мотоциклами. Бассейн, фитнес-зал и прачечная есть в описании, но на фотографиях гораздо чаще встречаются сад и песок, чем эти помещения.
 
-## Food and drink
+## Еда и напитки
 
-The Silversand Restaurant is listed as open from 08:00 to 22:00. The pictures show a buffet line, plates of papaya salad with prawns, fried food and seafood, and a restaurant room with wooden tables and orange chairs. Drinks are the bright part: cocktails in red and orange, and branded coconuts printed with “Silversand Resort Koh Samed”. A beach bar sits on the sand; the Silver Sand Club opens from 20:00, and the Silversand Shop minimart stays open until 22:00.
+Ресторан Silversand Restaurant, согласно описанию, работает с 08:00 до 22:00. На снимках — линия самообслуживания, тарелки с салатом из зелёной папайи и креветками, жареное и морепродукты, а также зал с деревянными столами и оранжевыми стульями. Ярче всего получаются напитки: красные и оранжевые коктейли и кокосы с надписью «Silversand Resort Koh Samed». На песке работает пляжный бар; клуб Silver Sand Club открывается с 20:00, а мини-маркет Silversand Shop — до 22:00.
 
-## Who it suits
+## Кому подойдёт
 
-Couples and families who want the beach within walking distance will get the most from this place. It is described as kid-friendly and pet-friendly, with free Wi-Fi, free breakfast and an airport shuttle among the listed amenities. It is not a quiet address: reviews are split, and the recurring complaint is loud music from the on-site club late into the night. Google shows about 4.1 from roughly 800 ratings; Trip.com 4.4/5 from 549 reviews; Tripadvisor is much cooler at 3.1/5 from 253. The gap is largely about noise and the age of the rooms, not the location.
+Больше всего здесь понравится парам и семьям, которым важен пляж в шаговой доступности. Отель описывают как подходящий для детей и животных; среди удобств — бесплатный Wi-Fi, завтрак и трансфер из аэропорта. Тихим это место не назовёшь: отзывы расходятся, и главная претензия — громкая музыка из клуба допоздна. У Google — около 4,1 на основе примерно 800 оценок, у Trip.com — 4,4/5 по 549 отзывам, а у Tripadvisor заметно прохладнее — 3,1/5 по 253. Разница относится скорее к шуму и возрасту номеров, чем к расположению.
 
-## Practical notes
+## Практические детали
 
-Check-in is at 14:00 and check-out at 12:00. Everything needed day to day — restaurant, shop, bar, beach access — is on site; the ferry at Nadan Pier is the way in and out. No prices or availability are listed here on purpose: those change, while the beach, the low buildings and the club next to them do not.
+Заезд в 14:00, выезд в 12:00. Всё нужное на каждый день — ресторан, магазин, бар, выход к пляжу — есть на территории; паром у причала Надан — способ приехать и уехать. Цены и наличие номеров я не привожу сознательно: они меняются, а пляж, низкие корпуса и клуб рядом — остаются.

@@ -6,9 +6,24 @@
   var counter = root.querySelector('.ss-counter');
   if (!slides.length) return;
   var current = 0;
+  var warmed = {};
+
+  /* Подогреваем текущий и соседние кадры: при перелистывании картинка
+     уже должна быть в кэше, а место под неё занято CSS. */
+  function preload(i) {
+    [i - 1, i, i + 1].forEach(function (n) {
+      var slide = slides[(n + slides.length) % slides.length];
+      var source = slide && slide.querySelector('source');
+      var url = source && source.getAttribute('srcset');
+      if (!url || warmed[url]) return;
+      warmed[url] = new Image();
+      warmed[url].src = url;
+    });
+  }
 
   function show(i) {
     current = (i + slides.length) % slides.length;
+    preload(current);
     slides.forEach(function (slide, n) {
       slide.classList.toggle('is-active', n === current);
     });
