@@ -1,6 +1,8 @@
 {{/* Сторож отладки: ?nojs — все остальные скрипты молчат.
    ?js — вернуть. Сторожа обходить ЗАПРЕЩЕНО: без скриптов
    кнопка темы мертва, тема системная — так и надо. */}}
+{{/* Паутина искать не должна: у отдельной витрины свой адрес и свой noindex. */}}
+{{- if .Param "robotsNoindex" }}<meta name="robots" content="noindex, nofollow">{{- end }}
 <script>(function(){try{var h=location.search;var q=/(?:\?|&)nojs(?:&|$)/.test(h);if(/(?:\?|&)js(?:&|$)/.test(h)){q=false;try{sessionStorage.removeItem('nojs')}catch(e){}}if(q){try{sessionStorage.setItem('nojs','1')}catch(e){}}var s=false;try{s=sessionStorage.getItem('nojs')==='1'}catch(e){}window.__NOJS__=q||s;}catch(e){window.__NOJS__=/(?:\?|&)nojs(?:&|$)/.test(location.search);}})();</script>
 {{/*
   Точка расширения темы: код внутри <head> на каждой странице.

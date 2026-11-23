@@ -666,6 +666,100 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
 .storybook-arrow:disabled { opacity: 0.18; cursor: default; }
 .storybook-counter { min-width: 4em; text-align: center; }
 
+/* ============================================================
+   Фотогалерея Silversand: карусель на отдельной странице.
+   Без скриптов кадры остаются обычным списком — текст и фото
+   читаются целиком. Класс is-ready ставит только сам скрипт.
+   ============================================================ */
+.ss-gallery { margin: var(--space-16) 0; }
+
+.ss-gallery .ss-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 var(--space-16);
+}
+.ss-slide picture { display: block; max-width: 100%; }
+.ss-slide img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(72vh, 900px);
+  border-radius: 3px;
+}
+.ss-slide figcaption {
+  max-width: 52rem;
+  font-size: var(--font-size-smaller, 0.875rem);
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0.8;
+}
+.ss-slide-group {
+  display: block;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ss-controls {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-16);
+}
+.ss-controls button {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: 1px solid rgba(128, 128, 128, 0.45);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.ss-controls button:hover { border-color: currentColor; }
+.ss-controls button:focus-visible,
+.ss-dot:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.ss-counter {
+  min-width: 4.5em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.ss-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+}
+.ss-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  padding: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.ss-dot.is-active { background: currentColor; }
+
+.ss-gallery.is-ready .ss-controls { display: flex; }
+.ss-gallery.is-ready .ss-dots { margin-top: var(--space-8); }
+.ss-gallery.is-ready .ss-slide { display: none; margin: 0; }
+.ss-gallery.is-ready .ss-slide.is-active { display: flex; }
+
+@media (max-width: 40rem) {
+  .ss-slide img { max-height: 62vh; }
+}
+
 /* Мобильные: укорачиваем заголовок */
 @media (max-width: 40rem) {
   .topbar { padding: 0 0.5rem; }

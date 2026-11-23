@@ -8,7 +8,8 @@
     (bookListLimit), у каждого раздела свой. Нет параметра — без лимита;
   - сортировка штатная Hugo: Weight → Date → Title (при равных весах
     свежие сверху);
-  - summary: показать описания (как у теминого {{< section summary >}}).
+  - summary: показать описания (как у теминого {{< section summary >}});
+  - bookHidden: спрятанная страница не попадает в список (как и в меню темы).
 
   Примеры:
       {{< section-tree >}}                    — дети, без лимита, 1 уровень
@@ -26,7 +27,7 @@
   {{- $page := .Page -}}
   {{- $depth := .Depth -}}
   {{- $showSummary := .ShowSummary -}}
-  {{- $pages := $page.Pages -}}
+  {{- $pages := where $page.Pages "Params.bookHidden" "ne" true -}}
   {{- with $page.Params.bookListLimit -}}
     {{- $pages = first (int .) $pages -}}
   {{- end -}}

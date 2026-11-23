@@ -5,6 +5,8 @@
   {{ partial "docs/inject/head" . }}
 </head>
 <body dir="{{ default "ltr" .Site.Language.Direction }}" class="book-kind-{{ .Kind }} book-type-{{ .Type }}{{ with .Layout }} book-layout-{{ . }}{{ end }}">
+  {{/* Отдельная витрина: только контент, без навигации и подвала сайта. */}}
+  {{ if not (.Param "standalonePage") }}
   <nav class="topbar">
     <a class="topbar-home" href="{{ "" | relLangURL }}">
       <img class="topbar-logo" src="{{ "img/avatar.png" | relURL }}"
@@ -43,18 +45,22 @@
     <a class="theme-btn debug-js" id="debug-js" href="?js" title="Скрипты выключены (?nojs) — клик: вернуть">JS✕</a>
     <script>(function(){if(window.__NOJS__){document.documentElement.setAttribute('data-nojs','1');}var d=document.getElementById('debug-js');if(!window.__NOJS__&&d){d.style.display='none';}})();</script>
   </nav>
+  {{ end }}
   <main class="container flex">
     {{ template "menu-container" . }} <!-- Left menu -->
 
     <div class="book-page">
+      {{ if not (.Param "standalonePage") }}
       <header class="book-header hidden">
         {{ template "header" . }} <!-- Mobile layout header -->
       </header>
+      {{ end }}
 
       {{ partial "docs/breadcrumbs" . }}
       {{ template "main" . }} <!-- Page Content -->
       {{ partial "docs/inject/content-after" . }}
 
+      {{ if not (.Param "standalonePage") }}
       <footer class="book-footer">
         {{ template "footer" . }} <!-- Footer under page content -->
         {{ template "comments" . }} <!-- Comments block -->
@@ -62,6 +68,7 @@
         {{ template "copyright" . }} <!-- Copyright block -->
         {{ template "clipboard" . }}
       </footer>
+      {{ end }}
 
       <label for="menu-control" class="hidden book-menu-overlay" aria-hidden="true"></label>
     </div>

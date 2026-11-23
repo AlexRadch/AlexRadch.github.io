@@ -1,0 +1,76 @@
+{{/*
+  Фотогалерея отдельной витрины Silversand.
+  Кадры сгруппированы по сюжетам, а не по именам файлов. Оригиналы лежат
+  в assets/silversand; Хуго сам ресайзит их в WebP + JPEG на 1600 px
+  по длинной стороне. Без JS все слайды остаются обычным списком.
+*/}}
+{{- $groups := slice
+  (dict "name" "Beach & sea" "slides" (slice
+    (dict "file" "ss_09_4000x3000.jpg" "alt" "Rows of white umbrellas and loungers on the sand at Ao Phai beach")
+    (dict "file" "ss_02_2048x1152.jpg" "alt" "Wooden tables under trees on the beachfront")
+    (dict "file" "ss_19_3945x2219.jpg" "alt" "Calm sea and a small boat off Ao Phai beach")
+    (dict "file" "ss_22_4000x3000.jpg" "alt" "Sunset over the sea with rocks on the shore")
+    (dict "file" "ss_42_2048x1326.jpg" "alt" "White sand, dark rocks and turquoise water")
+    (dict "file" "ss_46_1152x1536.jpg" "alt" "White loungers and umbrellas lined up on the beach")
+    (dict "file" "ss_36_1200x1600.jpg" "alt" "Wide stretch of sand beside clear turquoise water")
+  ))
+  (dict "name" "Rooms & bungalows" "slides" (slice
+    (dict "file" "ss_07_5712x4284.jpg" "alt" "Bed with white linen and a framed picture above the headboard")
+    (dict "file" "ss_11_1280x577.jpg" "alt" "Bed beside a large sliding glass door opening toward the sea")
+    (dict "file" "ss_45_1000x666.jpg" "alt" "Cushioned window seat inside a room")
+    (dict "file" "ss_31_4096x3072.jpg" "alt" "Bungalow with a daybed on the porch among tropical plants")
+    (dict "file" "ss_20_4096x3072.jpg" "alt" "Single-storey bungalow with a terracotta roof among palms")
+    (dict "file" "ss_01_2049x1537.jpg" "alt" "Low white building with a terracotta roof and wooden deck")
+  ))
+  (dict "name" "Grounds" "slides" (slice
+    (dict "file" "ss_17_2448x3264.jpg" "alt" "Paved path through palms and planted pots")
+    (dict "file" "ss_29_3024x4032.jpg" "alt" "Garden walkway with low buildings and palm trees")
+    (dict "file" "ss_33_3000x4000.jpg" "alt" "Shaded patio under trees with a glimpse of the beach")
+    (dict "file" "ss_27_3000x4000.jpg" "alt" "Wicker chairs under umbrellas on a patch of green turf")
+    (dict "file" "ss_25_4032x3024.jpg" "alt" "Large tree hung with glowing lanterns above beach tables")
+  ))
+  (dict "name" "Food & bar" "slides" (slice
+    (dict "file" "ss_03_3648x2736.jpg" "alt" "Restaurant terrace with hanging lanterns facing the sea")
+    (dict "file" "ss_37_4624x3468.jpg" "alt" "Plate of shredded salad topped with prawns")
+    (dict "file" "ss_32_3024x4032.jpg" "alt" "Red cocktail with a lime slice on a wooden table")
+    (dict "file" "ss_39_4032x2268.jpg" "alt" "Bar interior lit by blue and violet lights")
+  ))
+-}}
+{{- $total := 0 -}}
+{{- range $groups }}{{ $total = add $total (len .slides) }}{{ end -}}
+{{- $idx := 0 -}}
+<section class="ss-gallery" id="silversand-gallery" aria-label="Silversand photo gallery" tabindex="0">
+  <div class="ss-stage">
+  {{- range $group := $groups }}
+    {{- range $slide := $group.slides }}
+      {{- $idx = add $idx 1 -}}
+      {{- $img := resources.Get (printf "silversand/%s" $slide.file) -}}
+      {{- if not $img }}{{ errorf "Silversand: missing image %s" $slide.file }}{{ end -}}
+      {{- $dims := "1600x" -}}
+      {{- if lt $img.Width $img.Height }}{{ $dims = "x1600" }}{{ end -}}
+      {{- $jpg := $img.Resize (printf "%s jpg q80" $dims) -}}
+      {{- $webp := $img.Resize (printf "%s webp q80" $dims) -}}
+      <figure class="ss-slide{{ if eq $idx 1 }} is-active{{ end }}" data-index="{{ $idx }}">
+        <picture>
+          <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
+          <img src="{{ $jpg.RelPermalink }}" alt="{{ $slide.alt }}" width="{{ $jpg.Width }}" height="{{ $jpg.Height }}" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><span class="ss-slide-group">{{ $group.name }}</span>{{ $slide.alt }}</figcaption>
+      </figure>
+    {{- end }}
+  {{- end }}
+  </div>
+  <div class="ss-controls">
+    <button type="button" class="ss-prev" aria-label="Previous photo">&#8592;</button>
+    <span class="ss-counter" aria-live="polite">1 / {{ $total }}</span>
+    <button type="button" class="ss-next" aria-label="Next photo">&#8594;</button>
+  </div>
+  <div class="ss-dots" role="group" aria-label="Choose photo">
+    {{- range $i := seq 1 $total }}
+    <button type="button" class="ss-dot{{ if eq $i 1 }} is-active{{ end }}" data-go="{{ $i }}" aria-label="Photo {{ $i }}"{{ if eq $i 1 }} aria-current="true"{{ end }}></button>
+    {{- end }}
+  </div>
+</section>
+{{- with resources.Get "scripts/silversand-gallery.js" | resources.Minify }}
+<script>if(!window.__NOJS__){ {{ .Content | safeJS }} }</script>
+{{- end }}
