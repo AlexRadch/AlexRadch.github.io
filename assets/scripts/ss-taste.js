@@ -89,12 +89,12 @@
     else if (next) gallery.step(1);
     else if (dot) gallery.go(Number(dot.getAttribute('data-go')));
     else if (event.target.closest('.ss-stage')) {
-      /* Клик по краю кадра: левые 30% — назад, правые 30% — вперёд. */
+      /* Клик по краю кадра: левые 45% — назад, правые 45% — вперёд. */
       var stage = gallery.root.querySelector('.ss-stage');
       var box = stage.getBoundingClientRect();
       var x = (event.clientX - box.left) / box.width;
-      if (x < 0.3) gallery.step(-1);
-      else if (x > 0.7) gallery.step(1);
+      if (x < 0.45) gallery.step(-1);
+      else if (x > 0.55) gallery.step(1);
     }
   });
 

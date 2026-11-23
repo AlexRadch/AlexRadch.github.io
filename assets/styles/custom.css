@@ -809,7 +809,7 @@ body:has(.ss-taste) article.markdown {
   margin-inline: auto;
 }
 .ss-taste p { font-size: 16px; line-height: 1.6; margin: 0 0 1em; }
-.ss-taste :is(h1, h2, .ts-type-moment, .ts-close-name) {
+.ss-taste :is(h1, h2, .ts-close-name) {
   font-family: "Newsreader", Georgia, serif;
   font-weight: 400;
   letter-spacing: -0.018em;
@@ -818,7 +818,7 @@ body:has(.ss-taste) article.markdown {
 .ss-taste :focus-visible { outline: 2px solid var(--ts-action); outline-offset: 3px; }
 
 /* Hero: одна фотография места, слов на ней нет. */
-.ts-hero { padding-bottom: 48px; }
+.ts-hero { padding-bottom: 12px; }
 .ts-hero-photo {
   width: min(100% - 2 * var(--ts-gut), 960px);
   height: 480px;
@@ -839,18 +839,18 @@ body:has(.ss-taste) article.markdown {
 }
 .ts-hero-copy { padding-top: 40px; }
 .ts-hero h1 { font-size: 48px; line-height: 1.1; }
-.ts-sub {
+.ss-taste .ts-sub {
   max-width: 62ch;
-  margin: 16px 0 24px;
+  margin: 8px 0 6px;
   color: var(--ts-muted);
   font-size: 20px;
   line-height: 1.5;
 }
 
 /* Разделы: заголовок, текст, своя карусель. */
-.ts-section { padding-block: 56px 40px; }
+.ts-section { padding-block: 12px; }
 .ts-section h2 { font-size: 32px; line-height: 1.25; }
-.ts-lead { margin: 16px 0 24px; }
+.ss-taste .ts-lead { margin: 8px 0 12px; }
 .ss-taste .ts-carousel { margin: 0; }
 .ss-taste .ts-frame {
   position: relative;
@@ -946,12 +946,13 @@ body:has(.ss-taste) article.markdown {
   padding-block: 40px 32px;
   background: var(--ts-surface);
 }
-.ts-close-name { font-size: 32px; }
+.ss-taste .ts-close-name { display: inline-block; color: var(--ts-ink); font-size: 20px; text-decoration: none; }
+.ss-taste .ts-close-name:hover { text-decoration: underline; text-underline-offset: 0.18em; }
 .ts-close-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 12px;
 }
 .ts-close-links a {
   color: var(--ts-ink);
@@ -959,25 +960,23 @@ body:has(.ss-taste) article.markdown {
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
-.ts-close-links a:hover { color: var(--ts-action); }
-.ts-legal { margin: 24px 0 0; color: var(--ts-muted); font-size: 13px; }
 
 @media (max-width: 40rem) {
   .ss-taste { --ts-gut: 24px; }
-  .ts-hero { padding-bottom: 32px; }
+  .ts-hero { padding-bottom: 8px; }
   .ts-hero-photo { height: clamp(240px, 60vw, 360px); }
   .ts-hero-copy { padding-top: 24px; }
   .ts-hero h1 { font-size: 32px; line-height: 1.15; }
-  .ts-sub { font-size: 18px; }
-  .ts-section { padding-block: 48px 32px; }
+  .ss-taste .ts-sub { font-size: 18px; }
+  .ts-section { padding-block: 12px; }
   .ts-section h2 { font-size: 24px; }
-  .ts-lead { margin-bottom: 24px; }
+  .ss-taste .ts-lead { margin-bottom: 12px; }
   .ss-taste .ts-frame { height: clamp(240px, 44svh, 360px); }
   .ss-taste .ts-nav { width: 44px; height: 44px; }
   .ss-taste .ts-prev { left: 8px; }
   .ss-taste .ts-next { right: 8px; }
   .ts-gallery-foot { flex-direction: column; align-items: flex-start; gap: 8px; }
-  .ts-close-name { font-size: 24px; }
+  .ss-taste .ts-close-name { font-size: 18px; }
   .ts-closing { padding-block: 32px 24px; }
 }
 @media (prefers-reduced-motion: reduce) {
