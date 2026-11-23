@@ -1,0 +1,130 @@
+{{/*
+  Taste-версия витрины Silversand. Отдельная страница: опубликованная
+  silversand.md не трогается. Фотографии сгруппированы по разделам,
+  у каждого свой кадр и свои точки. Подписей под фото нет — описание
+  живёт в тексте раздела, а у картинки есть alt.
+
+  Палитра и шрифты сделки taste-skill для place:
+  linen-harbour (#f3f1ec / #e6e2d9 / #1d2530 / #2c5877),
+  Newsreader + Hanken Grotesk, Длинная сторона ресайза — 1600 px.
+*/}}
+{{- $sections := slice
+  (dict "id" "beach" "title" "Пляж Ао Пхай" "lead" "Ао Пхай здесь не открыточная картинка, а самый обычный пляж со своей повседневной жизнью. Под деревьями рядами стоят шезлонги и белые зонты, ближе к вечеру у воды расставляют деревянные столики. Песок светлый и мелкий, у берега вода бирюзовая, а дальше быстро темнеет. Пляж узкий и общий — других гостей хватает, особенно там, где ресторан выходит прямо на песок." "slides" (slice
+    (dict "file" "ss_02_2048x1152.jpg" "alt" "Деревянные столики под деревьями прямо у пляжа")
+    (dict "file" "ss_19_3945x2219.jpg" "alt" "Спокойное море и лодка на горизонте у Ао Пхай")
+    (dict "file" "ss_22_4000x3000.jpg" "alt" "Закат над морем и тёмные камни на берегу")
+    (dict "file" "ss_42_2048x1326.jpg" "alt" "Белый песок, тёмные валуны и бирюзовая вода")
+    (dict "file" "ss_46_1152x1536.jpg" "alt" "Белые шезлонги и зонты, выстроенные вдоль пляжа")
+    (dict "file" "ss_36_1200x1600.jpg" "alt" "Песчаный берег и чистая бирюзовая вода")
+  ))
+  (dict "id" "rooms" "title" "Номера и бунгало" "lead" "Жильё в стиле бунгало: одно- и двухэтажные белые корпуса с черепичными крышами, не высотка. Внутри просто и светло — белое постельное бельё, рамки на стенах, кондиционер и большие раздвижные двери, которые ведут на балкон или в сад. Снаружи у бунгало крыльцо с лежаком, вокруг пальмы, кактусы и орхидеи. Это скорее старый обжитый отель, чем новый дизайнерский: ценность не в мебели, а в двери прямо в сад или на пляж." "slides" (slice
+    (dict "file" "ss_07_5712x4284.jpg" "alt" "Кровать с белым бельём и картина над изголовьем")
+    (dict "file" "ss_11_1280x577.jpg" "alt" "Кровать у большой раздвижной двери, выходящей к морю")
+    (dict "file" "ss_45_1000x666.jpg" "alt" "Мягкое сиденье у окна в номере")
+    (dict "file" "ss_31_4096x3072.jpg" "alt" "Бунгало с лежаком на крыльце среди тропических растений")
+    (dict "file" "ss_20_4096x3072.jpg" "alt" "Одноэтажное бунгало с черепичной крышей среди пальм")
+    (dict "file" "ss_01_2049x1537.jpg" "alt" "Белый корпус с черепичной крышей и деревянной террасой")
+  ))
+  (dict "id" "grounds" "title" "Территория" "lead" "Мощёные дорожки вьются между клумбами, низкие корпуса наполовину спрятаны за пальмами. Есть тенистая терраса под большими деревьями, плетёные кресла под зонтами на площадке с травой и терраса ресторана с фонариками в металлических клетках. После наступления темноты именно фонари и гирлянды цветных лампочек берут на себя весь декор." "slides" (slice
+    (dict "file" "ss_17_2448x3264.jpg" "alt" "Мощёная дорожка среди пальм и горшков с растениями")
+    (dict "file" "ss_29_3024x4032.jpg" "alt" "Дорожка в саду между низкими корпусами и пальмами")
+    (dict "file" "ss_33_3000x4000.jpg" "alt" "Тенистая терраса под деревьями с видом на пляж")
+    (dict "file" "ss_27_3000x4000.jpg" "alt" "Плетёные кресла под зонтами на площадке с травой")
+    (dict "file" "ss_25_4032x3024.jpg" "alt" "Большое дерево со светящимися фонарями над столиками на песке")
+  ))
+  (dict "id" "food" "title" "Еда и бар" "lead" "Ресторан Silver Sand Restaurant работает с 08:00 до 22:00. На снимках — линия самообслуживания, салат из зелёной папайи с креветками, жареное и морепродукты, зал с деревянными столами и оранжевыми стульями. Ярче всего получаются напитки: красные и оранжевые коктейли и кокосы с надписью «Silver Sand Resort Koh Samed». На песке работает пляжный бар, клуб Silver Sand Club открывается с 20:00, мини-маркет — до 22:00." "slides" (slice
+    (dict "file" "ss_03_3648x2736.jpg" "alt" "Терраса ресторана с подвесными фонарями, обращённая к морю")
+    (dict "file" "ss_37_4624x3468.jpg" "alt" "Тарелка салата из зелёной папайи с креветками")
+    (dict "file" "ss_32_3024x4032.jpg" "alt" "Красный коктейль с долькой лайма на деревянном столе")
+    (dict "file" "ss_39_4032x2268.jpg" "alt" "Интерьер бара в сине-фиолетовом свете")
+  ))
+-}}
+{{- $hero := resources.Get "silversand/ss_09_4000x3000.jpg" -}}
+{{- if not $hero }}{{ errorf "Silversand: missing hero image" }}{{ end -}}
+{{- $heroJpg := $hero.Fill "1600x900 jpg q80" -}}
+{{- $heroWebp := $hero.Fill "1600x900 webp q80" -}}
+<div class="ss-taste">
+  <section class="ts-hero" id="top" aria-label="Silver Sand Resort">
+    <div class="ts-hero-photo" data-enter>
+      <picture>
+        <source srcset="{{ $heroWebp.RelPermalink }}" type="image/webp">
+        <img src="{{ $heroJpg.RelPermalink }}" alt="Белые зонты и шезлонги на песке пляжа Ао Пхай" width="1600" height="900" fetchpriority="high" decoding="async">
+      </picture>
+    </div>
+    <div class="wrap ts-hero-copy">
+      <h1>Silver Sand Resort</h1>
+      <p class="ts-sub">Небольшой отель на пляже Ао Пхай, остров Кох Самет, Таиланд.</p>
+    </div>
+  </section>
+
+  {{- range $section := $sections }}
+  <section class="ts-section" id="{{ $section.id }}">
+    <div class="wrap">
+      <h2>{{ $section.title }}</h2>
+      <p class="ts-lead">{{ $section.lead }}</p>
+      <div class="ts-carousel ss-gallery" data-gallery aria-label="Фотографии: {{ $section.title }}">
+        <div class="ts-frame">
+          <div class="ss-stage">
+          {{- $idx := 0 -}}
+          {{- range $slide := $section.slides }}
+            {{- $img := resources.Get (printf "silversand/%s" $slide.file) -}}
+            {{- if not $img }}{{ errorf "Silversand: missing image %s" $slide.file }}{{ end -}}
+            {{- $dims := "1600x" -}}
+            {{- if lt $img.Width $img.Height }}{{ $dims = "x1600" }}{{ end -}}
+            {{- $jpg := $img.Resize (printf "%s jpg q80" $dims) -}}
+            {{- $webp := $img.Resize (printf "%s webp q80" $dims) -}}
+            {{- $idx = add $idx 1 -}}
+            <figure class="ss-slide{{ if eq $idx 1 }} is-active{{ end }}" data-index="{{ $idx }}">
+              <div class="ss-media">
+                <picture>
+                  <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
+                  <img src="{{ $jpg.RelPermalink }}" alt="{{ $slide.alt }}" width="{{ $jpg.Width }}" height="{{ $jpg.Height }}" loading="lazy" decoding="async">
+                </picture>
+              </div>
+            </figure>
+          {{- end }}
+          </div>
+          <button type="button" class="ts-nav ts-prev" aria-label="Предыдущая фотография">&#8592;</button>
+          <button type="button" class="ts-nav ts-next" aria-label="Следующая фотография">&#8594;</button>
+        </div>
+        <div class="ts-gallery-foot">
+          <span class="ss-counter" aria-live="polite">1 / {{ len $section.slides }}</span>
+          <div class="ss-dots" role="group" aria-label="Выбрать фотографию">
+            {{- range $i := seq 1 (len $section.slides) }}
+            <button type="button" class="ss-dot{{ if eq $i 1 }} is-active{{ end }}" data-go="{{ $i }}" aria-label="Фотография {{ $i }}"{{ if eq $i 1 }} aria-current="true"{{ end }}></button>
+            {{- end }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {{- end }}
+
+  <section class="ts-section ts-about" id="about">
+    <div class="wrap">
+      <h2>Кому подойдёт</h2>
+      <p class="ts-lead">Пары и семьи, которым важен пляж в шаговой доступности. Отель описывают как подходящий для детей и животных; среди удобств — бесплатный Wi-Fi, завтрак и трансфер из аэропорта. Тихими это место не назовёшь: отзывы расходятся, и главная претензия — громкая музыка из клуба допоздна. У Google — около 4,1 на основе примерно 800 оценок, у Trip.com — 4,4/5 по 549 отзывам, а у Tripadvisor заметно прохладнее — 3,1/5 по 253. Разница относится скорее к шуму и возрасту номеров, чем к расположению.</p>
+    </div>
+  </section>
+
+  <section class="ts-section ts-visit" id="visit">
+    <div class="wrap">
+      <h2>Практические детали</h2>
+      <p class="ts-lead">Всё нужное на каждый день — ресторан, магазин, бар, выход к пляжу — есть на территории; паром у причала Надан — способ приехать и уехать. Цены и наличие номеров я не привожу сознательно: они меняются, а пляж, низкие корпуса и клуб рядом — остаются.</p>
+    </div>
+  </section>
+
+  <footer class="ts-closing" id="credits">
+    <div class="wrap">
+      <p class="ts-close-name">Silver Sand Resort</p>
+      <nav class="ts-close-links" aria-label="Разделы страницы">
+        <a href="#beach">Пляж</a>
+        <a href="#rooms">Номера</a>
+        <a href="#grounds">Территория</a>
+        <a href="#food">Еда</a>
+        <a href="#visit">Детали</a>
+      </nav>
+      <p class="ts-legal">Silver Sand Resort · Кох Самет, Таиланд</p>
+    </div>
+  </footer>
+</div>

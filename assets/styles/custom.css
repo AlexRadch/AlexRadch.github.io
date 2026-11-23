@@ -775,3 +775,215 @@ body.book-layout-storybook main.container:has(> .book-page > article > .storyboo
   .topbar-home { max-width: 9rem; }
 }
 
+/* ============================================================
+   Taste-версия витрины (silversand-taste). Place, linen-harbour,
+   Newsreader + Hanken Grotesk. Всё в .ss-taste; каркас темы
+   переопределяем только на этой странице через :has().
+   ============================================================ */
+body:has(.ss-taste) { background: #f3f1ec; color: #1d2530; }
+body:has(.ss-taste) main.container,
+body:has(.ss-taste) .book-page,
+body:has(.ss-taste) article.markdown {
+  display: block;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+.ss-taste {
+  --ts-bg: #f3f1ec;
+  --ts-surface: #e6e2d9;
+  --ts-ink: #1d2530;
+  --ts-muted: #5a6270;
+  --ts-action: #2c5877;
+  --ts-gut: 120px;
+  background: var(--ts-bg);
+  color: var(--ts-ink);
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.ss-taste .wrap {
+  width: min(100% - 2 * var(--ts-gut), 960px);
+  margin-inline: auto;
+}
+.ss-taste p { font-size: 16px; line-height: 1.6; margin: 0 0 1em; }
+.ss-taste :is(h1, h2, .ts-type-moment, .ts-close-name) {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  margin: 0;
+}
+.ss-taste :focus-visible { outline: 2px solid var(--ts-action); outline-offset: 3px; }
+
+/* Hero: одна фотография места, слов на ней нет. */
+.ts-hero { padding-bottom: 48px; }
+.ts-hero-photo {
+  width: min(100% - 2 * var(--ts-gut), 960px);
+  height: 480px;
+  margin-inline: auto;
+  overflow: hidden;
+  background: var(--ts-surface);
+}
+.ts-hero-photo[data-enter] { animation: ts-enter 0.8s ease-out both; }
+@keyframes ts-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+.ts-hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ts-hero-copy { padding-top: 40px; }
+.ts-hero h1 { font-size: 48px; line-height: 1.1; }
+.ts-sub {
+  max-width: 62ch;
+  margin: 16px 0 24px;
+  color: var(--ts-muted);
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+/* Разделы: заголовок, текст, своя карусель. */
+.ts-section { padding-block: 56px 40px; }
+.ts-section h2 { font-size: 32px; line-height: 1.25; }
+.ts-lead { margin: 16px 0 24px; }
+.ss-taste .ts-carousel { margin: 0; }
+.ss-taste .ts-frame {
+  position: relative;
+  height: clamp(360px, 56vh, 560px);
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--ts-surface);
+}
+/* Все кадры живут в коробке одной высоты: перелистывание не двигает текст. */
+.ss-taste .ts-frame .ss-stage { height: 100%; }
+.ss-taste .ts-frame .ss-slide { height: 100%; margin: 0; }
+.ss-taste .ts-frame .ss-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+.ss-taste .ts-frame picture { display: block; width: 100%; height: 100%; }
+.ss-taste .ts-carousel:not(.is-ready) .ts-frame { height: auto; overflow: visible; }
+.ss-taste .ts-carousel:not(.is-ready) .ss-slide,
+.ss-taste .ts-carousel:not(.is-ready) .ss-media,
+.ss-taste .ts-carousel:not(.is-ready) img { height: auto; }
+.ss-taste .ts-frame .ss-slide { align-items: center; }
+.ss-taste .ts-frame img {
+  border-radius: 0;
+  transition: transform 0.4s ease;
+}
+.ss-taste .ts-frame:hover .ss-slide.is-active img { transform: scale(1.02); }
+.ss-taste .ts-nav {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid rgba(29, 37, 48, 0.18);
+  border-radius: 2px;
+  background: var(--ts-bg);
+  color: var(--ts-ink);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+  transform: translateY(-50%);
+}
+.ss-taste .ts-prev { left: 16px; }
+.ss-taste .ts-next { right: 16px; }
+.ss-taste .ts-nav:hover { transform: translateY(calc(-50% - 2px)); }
+.ss-taste .ts-nav:active { transform: translateY(calc(-50% + 1px)); }
+.ss-taste .ts-carousel:not(.is-ready) .ts-nav { display: none; }
+.ts-gallery-foot {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 16px;
+}
+.ss-taste .ss-counter {
+  min-width: 4.5em;
+  color: var(--ts-muted);
+  font-size: 14px;
+  text-align: left;
+}
+.ss-taste .ss-dots { display: flex; flex-wrap: wrap; gap: 0; margin: 0; }
+/* Кнопка точки — квадрат 44px для пальца, сама точка рисуется псевдоэлементом. */
+.ss-taste .ss-dot {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.ss-taste .ss-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--ts-ink);
+  border-radius: 50%;
+}
+.ss-taste .ss-dot.is-active::after {
+  border-color: var(--ts-action);
+  background: var(--ts-action);
+}
+
+/* Закрытие: та же плоская поверхность, что и у кадров. */
+.ts-closing {
+  padding-block: 40px 32px;
+  background: var(--ts-surface);
+}
+.ts-close-name { font-size: 32px; }
+.ts-close-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 16px;
+}
+.ts-close-links a {
+  color: var(--ts-ink);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.ts-close-links a:hover { color: var(--ts-action); }
+.ts-legal { margin: 24px 0 0; color: var(--ts-muted); font-size: 13px; }
+
+@media (max-width: 40rem) {
+  .ss-taste { --ts-gut: 24px; }
+  .ts-hero { padding-bottom: 32px; }
+  .ts-hero-photo { height: clamp(240px, 60vw, 360px); }
+  .ts-hero-copy { padding-top: 24px; }
+  .ts-hero h1 { font-size: 32px; line-height: 1.15; }
+  .ts-sub { font-size: 18px; }
+  .ts-section { padding-block: 48px 32px; }
+  .ts-section h2 { font-size: 24px; }
+  .ts-lead { margin-bottom: 24px; }
+  .ss-taste .ts-frame { height: clamp(240px, 44svh, 360px); }
+  .ss-taste .ts-nav { width: 44px; height: 44px; }
+  .ss-taste .ts-prev { left: 8px; }
+  .ss-taste .ts-next { right: 8px; }
+  .ts-gallery-foot { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .ts-close-name { font-size: 24px; }
+  .ts-closing { padding-block: 32px 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ss-taste *, .ss-taste *::before, .ss-taste *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
