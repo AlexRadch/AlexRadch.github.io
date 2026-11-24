@@ -130,11 +130,18 @@
                 class="d-flex | pos-fixed bottom-0 left-0 z-1 | w-100 h-60px"
                 d-none="md">
                 <div class="d-flex jc-space-between | w-100 | bc-neutral-100 btwidth-1 btstyle-dashed bcolor-neutral-500">
-                    <a  href="/"
-                        class="d-flex fd-column jc-center ai-center gap-1 | pl-5 pr-2 | td-none ta-center | c-primary-900 b-0 brad-3">
-                        <span class="icon-house fs-6"></span>
-                        <span class="fvs-wght-400 fs-1 tt-uppercase">{{ libdocMessages.homepageShort[pageLang] }}</span>
-                    </a>
+                    <div class="d-flex ai-center">
+                        <input type="checkbox"
+                            name="nav_primary"
+                            id="nav_primary_checkbox"
+                            value=""
+                            class="pos-absolute opa-0 pe-none">
+                        <label for="nav_primary_checkbox"
+                            class="d-flex fd-column jc-center ai-center gap-1 | h-100 pl-5 pr-2 | ta-center | cur-pointer c-primary-900 bc-neutral-100">
+                            <span class="icon-list fs-6"></span>
+                            <span class="fvs-wght-400 fs-1 tt-uppercase">{{ libdocMessages.menu[pageLang] }}</span>
+                        </label>
+                    </div>
                     {% if libdocConfig.searchEnabled %}
                         <a  href="/search/"
                             class="d-flex fd-column jc-center ai-center gap-1 | pl-2 pr-2 | td-none ta-center | c-primary-900 b-0 brad-3">
@@ -142,6 +149,11 @@
                             <span class="fvs-wght-400 fs-1 tt-uppercase">{{ libdocMessages.search[pageLang] }}</span>
                         </a>
                     {% endif %}
+                    <a  href="/"
+                        class="d-flex fd-column jc-center ai-center gap-1 | pl-2 pr-2 | td-none ta-center | c-primary-900 b-0 brad-3">
+                        <span class="icon-house fs-6"></span>
+                        <span class="fvs-wght-400 fs-1 tt-uppercase">{{ libdocMessages.homepageShort[pageLang] }}</span>
+                    </a>
                     <button type="button"
                         id="sd_floating_toc_toggle_btn"
                         class="d-flex fd-column jc-center ai-center gap-1 | pl-2 pr-2 | ta-center | cur-pointer c-primary-900 bc-neutral-100 b-0 brad-3"
@@ -151,23 +163,11 @@
                     </button>
                     <button type="button"
                         id="sd_gtt_btn"
-                        class="d-flex fd-column jc-center ai-center gap-1 | pl-2 pr-2 | ta-center | cur-pointer c-primary-900 bc-neutral-100 b-0 brad-3"
+                        class="d-flex fd-column jc-center ai-center gap-1 | pl-2 pr-5 | ta-center | cur-pointer c-primary-900 bc-neutral-100 b-0 brad-3"
                         onclick="libdocUi.handlers._clickGTT()">
                         <span class="icon-arrow-line-up fs-6"></span>
                         <span class="fvs-wght-400 fs-1 tt-uppercase">{{ libdocMessages.top[pageLang] }}</span>
                     </button>
-                    <div class="d-flex ai-center">
-                        <input type="checkbox"
-                            name="nav_primary"
-                            id="nav_primary_checkbox"
-                            value=""
-                            class="pos-absolute opa-0 pe-none">
-                        <label for="nav_primary_checkbox"
-                            class="d-flex fd-column jc-center ai-center gap-1 | h-100 pl-2 pr-5 | ta-center | cur-pointer c-primary-900 bc-neutral-100">
-                            <span class="icon-list fs-6"></span>
-                            <span class="fvs-wght-400 fs-1 tt-uppercase">{{ libdocMessages.menu[pageLang] }}</span>
-                        </label>
-                    </div>
                 </div>
             </nav>
             <nav id="nav_primary_container"
