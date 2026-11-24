@@ -1,0 +1,9 @@
+{
+  "siteTitle": "Александр Радченко",
+  "siteDescription": "Личный сайт-витрина: небольшие исследования, обзоры сайтов и сервисов, инструкции.",
+  "author": "Александр Радченко",
+  "faviconUrl": "/favicon.png",
+  "customLinks": [],
+  "productionUrl": "https://alexradch.github.io",
+  "editThisPageRootUrl": "https://github.com/AlexRadch/AlexRadch.github.io/blob/eleventy-migration"
+}
