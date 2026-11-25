@@ -226,6 +226,7 @@ coverInk: "#3f4b25"
 И они зашли в дом пить чай.
 
 ---
+center
 
 ![И они зашли в дом пить чай](https://www.frogandtoad.ai/illustrations/web/12-FAT-cake-final%20copy.webp)
 

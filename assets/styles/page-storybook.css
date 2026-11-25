@@ -234,6 +234,11 @@ body.page-storybook main > .storybook {
   margin-bottom: 0;
 }
 
+/* Директива center в исходнике сказки: последняя страница центрируется. */
+.storybook-book .storybook-center {
+  text-align: center;
+}
+
 .storybook-book .storybook-page p:has(> img),
 .storybook-book .storybook-page p:has(> img):first-child,
 .storybook-book .storybook-page p:has(> img):last-child {

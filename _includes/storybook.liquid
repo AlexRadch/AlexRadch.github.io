@@ -27,13 +27,19 @@ layout: libdoc_page.liquid
     {%- assign bodyPages = content | split: '<hr>' -%}
     {%- for pageBody in bodyPages -%}
       {%- assign body = pageBody | strip -%}
+      {%- assign head = body | slice: 0, 13 -%}
+      {%- assign centered = false -%}
+      {%- if head == '<p>center</p>' -%}
+        {%- assign centered = true -%}
+        {%- assign body = body | remove_first: '<p>center</p>' | strip -%}
+      {%- endif -%}
       {%- unless body == empty -%}
         {%- assign i = forloop.index0 -%}
         {%- assign parity = i | modulo: 2 -%}
         {%- if parity == 0 -%}<div class="storybook-spread">{%- endif -%}
         <div class="storybook-measurer">
           <div class="storybook-page{% if parity == 0 and forloop.last %} storybook-page-lone{% elsif parity == 0 %} storybook-page-left{% else %} storybook-page-right{% endif %}">
-            <div class="storybook-inner">{{ body }}</div>
+            <div class="storybook-inner">{%- if centered -%}<div class="storybook-center">{{ body }}</div>{%- else -%}{{ body }}{%- endif -%}</div>
             <div class="storybook-folio">{{ i | plus: 1 }}</div>
           </div>
         </div>
