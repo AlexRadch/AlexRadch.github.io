@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="{{ libdocConfig.lang }}">
 <head>
+    <script>
+    (function () {
+        var search = location.search;
+        var nojs = /(?:^|[?&])nojs(?:[=&]|$)/.test(search);
+        if (/(?:^|[?&])js(?:[=&]|$)/.test(search)) {
+            nojs = false;
+            try { sessionStorage.removeItem('nojs'); } catch (e) {}
+        }
+        if (nojs) {
+            try { sessionStorage.setItem('nojs', '1'); } catch (e) {}
+        }
+        try { nojs = nojs || sessionStorage.getItem('nojs') === '1'; } catch (e) {}
+        window.__NOJS__ = nojs;
+        document.documentElement.dataset.nojs = nojs ? 'true' : 'false';
+        if (!nojs) document.write('<script defer src="/assets/scripts/page-silversand.js"><\/script>');
+    })();
+    </script>
+    <style>
+        .nojs-back { display: none; position: fixed; top: 8px; right: 8px; z-index: 9999; padding: 4px 8px; background: #c0392b; color: #fff; font: 12px sans-serif; text-decoration: none; border-radius: 4px; }
+        html[data-nojs="true"] .nojs-back { display: block; }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
@@ -14,9 +35,9 @@
     <link rel="stylesheet" href="/assets/styles/page-silversand.css">
 </head>
 <body>
+    <a href="?js" class="nojs-back" title="Включить JavaScript">JS✕</a>
     <main>
         <article class="page-silversand">{{ content | cleanup }}</article>
     </main>
-    <script src="/assets/scripts/page-silversand.js"></script>
 </body>
 </html>

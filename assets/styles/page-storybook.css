@@ -2,6 +2,9 @@
    Цвета бумаги заданы здесь и не зависят от темы сайта. */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400..700;1,400..700&display=swap");
 
+/* Книжка не меняется при выключенном JS: предупреждение LibDoc её только сдвигает. */
+body.page-storybook noscript { display: none; }
+
 .storybook-book {
   --cover-ink: #343a40;
   --sb-font-bold: 700;
@@ -46,14 +49,16 @@
 }
 
 .storybook-book .storybook-measurer {
+  position: relative;
   flex: 0 0 auto;
   width: var(--sb-page-w);
-  height: var(--sb-page-h);
+  aspect-ratio: var(--sb-aw) / var(--sb-ah);
   max-width: 100%;
 }
 
 .storybook-book .storybook-page {
-  position: relative;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -92,7 +97,7 @@
 }
 
 .storybook-book .storybook-inner {
-  font-size: max(13px, 3.75cqi);
+  font-size: 3.75cqi;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -156,10 +161,14 @@
 }
 
 .storybook-book .storybook-cover figure img {
+  display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   max-width: none;
   max-height: none;
+  object-fit: fill;
   translate: var(--sb-cover-x) var(--sb-cover-y);
   scale: var(--sb-cover-zoom);
   margin: 0;

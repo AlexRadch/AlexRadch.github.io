@@ -1,6 +1,61 @@
 {%- include 'libdoc_before_html' -%}<!DOCTYPE html>
 <html lang="{{ pageLang }}">
 <head>
+    <script>
+    (function () {
+        var search = location.search;
+        var nojs = /(?:^|[?&])nojs(?:[=&]|$)/.test(search);
+        if (/(?:^|[?&])js(?:[=&]|$)/.test(search)) {
+            nojs = false;
+            try { sessionStorage.removeItem('nojs'); } catch (e) {}
+        }
+        if (nojs) {
+            try { sessionStorage.setItem('nojs', '1'); } catch (e) {}
+        }
+        try { nojs = nojs || sessionStorage.getItem('nojs') === '1'; } catch (e) {}
+        window.__NOJS__ = nojs;
+        document.documentElement.dataset.nojs = nojs ? 'true' : 'false';
+        if (nojs) {
+            document.write('<link rel="stylesheet" href="/core/assets/css/ds__dark_mode.css" media="(prefers-color-scheme: dark)">');
+        } else {
+            document.write('<script defer src="/core/assets/js/sandbox.js"><\/script>');
+            document.write('<script defer src="/core/assets/js/hljs/highlight.min.js"><\/script>');
+            {% for hljsLang in libdocConfig.hljsLanguages %}
+            document.write('<script defer src="/core/assets/js/hljs/languages/{{ hljsLang }}.min.js"><\/script>');
+            {% endfor %}
+            document.write('<script defer src="/core/assets/js/ui.js"><\/script>');
+            {% if libdocConfig.searchEnabled %}
+            document.write('<link rel="stylesheet" href="/core/assets/css/autocomplete.css">');
+            document.write('<script defer src="/core/assets/js/autocomplete.min.js"><\/script>');
+            document.write('<script defer src="/core/assets/js/fuse.js"><\/script>');
+            document.write('<script defer src="/core/assets/js/fuzzy.js"><\/script>');
+            document.write('<script defer src="/core/assets/js/hotkeys.min.js"><\/script>');
+            {% endif %}
+            {% if page.url == '/search/' %}
+            document.write('<script defer src="/core/assets/js/search.js"><\/script>');
+            {% endif %}
+            {% if pageStyle and pageScript != false %}
+            document.write('<script defer src="/assets/scripts/page-{{ pageStyle }}.js"><\/script>');
+            {% endif %}
+        }
+    })();
+    </script>
+    <style>
+        .nojs-back {
+            display: none;
+            position: fixed;
+            top: 8px;
+            right: 8px;
+            z-index: 9999;
+            padding: 4px 8px;
+            background: #c0392b;
+            color: #fff;
+            font: 12px sans-serif;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        html[data-nojs="true"] .nojs-back { display: block; }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ pageTitle }}</title>
@@ -65,7 +120,7 @@
     <link rel="stylesheet" href="/core/assets/css/ds__defaults.css">
     <link rel="stylesheet" href="/core/assets/css/ds__colors.css">
     <script>
-        (function () {
+        if (!window.__NOJS__) (function () {
             var colorScheme = 'auto';
             try {
                 colorScheme = (JSON.parse(localStorage.getItem('eleventyLibdoc')) || {}).colorScheme || 'auto';
@@ -101,26 +156,29 @@
         <link rel="stylesheet" href="/core/assets/css/noscript.css">
     </noscript>
     <script>
-        const libdocMessages = {
+        if (!window.__NOJS__) {
+        var libdocMessages = {
             {% for key in libdocMessages %}
                 {{ key[0] }}: `{{ libdocMessages[key[0]][pageLang] }}`,
             {%- endfor %}
         }
-        const libdocConfig = {
+        var libdocConfig = {
             htmlBasePathPrefix: `{{ libdocConfig.htmlBasePathPrefix }}`,
             blogTitle: `{{ libdocConfig.blogTitle }}`,
             blogDescription: `{{ libdocConfig.blogDescription }}`,
             displayTagsListLink: {{ libdocConfig.displayTagsListLink }}
         }
-        const libdocSystem = {
+        var libdocSystem = {
             searchIndexUrl: `{{ '/core/assets/js/search_index.json' | url }}`,
             fuzzyIndexUrl: `{{ '/core/assets/js/fuzzy_index.json' | url }}`,
             productionUrl: `{{ libdocSystem.productionUrl }}`,
             blogPostsCount: `{{ collections.post.size }}`
         }
+        }
     </script>
 </head>
 <body class="d-flex fd-column ai-center | m-0{% if pageStyle %} page-{{ pageStyle }}{% endif %}">
+    <a href="?js" class="nojs-back" title="Включить JavaScript">JS✕</a>
     <div class="d-flex | w-100"
         fd-column="xs,sm"
         ai-start="md"
@@ -449,22 +507,5 @@
             </footer>
         </main>
     </div>
-    
-    <script src="/core/assets/js/sandbox.js"></script>
-    <script src="/core/assets/js/hljs/highlight.min.js"></script>
-    {% for hljsLang in libdocConfig.hljsLanguages %}
-        <script src="/core/assets/js/hljs/languages/{{ hljsLang }}.min.js"></script>
-    {% endfor %}
-    <script src="/core/assets/js/ui.js"></script>
-    {% if libdocConfig.searchEnabled %}
-        <link rel="stylesheet" href="/core/assets/css/autocomplete.css">
-        <script src="/core/assets/js/autocomplete.min.js"></script>
-        <script src="/core/assets/js/fuse.js"></script>
-        <script src="/core/assets/js/fuzzy.js"></script>
-        <script src="/core/assets/js/hotkeys.min.js"></script>
-    {% endif  %}
-    {% if pageStyle and pageScript != false %}
-    <script src="/assets/scripts/page-{{ pageStyle }}.js"></script>
-    {% endif %}
 </body>
 </html>
