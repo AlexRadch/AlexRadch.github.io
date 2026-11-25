@@ -1,0 +1,44 @@
+---
+layout: libdoc_page.liquid
+---
+{%- comment -%}
+Книга без скриптов: обложка из данных страницы, дальше лента разворотов.
+Разделители `---` исходного Markdown приходят сюда уже как <hr>.
+{%- endcomment -%}
+<article class="storybook">
+  <div class="storybook-book" id="storybook" style="--sb-aw: {{ aspectWidth | default: 2 }}; --sb-ah: {{ aspectHeight | default: 3 }}; --sb-cover-zoom: {{ coverZoom | default: 1.5 }}; --sb-cover-x: {{ coverOffsetX | default: '0%' }}; --sb-cover-y: {{ coverOffsetY | default: '0%' }}; --cover-ink: {{ coverInk | default: '#343a40' }};">
+    <div class="storybook-spread">
+      <div class="storybook-measurer">
+        <div class="storybook-page">
+          <div class="storybook-inner storybook-cover">
+            {%- if coverImage -%}
+            <figure><img src="{{ coverImage }}" alt="{{ storyTitle }}" loading="eager" sizes="auto"></figure>
+            {%- endif -%}
+            <h1 class="storybook-cover-title">{%- if storyCoverTitle -%}{%- for block in storyCoverTitle -%}<span class="{{ block.kind }}">{{ block.text }}</span>{%- endfor -%}{%- else -%}{{ storyTitle }}{%- endif -%}</h1>
+            <div class="storybook-cover-byline">
+              {%- for author in storyAuthors -%}
+              <p>{{ author.role }}{% if author.url %} <a href="{{ author.url }}">{{ author.name }}</a>{% else %} {{ author.name }}{% endif %}</p>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%- assign bodyPages = content | split: '<hr>' -%}
+    {%- for pageBody in bodyPages -%}
+      {%- assign body = pageBody | strip -%}
+      {%- unless body == empty -%}
+        {%- assign i = forloop.index0 -%}
+        {%- assign parity = i | modulo: 2 -%}
+        {%- if parity == 0 -%}<div class="storybook-spread">{%- endif -%}
+        <div class="storybook-measurer">
+          <div class="storybook-page{% if parity == 0 and forloop.last %} storybook-page-lone{% elsif parity == 0 %} storybook-page-left{% else %} storybook-page-right{% endif %}">
+            <div class="storybook-inner">{{ body }}</div>
+            <div class="storybook-folio">{{ i | plus: 1 }}</div>
+          </div>
+        </div>
+        {%- if parity == 1 or forloop.last -%}</div>{%- endif -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+</article>

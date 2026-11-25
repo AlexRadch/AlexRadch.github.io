@@ -1,0 +1,228 @@
+/* Книжка «Квак и Жаб»: обложка + лента разворотов без JavaScript.
+   Цвета бумаги заданы здесь и не зависят от темы сайта. */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400..700;1,400..700&display=swap");
+
+.storybook-book {
+  --cover-ink: #343a40;
+  --sb-font-bold: 700;
+  --sb-font-normal: 500;
+  --paper: #f5eedd;
+  --paper-hi: #faf6ea;
+  --paper-lo: #ece3cc;
+  --paper-edge: #f0e8d4;
+  --ink: #2a2318;
+  --ink-soft: #7b6c55;
+  --book-font: "Noto Serif", Georgia, serif;
+  --sb-gap: 1.5rem;
+  --sb-aw: 2;
+  --sb-ah: 3;
+  --sb-cover-zoom: 1.5;
+  --sb-cover-x: 0;
+  --sb-cover-y: 0;
+  --sb-page-h: clamp(300px, 70vh, 620px);
+  --sb-page-w: calc(var(--sb-page-h) * var(--sb-aw) / var(--sb-ah));
+  font-weight: var(--sb-font-normal);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sb-gap);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.storybook-book .storybook-page {
+  background: linear-gradient(90deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 72%, var(--paper-edge) 100%);
+  color: var(--ink);
+  font-family: var(--book-font);
+}
+
+.storybook-book .storybook-spread {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+
+.storybook-book .storybook-measurer {
+  flex: 0 0 auto;
+  width: var(--sb-page-w);
+  height: var(--sb-page-h);
+  max-width: 100%;
+}
+
+.storybook-book .storybook-page {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: var(--sb-aw) / var(--sb-ah);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 11% 11% 15%;
+  container-type: inline-size;
+  line-height: 1.42;
+}
+
+.storybook-book .storybook-page:has(.storybook-cover) {
+  padding: 0;
+}
+
+/* У корешка поля разъезжаются: слева 10/12, справа 12/10. */
+.storybook-book .storybook-page-left {
+  padding-left: 10%;
+  padding-right: 12%;
+}
+
+.storybook-book .storybook-page-right {
+  padding-left: 12%;
+  padding-right: 10%;
+}
+
+.storybook-book .storybook-folio {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4cqi;
+  text-align: center;
+  font-size: 3.2cqi;
+  font-variant-numeric: lining-nums;
+  color: var(--ink-soft);
+}
+
+.storybook-book .storybook-inner {
+  font-size: max(13px, 3.75cqi);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.storybook-book .storybook-page figure,
+.storybook-book .storybook-page p:has(> img) {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.storybook-book .storybook-page img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 72%;
+  object-fit: contain;
+  background: var(--paper);
+  border-radius: 0;
+}
+
+.storybook-book .storybook-page p {
+  margin: 0.5em 0;
+}
+
+.storybook-book .storybook-page p:first-child {
+  margin-top: 0;
+}
+
+.storybook-book .storybook-page p:last-child {
+  margin-bottom: 0;
+}
+
+.storybook-book .storybook-page p:has(> img),
+.storybook-book .storybook-page p:has(> img):first-child,
+.storybook-book .storybook-page p:has(> img):last-child {
+  margin: 0;
+}
+
+.storybook-book .storybook-cover {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.storybook-book .storybook-cover figure {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: none;
+}
+
+.storybook-book .storybook-cover figure img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  translate: var(--sb-cover-x) var(--sb-cover-y);
+  scale: var(--sb-cover-zoom);
+  margin: 0;
+}
+
+.storybook-book .storybook-cover-title {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  top: 12%;
+  left: 15%;
+  right: 15%;
+  margin: 0;
+  font-size: 1.8em;
+  font-weight: var(--sb-font-bold);
+  text-align: center;
+  text-wrap: balance;
+  line-height: 1.05;
+  color: var(--cover-ink);
+}
+
+.storybook-book .storybook-cover-title .main {
+  display: block;
+  font-size: 1.5em;
+  white-space: nowrap;
+}
+
+.storybook-book .storybook-cover-title .sub {
+  display: block;
+  margin-top: 0.3em;
+  font-size: 0.9em;
+  line-height: 1.15;
+}
+
+.storybook-book .storybook-cover-byline {
+  position: absolute;
+  z-index: 2;
+  bottom: 3%;
+  left: 10%;
+  right: 10%;
+  text-align: center;
+  font-size: 1em;
+  color: color-mix(in srgb, var(--cover-ink) 70%, black);
+}
+
+.storybook-book .storybook-cover-byline p {
+  margin: 0.15em 0;
+}
+
+.storybook-book .storybook-cover-byline p::first-letter {
+  text-transform: uppercase;
+}
+
+.storybook-book a {
+  color: currentColor;
+  text-decoration: underline 1px color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: .18em;
+}
+
+.storybook-book a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.storybook-book .storybook-cover-byline a {
+  font-weight: var(--sb-font-bold);
+}

@@ -3,11 +3,37 @@ title: "Квак и Жаб и всё более совершенные маши�
 description: "Квак и Жаб перед лицом самого современного вызова"
 date: 2026-10-10T00:00:00+07:00
 ogImageUrl: "https://www.frogandtoad.ai/illustrations/web/1-FAT-title-final.webp"
-layout: libdoc_page.liquid
+layout: storybook.liquid
 permalink: story-books/frog-and-toad/machines-hack-huggingface/
 eleventyNavigation:
   key: "Квак и Жаб и всё более совершенные машины"
   parent: "Книги"
+pageStyle: "storybook"
+pageScript: false
+hidePageHeading: true
+storyTitle: "Квак и Жаб и всё более совершенные машины"
+storyCoverTitle:
+  - kind: "main"
+    text: "Квак и Жаб"
+  - kind: "sub"
+    text: "и всё более совершенные машины"
+storyAuthors:
+  - role: "Написала"
+    name: "Элизабет Ван Ностранд"
+    url: "https://acesounderglass.com/about-me-2/"
+  - role: "Нарисовал"
+    name: "HungerArtist"
+    url: "https://www.deviantart.com/hungerartist"
+  - role: "Перевёл"
+    name: "Александр Радченко"
+    url: "https://github.com/AlexRadch"
+coverImage: "https://www.frogandtoad.ai/illustrations/web/1-FAT-title-final.webp"
+coverZoom: 1.48
+coverOffsetX: "0%"
+coverOffsetY: "0%"
+aspectWidth: 2
+aspectHeight: 3
+coverInk: "#3f4b25"
 ---
 
 ![Квак и Жаб видят, как мимо проходит их сосед с кипой бумаг](https://www.frogandtoad.ai/illustrations/web/2-FAT-Meet-HF-final.webp)
