@@ -15,11 +15,21 @@ import libdocFunctions                      from "./_data/libdocFunctions.js";
 import gistExtras                           from "./lib/gist-extras.js";
 // END GISTS imports
 
+// START LOCAL imports
+import externalImagesPlugin                 from "./lib/external-images.js";
+// END LOCAL imports
+
 export default function(eleventyConfig) {
     // START PLUGINS
     eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
     eleventyConfig.addPlugin(InputPathToUrlTransformPlugin);
     eleventyConfig.addPlugin(eleventyNavigationPlugin);
+    // Внешние картинки помечаются до image transform, чтобы тот их не трогал
+    eleventyConfig.htmlTransformer.addPosthtmlPlugin(
+        "html",
+        externalImagesPlugin,
+        { priority: 0, name: "external-images-passthrough" }
+    );
     eleventyConfig.addPlugin(eleventyImageTransformPlugin, libdocFunctions.pluginsParameters.eleventyImageTransform());
     eleventyConfig.addPlugin(pluginRss);
     eleventyConfig.addPlugin(gistExtras);
