@@ -22,15 +22,53 @@ body.page-storybook noscript { display: none; }
   --sb-cover-zoom: 1.5;
   --sb-cover-x: 0;
   --sb-cover-y: 0;
-  --sb-page-h: clamp(300px, 70vh, 620px);
+  /* Зазоры вокруг страницы — это пространство для скролла, а не типографика.
+     Не в ch: ch зависит от шрифта книги и вырос бы вместе с ней. */
+  --sb-gutter: clamp(0.75rem, 1vh, 1.5rem);
+  /* Высота страницы — почти весь экран, но не больше ширины, при которой
+     две страницы влезают рядом. Шапку НЕ вычитаем: она обычная, уезжает
+     при скролле. Вычитаем только закреплённое нижнее меню (см. ниже).
+     100cqw меряет уже область main, то есть без сайдбара, когда он показан.
+     Верхней границы вроде 620px нет: на 4K разворот растёт до экрана. */
+  --sb-vh: 100vh;
+  --sb-vh: 100dvh;
+  --sb-chrome: 0px;
+  --sb-page-h: max(
+    300px,
+    min(
+      calc(var(--sb-vh) - var(--sb-chrome) - 2 * var(--sb-gutter)),
+      calc((100cqw - 4px) * var(--sb-ah) / (2 * var(--sb-aw)))
+    )
+  );
   --sb-page-w: calc(var(--sb-page-h) * var(--sb-aw) / var(--sb-ah));
   font-weight: var(--sb-font-normal);
+  container-type: inline-size;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--sb-gap);
   width: 100%;
   margin: 0 auto;
+  /* Отступы вокруг ленты: при скролле страница встаёт с зазором
+     сверху и снизу, а не впритык к краям окна. */
+  padding: var(--sb-gutter);
+}
+
+/* На узком экране две страницы рядом всё равно не влезают — пусть лучше
+   каждая занимает всю ширину и встаёт под предыдущей с зазором.
+   Здесь вычитаем только нижнее меню (60px): оно pos-fixed, а шапка
+   при скролле уходит и высоту страницы не ограничивает. */
+@media (max-width: 959px) {
+  .storybook-book {
+    --sb-chrome: 60px;
+    --sb-page-h: max(300px, calc(var(--sb-vh) - var(--sb-chrome) - 2 * var(--sb-gutter)));
+  }
+}
+
+/* Внешняя обёртка LibDoc ограничивает сайт 1700px — книжке нужен весь
+   экран, особенно на 4K. Инлайн-стиль перебиваем только здесь. */
+body.page-storybook div:has(> main) {
+  max-width: none !important;
 }
 
 /* LibDoc даёт всем прямым детям main динамический max-width и поля
