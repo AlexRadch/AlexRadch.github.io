@@ -169,6 +169,15 @@ body.page-storybook main > .storybook {
 .storybook-book .storybook-page figure,
 .storybook-book .storybook-page p:has(> img) {
   margin: 0;
+  /* LibDoc даёт figure свои отступы, рамку и скругление — внутри книги
+     всё это лишнее и мешает считать размер картинки от страницы. */
+  padding: 0;
+  border: 0;
+  row-gap: 0;
+  /* У темы figure ещё и overflow: hidden — он обрезает увеличенную
+     обложку по её первоначальной рамке и оставляет полосы сверху/снизу.
+     Обрезку по странице делает .storybook-cover, а не figure. */
+  overflow: visible;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -177,13 +186,22 @@ body.page-storybook main > .storybook {
 
 .storybook-book .storybook-page img {
   display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 72%;
-  object-fit: contain;
   background: var(--paper);
   border-radius: 0;
+}
+
+/* Иллюстрации в тексте масштабируются вместе со страницей, а не с
+   пикселями файла: иначе при уменьшении масштаба браузера картинка
+   остаётся мелкой, пока текст и сама страница сохраняют размер. */
+.storybook-book .storybook-page p:has(> img) > img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  /* cqw меряет саму страницу: её ширина — 100cqw, высота — 150cqw.
+     Нельзя брать --sb-page-h: внутри страницы он пересчитывается
+     относительно её самой и даёт не ту высоту. */
+  max-height: 155cqw;
+  object-fit: contain;
 }
 
 .storybook-book .storybook-page p {
