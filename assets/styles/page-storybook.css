@@ -307,10 +307,23 @@ body.page-storybook main > .storybook {
   text-transform: uppercase;
 }
 
-.storybook-book a {
+/* Ссылки книги: как на Hugo — цвет текста, подчёрк 1px с прозрачностью 45%
+   и без сайтовой стрелки внешней ссылки. Псевдоклассы нужны, чтобы перебить
+   правила LibDoc «main a:link/visited» с их синим цветом и своим подчёрком. */
+.storybook-book a,
+.storybook-book a:link,
+.storybook-book a:visited,
+.storybook-book a:hover {
   color: currentColor;
   text-decoration: underline 1px color-mix(in srgb, currentColor 45%, transparent);
   text-underline-offset: .18em;
+  letter-spacing: normal;
+  font-variation-settings: normal;
+  transition: none;
+}
+
+main .storybook-book a[href]::after {
+  content: none;
 }
 
 .storybook-book a:hover {
