@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "start": "eleventy --serve",
+    "watch": "eleventy --watch",
     "build": "eleventy"
   },
   "devDependencies": {

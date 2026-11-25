@@ -13,6 +13,17 @@
 Публикация: GitHub Actions → GitHub Pages, https://alexradch.github.io/.
 Workflow и адрес сборки переделываются при переносе.
 
+## Команды
+
+```sh
+npm install      # один раз
+npm start        # сервер http://localhost:8080 с автообновлением
+npm run watch    # только следить за файлами, без сервера
+npm run build    # сборка в _site
+```
+
+`npm run` показывает все доступные команды.
+
 ## Правила
 
 - Текст — в Markdown. Шорткоды только там, где Markdown не справляется:
