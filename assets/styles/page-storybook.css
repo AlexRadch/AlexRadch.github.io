@@ -270,6 +270,10 @@ body.page-storybook main > .storybook {
   margin: 0;
   font-size: 1.8em;
   font-weight: var(--sb-font-bold);
+  /* LibDoc ставит h1 ось wght 800 и трекинг -0.06em — у книги свой вес 700
+     и обычный трекинг; от них зависит и перенос строк заголовка. */
+  font-variation-settings: normal;
+  letter-spacing: normal;
   text-align: center;
   text-wrap: balance;
   line-height: 1.05;
