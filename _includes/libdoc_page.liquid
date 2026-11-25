@@ -41,6 +41,9 @@
     <meta name="color-scheme" content="light dark">
 
     <meta name="generator" content="{{ eleventy.generator }}">
+    {% if robotsNoindex %}
+    <meta name="robots" content="noindex, nofollow">
+    {% endif %}
 
     <!-- Font fallback -->
     <style>
@@ -76,6 +79,9 @@
     </noscript>
     <link rel="stylesheet" href="/core/assets/css/hljs/night-owl.css">
     <link rel="stylesheet" href="/core/assets/css/icons.css">
+    {% if pageStyle %}
+    <link rel="stylesheet" href="/assets/styles/page-{{ pageStyle }}.css">
+    {% endif %}
     <style>
         :root {
             --libdoc-image-background-color-light-mode: {{ libdocConfig.imgBgColorLightMode }};
@@ -114,7 +120,7 @@
         }
     </script>
 </head>
-<body class="d-flex fd-column ai-center | m-0">
+<body class="d-flex fd-column ai-center | m-0{% if pageStyle %} page-{{ pageStyle }}{% endif %}">
     <div class="d-flex | w-100"
         fd-column="xs,sm"
         ai-start="md"
@@ -455,5 +461,8 @@
         <script src="/core/assets/js/fuzzy.js"></script>
         <script src="/core/assets/js/hotkeys.min.js"></script>
     {% endif  %}
+    {% if pageStyle %}
+    <script src="/assets/scripts/page-{{ pageStyle }}.js"></script>
+    {% endif %}
 </body>
 </html>

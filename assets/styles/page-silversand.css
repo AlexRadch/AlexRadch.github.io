@@ -1,0 +1,81 @@
+/* Карусель и кадр витрины Silver Sand. Подключается только на странице
+   с pageStyle: "silversand"; все селекторы привязаны к классу страницы. */
+
+.page-silversand .silversand-carousel {
+  max-width: 960px;
+  margin: 24px auto 32px;
+}
+.page-silversand .silversand-frame {
+  position: relative;
+  height: clamp(360px, 56vh, 560px);
+  overflow: hidden;
+  border-radius: 2px;
+  background: #e6e2d9;
+}
+/* Все кадры живут в коробке одной высоты: листание не двигает текст. */
+.page-silversand .silversand-frame .ss-stage { height: 100%; }
+.page-silversand .silversand-frame .ss-slide { height: 100%; margin: 0; }
+.page-silversand .silversand-frame .ss-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+.page-silversand .silversand-frame picture { display: block; width: 100%; height: 100%; }
+.page-silversand .silversand-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  transition: transform 0.4s ease;
+}
+.page-silversand .silversand-frame:hover .ss-slide.is-active img { transform: scale(1.02); }
+.page-silversand .silversand-carousel:not(.is-ready) .silversand-frame { height: auto; overflow: visible; }
+.page-silversand .silversand-carousel:not(.is-ready) .ss-slide,
+.page-silversand .silversand-carousel:not(.is-ready) .ss-media,
+.page-silversand .silversand-carousel:not(.is-ready) img { height: auto; }
+
+.page-silversand .silversand-gallery-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 16px;
+}
+.page-silversand .ss-counter {
+  min-width: 4.5em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+}
+.page-silversand .ss-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+}
+.page-silversand .ss-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  padding: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.page-silversand .ss-dot.is-active { background: currentColor; }
+.page-silversand .ss-dot:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.page-silversand .ss-gallery.is-ready .ss-slide { display: none; margin: 0; }
+.page-silversand .ss-gallery.is-ready .ss-slide.is-active { display: flex; }
+
+@media (max-width: 40rem) {
+  .page-silversand .silversand-frame { height: clamp(240px, 44svh, 360px); }
+  .page-silversand .silversand-gallery-foot { flex-direction: column; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-silversand *, .page-silversand *::before, .page-silversand *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
