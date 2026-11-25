@@ -33,6 +33,16 @@ body.page-storybook noscript { display: none; }
   margin: 0 auto;
 }
 
+/* LibDoc даёт всем прямым детям main динамический max-width и поля
+   по 56px. Книжке это не нужно: разворот должен занимать всю ширину
+   области контента, иначе две страницы не влезают рядом. */
+body.page-storybook main > .storybook {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
 .storybook-book .storybook-page {
   background: var(--paper);
   color: var(--ink);
@@ -43,7 +53,9 @@ body.page-storybook noscript { display: none; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0;
+  /* Горизонтально страницы разворота идут вплотную (корешок),
+     а при переносе вниз между ними появляется зазор. */
+  gap: var(--sb-gap) 0;
   flex: 0 1 auto;
   max-width: 100%;
 }
@@ -177,7 +189,6 @@ body.page-storybook noscript { display: none; }
 
 .storybook-book .storybook-cover-title {
   position: absolute;
-  z-index: 2;
   display: block;
   top: 12%;
   left: 15%;
@@ -206,7 +217,6 @@ body.page-storybook noscript { display: none; }
 
 .storybook-book .storybook-cover-byline {
   position: absolute;
-  z-index: 2;
   bottom: 3%;
   left: 10%;
   right: 10%;
