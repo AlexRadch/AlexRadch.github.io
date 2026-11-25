@@ -34,7 +34,7 @@ body.page-storybook noscript { display: none; }
 }
 
 .storybook-book .storybook-page {
-  background: linear-gradient(90deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 72%, var(--paper-edge) 100%);
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--book-font);
 }
@@ -72,17 +72,29 @@ body.page-storybook noscript { display: none; }
 
 .storybook-book .storybook-page:has(.storybook-cover) {
   padding: 0;
+  border-radius: 0 10px 10px 0;
+  background: linear-gradient(90deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 100%);
 }
 
 /* У корешка поля разъезжаются: слева 10/12, справа 12/10. */
 .storybook-book .storybook-page-left {
   padding-left: 10%;
   padding-right: 12%;
+  border-radius: 10px 0 0 10px;
+  background: linear-gradient(270deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 100%);
 }
 
 .storybook-book .storybook-page-right {
   padding-left: 12%;
   padding-right: 10%;
+  border-radius: 0 10px 10px 0;
+  background: linear-gradient(90deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 100%);
+}
+
+/* Одинокий тело-разворот — левая страница. */
+.storybook-book .storybook-page-lone {
+  border-radius: 10px 0 0 10px;
+  background: linear-gradient(270deg, var(--paper-lo) 0%, var(--paper-hi) 8%, var(--paper) 26%, var(--paper) 100%);
 }
 
 .storybook-book .storybook-folio {
@@ -149,26 +161,15 @@ body.page-storybook noscript { display: none; }
 }
 
 .storybook-book .storybook-cover figure {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background: none;
+  margin: 0;
+  border-radius: 0;
 }
 
 .storybook-book .storybook-cover figure img {
   display: block;
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
-  max-width: none;
+  height: auto;
   max-height: none;
-  object-fit: fill;
   translate: var(--sb-cover-x) var(--sb-cover-y);
   scale: var(--sb-cover-zoom);
   margin: 0;

@@ -9,7 +9,7 @@ layout: libdoc_page.liquid
   <div class="storybook-book" id="storybook" style="--sb-aw: {{ aspectWidth | default: 2 }}; --sb-ah: {{ aspectHeight | default: 3 }}; --sb-cover-zoom: {{ coverZoom | default: 1.5 }}; --sb-cover-x: {{ coverOffsetX | default: '0%' }}; --sb-cover-y: {{ coverOffsetY | default: '0%' }}; --cover-ink: {{ coverInk | default: '#343a40' }};">
     <div class="storybook-spread">
       <div class="storybook-measurer">
-        <div class="storybook-page">
+        <div class="storybook-page storybook-page-right">
           <div class="storybook-inner storybook-cover">
             {%- if coverImage -%}
             <figure><img src="{{ coverImage }}" alt="{{ storyTitle }}" loading="eager" sizes="auto"></figure>
