@@ -2,6 +2,15 @@
    Цвета бумаги заданы здесь и не зависят от темы сайта. */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400..700;1,400..700&display=swap");
 
+/* cqi внутри страницы меряет её content-box вместе с полями, а шрифт считается
+   от всей ширины страницы. Регистрация заставляет --sb-page-w вычислиться
+   на книге готовой длиной, и наследники получают уже полную ширину. */
+@property --sb-page-w {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 1px;
+}
+
 /* Книжка не меняется при выключенном JS: предупреждение LibDoc её только сдвигает. */
 body.page-storybook noscript { display: none; }
 
@@ -42,6 +51,13 @@ body.page-storybook noscript { display: none; }
   );
   --sb-page-w: calc(var(--sb-page-h) * var(--sb-aw) / var(--sb-ah));
   font-weight: var(--sb-font-normal);
+  /* Только в книге: у LibDoc на теле стоит ось wght 360 и отрицательный
+     трекинг — они перебивают книжные 500 и делают текст светлее Hugo.
+     Сглаживание и рендеринг тоже книжные, не сайтовые. */
+  font-variation-settings: normal;
+  letter-spacing: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   container-type: inline-size;
   display: flex;
   flex-wrap: wrap;
@@ -151,15 +167,15 @@ body.page-storybook main > .storybook {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 4cqi;
+  bottom: calc(var(--sb-page-w) * 0.06);
   text-align: center;
-  font-size: 3.2cqi;
+  font-size: calc(var(--sb-page-w) * 0.032);
   font-variant-numeric: lining-nums;
   color: var(--ink-soft);
 }
 
 .storybook-book .storybook-inner {
-  font-size: 3.75cqi;
+  font-size: calc(var(--sb-page-w) * 0.0375);
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -206,6 +222,8 @@ body.page-storybook main > .storybook {
 
 .storybook-book .storybook-page p {
   margin: 0.5em 0;
+  /* LibDoc ставит абзацам 1.6 — в книге межстрочный такой же, как на странице. */
+  line-height: 1.42;
 }
 
 .storybook-book .storybook-page p:first-child {
