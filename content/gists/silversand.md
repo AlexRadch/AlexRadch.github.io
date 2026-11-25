@@ -4,7 +4,7 @@ description: "Фотографии и заметки о небольшом от�
 date: 2026-11-23T21:13:37+07:00
 robotsNoindex: true
 pageStyle: "silversand"
-layout: libdoc_page.liquid
+layout: silversand_standalone.liquid
 permalink: gists/silversand/
 eleventyNavigation:
   key: "Silver Sand Resort"
