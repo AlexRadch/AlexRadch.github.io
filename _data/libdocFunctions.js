@@ -52,7 +52,7 @@ export default {
                     // width: current width in px
                     // format: current file format
                     // options: set of options passed to the Image call
-                    const filename = src.split('/').slice(-1)[0].split('.')[0];
+                    const filename = src.split(/[\\/]/).slice(-1)[0].split('.')[0];
                     return `${libdocUtils.slugify(filename)}-${id}-__${width}__.${format}`;
                 },
                 sharpOptions: {

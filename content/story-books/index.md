@@ -6,6 +6,7 @@ layout: libdoc_page.liquid
 permalink: story-books/
 eleventyNavigation:
   key: "Книги"
+  order: 2
 ---
 Книжки, которые листаются как настоящие.
 
