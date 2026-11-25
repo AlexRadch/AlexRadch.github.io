@@ -11,9 +11,9 @@ import libdocConfig                         from "./_data/libdocConfig.js";
 import libdocFunctions                      from "./_data/libdocFunctions.js";
 // END LibDoc imports
 
-// START gists imports
-import silversand                           from "./_data/silversand.js";
-// END gists imports
+// START GISTS imports
+import gistExtras                           from "./lib/gist-extras.js";
+// END GISTS imports
 
 export default function(eleventyConfig) {
     // START PLUGINS
@@ -22,6 +22,7 @@ export default function(eleventyConfig) {
     eleventyConfig.addPlugin(eleventyNavigationPlugin);
     eleventyConfig.addPlugin(eleventyImageTransformPlugin, libdocFunctions.pluginsParameters.eleventyImageTransform());
     eleventyConfig.addPlugin(pluginRss);
+    eleventyConfig.addPlugin(gistExtras);
     // END PLUGINS
 
     // START FILTERS
@@ -50,52 +51,6 @@ export default function(eleventyConfig) {
     eleventyConfig.addPairedShortcode("sandbox", libdocFunctions.shortcodes.sandbox);
     eleventyConfig.addPairedShortcode("sandboxFile", libdocFunctions.shortcodes.sandboxFile);
     // END SHORTCODES
-
-    // START gists shortcodes
-    // Карусель Silver Sand: кадры уже ресайзнуты заранее, поэтому eleventy:ignore
-    // удерживает image transform от повторной оптимизации готовых JPG/WebP.
-    eleventyConfig.addShortcode("silversandGallery", function(key, label) {
-        const slides = silversand[key];
-        if (!slides) {
-            throw new Error(`Silver Sand: нет галереи ${key}`);
-        }
-        const escape = value => String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
-        const frames = slides.map((slide, index) => `
-          <figure class="ss-slide${index === 0 ? " is-active" : ""}" data-index="${index + 1}">
-            <div class="ss-media">
-              <picture>
-                <source srcset="${slide.webp}" type="image/webp">
-                <img eleventy:ignore src="${slide.jpg}" alt="${escape(slide.alt)}" width="${slide.width}" height="${slide.height}" loading="lazy" decoding="async">
-              </picture>
-            </div>
-          </figure>`).join("");
-        return `
-<div class="wrap">
-  <div class="silversand-carousel ss-gallery" data-gallery aria-label="Фотографии: ${escape(label)}">
-    <div class="silversand-frame">
-      <div class="ss-stage">${frames}
-      </div>
-    </div>
-    <div class="silversand-gallery-foot">
-      <span class="ss-counter" aria-live="polite">1 / ${slides.length}</span>
-      <div class="ss-dots" role="group" aria-label="Выбрать фотографию">
-        ${slides.map((slide, index) => `<button type="button" class="ss-dot${index === 0 ? " is-active" : ""}" data-go="${index + 1}" aria-label="Фотография ${index + 1}"${index === 0 ? ' aria-current="true"' : ''}></button>`).join("\n        ")}
-      </div>
-    </div>
-  </div>
-</div>`;
-    });
-    // END gists shortcodes
-
-    // START TRANSFORMS
-    // eleventy:ignore гасит оптимизацию уже готовых кадров, но в разметке
-    // внутри <picture> атрибут остаётся — убираем его из итогового HTML.
-    eleventyConfig.addTransform("cleanEleventyIgnore", function(content, outputPath) {
-        return outputPath && outputPath.endsWith(".html")
-            ? content.replaceAll(' eleventy:ignore=""', '')
-            : content;
-    });
-    // END TRANSFORMS
 
     // START FILE COPY
 	eleventyConfig.addPassthroughCopy("sandboxes");
