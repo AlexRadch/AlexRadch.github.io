@@ -1,4 +1,5 @@
 ---
+lastmod: "2026-10-14"
 title: "Фрагменты"
 description: "Небольшие обзоры и исследования."
 layout: libdoc_page.liquid

@@ -11,7 +11,7 @@
 печатная версия. Свой CSS и ванильный JS.
 
 Публикация: GitHub Actions → GitHub Pages, https://alexradch.github.io/.
-Workflow и адрес сборки переделываются при переносе.
+Workflow: `.github/workflows/eleventy.yml`, сборка из `_site`.
 
 ## Команды
 

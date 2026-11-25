@@ -1,4 +1,5 @@
 ---
+lastmod: "2026-09-23"
 title: Главная
 description: Личный сайт-витрина Александра Радченко
 layout: libdoc_page.liquid

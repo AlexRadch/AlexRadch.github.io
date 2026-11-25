@@ -1,4 +1,5 @@
 ---
+lastmod: "2026-10-14"
 title: "Квак и Жаб и всё более совершенные машины"
 description: "Квак и Жаб перед лицом самого современного вызова"
 date: 2026-10-10T00:00:00+07:00
@@ -7,7 +8,7 @@ layout: storybook.liquid
 permalink: story-books/frog-and-toad/machines-hack-huggingface/
 eleventyNavigation:
   key: "Квак и Жаб и всё более совершенные машины"
-  parent: "Книги"
+  parent: "Квак и Жаб"
 pageStyle: "storybook"
 pageScript: false
 hidePageHeading: true

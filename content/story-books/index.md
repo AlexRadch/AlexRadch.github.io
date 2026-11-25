@@ -1,4 +1,5 @@
 ---
+lastmod: "2026-10-14"
 title: "Книги"
 description: "Книжки-читалки: которые листаются как настоящие"
 layout: libdoc_page.liquid

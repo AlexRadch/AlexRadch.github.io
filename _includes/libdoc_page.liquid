@@ -437,7 +437,10 @@
                                 <span class="icon-calendar-dots fs-6"></span>
                                 <time ws-nowrap="sm,md">
                                     {% assign dateString = page.date | dateString %}
-                                    {% if dateString == "1111-11-11" %}
+                                    {% if lastmod %}
+                                        {{ libdocMessages.lastModified[pageLang] }}
+                                        {{ lastmod }}
+                                    {% elsif dateString == "1111-11-11" %}
                                         {{ libdocMessages.lastModified[pageLang] }}
                                         {{ page.inputPath | gitLastModifiedDate }}
                                     {% else %}
