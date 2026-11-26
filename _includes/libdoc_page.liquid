@@ -25,6 +25,7 @@
             {% endfor %}
             document.write('<script defer src="/core/assets/js/ui.js"><\/script>');
             document.write('<script defer src="/assets/scripts/nav-collapsible.js"><\/script>');
+            document.write('<script defer src="/assets/scripts/toc-state.js"><\/script>');
             {% if libdocConfig.searchEnabled %}
             document.write('<link rel="stylesheet" href="/core/assets/css/autocomplete.css">');
             document.write('<script defer src="/core/assets/js/autocomplete.min.js"><\/script>');
@@ -40,6 +41,13 @@
             {% endif %}
         }
     })();
+    </script>
+    <script>
+        if (!window.__NOJS__) (function () {
+            var prefs = {};
+            try { prefs = JSON.parse(localStorage.getItem('eleventyLibdoc')) || {}; } catch (e) {}
+            if (prefs.tocMainExpanded === false) document.documentElement.dataset.tocMain = 'closed';
+        })();
     </script>
     <style>
         .nojs-back {
@@ -149,6 +157,7 @@
             --ita-widths-content: {{ libdocSystem.widthContent }}px;
             --ita-widths-main-container-max: calc(2 * var(--ita-widths-content) + var(--ita-widths-sidebar));
         }
+        html[data-toc-main="closed"] #toc_main > ol { display: none; }
         {% if libdocConfig.roundedImagesCorners %}
             main img {
                 border-radius: 9px;
