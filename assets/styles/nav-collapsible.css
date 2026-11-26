@@ -1,21 +1,26 @@
 /* Collapsible sidebar submenus: assets/scripts/nav-collapsible.js */
-#nav_primary li.nav-collapsible {
-    position: relative;
+/* Parents show the same +/− marker as the local TOC; the theme dot stays on leaves. */
+#nav_primary li.nav-collapsible > a.nav_primary__anchor::before {
+    margin-right: 24px;
 }
 
-#nav_primary li.nav-collapsible > a.nav_primary__anchor {
-    padding-right: 34px;
+#nav_primary li.nav-collapsible > a.nav_primary__anchor::after {
+    display: none;
+}
+
+#nav_primary li.nav-collapsible {
+    position: relative;
 }
 
 #nav_primary .nav-collapsible__toggle {
     position: absolute;
     top: 0;
-    right: 0;
+    left: 20px;
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
+    width: 20px;
     height: 34px;
     padding: 0;
     border: 0;
@@ -24,13 +29,10 @@
     cursor: pointer;
 }
 
-#nav_primary .nav-collapsible__toggle .icon-caret-down {
-    transition: transform 150ms ease;
-    transform: rotate(-90deg);
-}
-
-#nav_primary .nav-collapsible__toggle[aria-expanded="true"] .icon-caret-down {
-    transform: rotate(0deg);
+/* Same size as the TOC markers (.fs-6 = 20px). */
+#nav_primary .nav-collapsible__toggle [class*="icon-"] {
+    width: 20px;
+    height: 20px;
 }
 
 #nav_primary .nav-collapsible__children--collapsed {

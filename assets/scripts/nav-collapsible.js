@@ -42,6 +42,7 @@
     function setExpanded(group, expanded) {
         group.list.classList.toggle("nav-collapsible__children--collapsed", !expanded);
         group.button.setAttribute("aria-expanded", expanded ? "true" : "false");
+        group.icon.className = expanded ? "icon-minus-circle" : "icon-plus-circle";
         var label = (expanded ? "Свернуть подменю: " : "Развернуть подменю: ") + nameOf(group.anchor);
         group.button.setAttribute("aria-label", label);
         group.button.title = label;
@@ -58,14 +59,13 @@
         var icon = document.createElement("span");
         button.type = "button";
         button.className = "nav-collapsible__toggle";
-        icon.className = "icon-caret-down";
         button.appendChild(icon);
 
         var id = idFor(anchor, index);
         list.id = id;
         button.setAttribute("aria-controls", id);
 
-        var group = { list: list, anchor: anchor, button: button };
+        var group = { list: list, anchor: anchor, button: button, icon: icon };
         button.addEventListener("click", function () {
             setExpanded(group, button.getAttribute("aria-expanded") !== "true");
         });
