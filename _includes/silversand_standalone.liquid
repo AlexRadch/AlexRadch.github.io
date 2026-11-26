@@ -28,6 +28,16 @@
     <meta name="description" content="{{ description }}">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/png" href="{{ libdocConfig.faviconUrl }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ libdocConfig.productionUrl | append: page.url }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="{{ ogImageUrl | default: libdocConfig.ogImageUrl }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:url" content="{{ libdocConfig.productionUrl | append: page.url }}">
+    <meta name="twitter:image" content="{{ ogImageUrl | default: libdocConfig.ogImageUrl }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -2,6 +2,7 @@
 lastmod: "2026-11-23"
 title: "Silver Sand Resort: отель на пляже Ао Пхай"
 description: "Фотографии и заметки о небольшом отеле бунгало на пляже Ао Пхай, остров Кох Самет: пляж, номера, территория и еда."
+ogImageUrl: "https://alexradch.github.io/assets/silversand/hero.jpg"
 date: 2026-11-23T21:13:37+07:00
 robotsNoindex: true
 pageStyle: "silversand"

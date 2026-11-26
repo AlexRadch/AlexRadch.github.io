@@ -2,6 +2,7 @@
 lastmod: "2026-11-26"
 title: "Света — лучшие варианты для песни-поздравления"
 description: "Ответ нейросети: пять связок «жанр + стиль текста» для песни-поздравления Свете и два фаворита."
+ogImageUrl: "https://alexradch.github.io/assets/og-gist-sveta-pesnya-pozdravlenie.png"
 date: 2026-11-26T14:12:00+07:00
 layout: libdoc_page.liquid
 permalink: gists/sveta-pesnya-pozdravlenie/

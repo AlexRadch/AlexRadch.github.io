@@ -2,6 +2,7 @@
 lastmod: "2026-09-26"
 title: "Киса Лариса"
 description: "Песня супруги на день рождения: текст её собственный, музыка — Suno."
+ogImageUrl: "https://cdn2.suno.ai/image_large_8e47e366-78dd-42ac-b7f4-927162c7ba8c.jpeg"
 date: 2026-09-24T18:00:00+07:00
 layout: libdoc_page.liquid
 permalink: gists/kisa-larisa/
