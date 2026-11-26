@@ -24,6 +24,7 @@
             document.write('<script defer src="/core/assets/js/hljs/languages/{{ hljsLang }}.min.js"><\/script>');
             {% endfor %}
             document.write('<script defer src="/core/assets/js/ui.js"><\/script>');
+            document.write('<script defer src="/assets/scripts/nav-collapsible.js"><\/script>');
             {% if libdocConfig.searchEnabled %}
             document.write('<link rel="stylesheet" href="/core/assets/css/autocomplete.css">');
             document.write('<script defer src="/core/assets/js/autocomplete.min.js"><\/script>');
@@ -134,6 +135,8 @@
     </noscript>
     <link rel="stylesheet" href="/core/assets/css/hljs/night-owl.css">
     <link rel="stylesheet" href="/core/assets/css/icons.css">
+    <link rel="stylesheet" href="/assets/styles/nav-collapsible.css">
+    {% navCollapseConfig %}
     {% if pageStyle %}
     <link rel="stylesheet" href="/assets/styles/page-{{ pageStyle }}.css">
     {% endif %}

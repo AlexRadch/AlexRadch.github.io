@@ -17,6 +17,7 @@ import gistExtras                           from "./lib/gist-extras.js";
 
 // START LOCAL imports
 import externalImagesPlugin                 from "./lib/external-images.js";
+import navCollapsePlugin                   from "./lib/nav-collapse.js";
 // END LOCAL imports
 
 export default function(eleventyConfig) {
@@ -33,6 +34,7 @@ export default function(eleventyConfig) {
     eleventyConfig.addPlugin(eleventyImageTransformPlugin, libdocFunctions.pluginsParameters.eleventyImageTransform());
     eleventyConfig.addPlugin(pluginRss);
     eleventyConfig.addPlugin(gistExtras);
+    eleventyConfig.addPlugin(navCollapsePlugin);
     // END PLUGINS
 
     // START FILTERS
