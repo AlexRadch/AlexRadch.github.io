@@ -1,28 +1,41 @@
 /* Состояние меню рисуется при сборке (lib/nav-collapse.js); этот файл только
    прячет свёрнутые списки и меняет +/−. В ?nojs и без JS показываем всё дерево
    с теми же значками, чтобы меню не дёргалось и не теряло вид. */
+/* Ссылка и кнопка делят одну ячейку сетки: кнопка центрируется по высоте
+   ссылки, даже когда название занимает несколько строк. */
 #nav_primary li.nav-collapsible {
-    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+}
+
+#nav_primary li.nav-collapsible > a.nav_primary__anchor {
+    grid-area: 1 / 1;
 }
 
 #nav_primary li.nav-collapsible > a.nav_primary__anchor::before {
     margin-right: 24px;
 }
 
+#nav_primary li.nav-collapsible > ol {
+    grid-row: 2;
+}
+
 #nav_primary li.nav-collapsible > a.nav_primary__anchor::after {
     display: none;
 }
 
-#nav_primary .nav-collapsible__toggle {
-    position: absolute;
-    top: 0;
-    left: 20px;
+#nav_primary li.nav-collapsible > .nav-collapsible__toggle {
+    grid-area: 1 / 1;
+    justify-self: start;
+    align-self: center;
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 20px;
     height: 34px;
+    margin-left: 20px;
     padding: 0;
     border: 0;
     background: transparent;
