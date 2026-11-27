@@ -7,6 +7,7 @@ permalink: story-books/frog-and-toad/
 eleventyNavigation:
   key: "Квак и Жаб"
   parent: "Книги"
+tocPages: false
 ---
 Лягушонок Квак и жабёнок Жаб, герои сказок Арнольда Лобела.
 

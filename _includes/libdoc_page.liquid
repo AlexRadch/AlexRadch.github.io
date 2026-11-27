@@ -26,6 +26,7 @@
             document.write('<script defer src="/core/assets/js/ui.js"><\/script>');
             document.write('<script defer src="/assets/scripts/nav-collapsible.js"><\/script>');
             document.write('<script defer src="/assets/scripts/toc-state.js"><\/script>');
+            document.write('<script defer src="/assets/scripts/floating-pages.js"><\/script>');
             {% if libdocConfig.searchEnabled %}
             document.write('<link rel="stylesheet" href="/core/assets/css/autocomplete.css">');
             document.write('<script defer src="/core/assets/js/autocomplete.min.js"><\/script>');
@@ -144,6 +145,7 @@
     <link rel="stylesheet" href="/core/assets/css/hljs/night-owl.css">
     <link rel="stylesheet" href="/core/assets/css/icons.css">
     <link rel="stylesheet" href="/assets/styles/nav-collapsible.css">
+    <link rel="stylesheet" href="/assets/styles/floating-pages.css">
     {% navCollapseConfig %}
     {% if pageStyle %}
     <link rel="stylesheet" href="/assets/styles/page-{{ pageStyle }}.css">
@@ -522,5 +524,6 @@
             </footer>
         </main>
     </div>
+<div id="floating_pages_source" hidden>{% floatingPages page.url %}</div>
 </body>
 </html>

@@ -7,6 +7,7 @@ permalink: story-books/
 eleventyNavigation:
   key: "Книги"
   order: 2
+tocPages: false
 ---
 Книжки, которые листаются как настоящие.
 

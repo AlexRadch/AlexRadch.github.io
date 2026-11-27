@@ -8,6 +8,7 @@ eleventyNavigation:
   key: "Фрагменты"
   order: 1
 navChildrenExpanded: false
+tocPages: false
 ---
 Небольшие самостоятельные обзоры и исследования.
 Каждый фрагмент живёт сам по себе и не связан с остальным сайтом.

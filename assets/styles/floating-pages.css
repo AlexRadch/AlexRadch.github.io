@@ -1,0 +1,10 @@
+/* Разделитель между главами и подстраницами в обоих оглавлениях. */
+.pages-divider {
+    margin-top: 8px;
+    padding: 8px 20px 4px;
+    border-top: 1px dashed var(--ita-colors-primary-300);
+    color: var(--ita-colors-primary-500);
+    font-size: 0.75em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
