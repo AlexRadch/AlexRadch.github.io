@@ -28,6 +28,10 @@
 
         links.forEach(function (sourceLink) {
             var li = document.createElement('li');
+            // У подстраниц тот же класс строки, что у глав: одинаковые отступы
+            // и высота в обоих оглавлениях.
+            var templateItem = templateLink.closest('li');
+            if (templateItem) li.className = templateItem.className;
             var link = templateLink.cloneNode(false);
             link.href = sourceLink.getAttribute('href');
             link.textContent = sourceLink.textContent.trim();

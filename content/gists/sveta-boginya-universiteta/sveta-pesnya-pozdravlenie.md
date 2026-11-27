@@ -1,22 +1,26 @@
 ---
-lastmod: "2026-11-26"
+lastmod: "2026-11-27"
 title: "Света — лучшие варианты для песни-поздравления"
 description: "Ответ нейросети: пять связок «жанр + стиль текста» для песни-поздравления Свете и два фаворита."
 ogImageUrl: "https://alexradch.github.io/assets/og-gist-sveta-pesnya-pozdravlenie.png"
 date: 2026-11-26T14:12:00+07:00
 layout: libdoc_page.liquid
-permalink: gists/sveta-pesnya-pozdravlenie/
+permalink: gists/sveta-boginya-universiteta/sveta-pesnya-pozdravlenie/
 eleventyNavigation:
   key: "Света — лучшие варианты для песни-поздравления"
-  parent: "Фрагменты"
-navChildrenExpanded: false
+  parent: "Света — Богиня университета: готовая песня"
+  order: 2
 ---
 
 # Света — лучшие варианты для песни-поздравления
 
 Ответ нейросети на вопрос, в каком жанре и стиле написать песню-поздравление Свете. Публикуется как есть: пять вариантов, от самого попадающего в фактуру к более альтернативным.
 
-Выбран первый вариант — ироничный эпик-фолк-рок; [отдельное задание для ИИ](/gists/sveta-pesnya-pozdravlenie/sveta-pesnya-zadanie-dlya-ii/) с структурой песни и правилами стихосложения.
+Исходные [факты о Свете](/gists/sveta-boginya-universiteta/sveta-fakty-dlya-pesni/), с которых всё началось.
+
+Выбран первый вариант — ироничный эпик-фолк-рок; [отдельное задание для ИИ](/gists/sveta-boginya-universiteta/sveta-pesnya-zadanie-dlya-ii/) с структурой песни и правилами стихосложения.
+
+Готовая [песня «Света — Богиня университета»](/gists/sveta-boginya-universiteta/) — два варианта Suno на один и тот же текст, с плеерами и полным текстом.
 
 Отличная фактура — у вас уже есть всё, чтобы получилась не «дежурная поздравлялка», а по-настоящему личный хит.
 
