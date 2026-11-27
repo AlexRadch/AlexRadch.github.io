@@ -1,15 +1,16 @@
-/* Collapsible sidebar submenus: assets/scripts/nav-collapsible.js */
-/* Parents show the same +/− marker as the local TOC; the theme dot stays on leaves. */
+/* Состояние меню рисуется при сборке (lib/nav-collapse.js); этот файл только
+   прячет свёрнутые списки и меняет +/−. В ?nojs и без JS показываем всё дерево
+   с теми же значками, чтобы меню не дёргалось и не теряло вид. */
+#nav_primary li.nav-collapsible {
+    position: relative;
+}
+
 #nav_primary li.nav-collapsible > a.nav_primary__anchor::before {
     margin-right: 24px;
 }
 
 #nav_primary li.nav-collapsible > a.nav_primary__anchor::after {
     display: none;
-}
-
-#nav_primary li.nav-collapsible {
-    position: relative;
 }
 
 #nav_primary .nav-collapsible__toggle {
@@ -29,12 +30,40 @@
     cursor: pointer;
 }
 
-/* Same size as the TOC markers (.fs-6 = 20px). */
+/* Такой же размер, как у значков локального оглавления (.fs-6 = 20px). */
 #nav_primary .nav-collapsible__toggle [class*="icon-"] {
     width: 20px;
     height: 20px;
 }
 
-#nav_primary .nav-collapsible__children--collapsed {
+#nav_primary .nav-collapsible__toggle .icon-plus-circle {
     display: none;
+}
+
+#nav_primary li.nav-collapsible--closed > ol {
+    display: none;
+}
+
+#nav_primary li.nav-collapsible--closed .nav-collapsible__toggle .icon-minus-circle {
+    display: none;
+}
+
+#nav_primary li.nav-collapsible--closed .nav-collapsible__toggle .icon-plus-circle {
+    display: inline-flex;
+}
+
+html[data-nojs="true"] #nav_primary li.nav-collapsible--closed > ol {
+    display: flex;
+}
+
+html[data-nojs="true"] #nav_primary li.nav-collapsible--closed .nav-collapsible__toggle .icon-minus-circle {
+    display: inline-flex;
+}
+
+html[data-nojs="true"] #nav_primary li.nav-collapsible--closed .nav-collapsible__toggle .icon-plus-circle {
+    display: none;
+}
+
+html[data-nojs="true"] #nav_primary .nav-collapsible__toggle {
+    cursor: default;
 }

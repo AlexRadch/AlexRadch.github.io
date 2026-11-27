@@ -146,7 +146,6 @@
     <link rel="stylesheet" href="/core/assets/css/icons.css">
     <link rel="stylesheet" href="/assets/styles/nav-collapsible.css">
     <link rel="stylesheet" href="/assets/styles/floating-pages.css">
-    {% navCollapseConfig %}
     {% if pageStyle %}
     <link rel="stylesheet" href="/assets/styles/page-{{ pageStyle }}.css">
     {% endif %}
@@ -167,6 +166,17 @@
         {% endif %}
     </style>
     <noscript>
+
+        <style>
+
+            #nav_primary li.nav-collapsible--closed > ol { display: flex; }
+
+            #nav_primary li.nav-collapsible--closed .icon-plus-circle { display: none; }
+
+            #nav_primary li.nav-collapsible--closed .icon-minus-circle { display: inline-flex; }
+
+        </style>
+
         <link rel="stylesheet" href="/core/assets/css/noscript.css">
     </noscript>
     <script>
@@ -360,7 +370,7 @@
 
                 <div id="nav_primary"
                     class="pos-relative | fg-1 o-auto">
-                    {{ eleventyNavigationMenu }}
+                    {% navCollapseMenu pageLang %}{{ eleventyNavigationMenu }}{% endnavCollapseMenu %}
                 </div>
             </nav>
         </div>

@@ -7,7 +7,6 @@ permalink: gists/
 eleventyNavigation:
   key: "Фрагменты"
   order: 1
-navChildrenExpanded: false
 tocPages: false
 ---
 Небольшие самостоятельные обзоры и исследования.

@@ -9,6 +9,7 @@ permalink: gists/sveta-pesnya-pozdravlenie/
 eleventyNavigation:
   key: "Света — лучшие варианты для песни-поздравления"
   parent: "Фрагменты"
+navChildrenExpanded: false
 ---
 
 # Света — лучшие варианты для песни-поздравления

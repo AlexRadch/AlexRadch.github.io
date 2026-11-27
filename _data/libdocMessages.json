@@ -1,4 +1,16 @@
 {
+	"navExpandChildren": {
+		"en": "Expand submenu",
+		"fr": "Développer le sous-menu",
+		"it": "Espandi il sottomenu",
+		"ru": "Развернуть подменю"
+	},
+	"navCollapseChildren": {
+		"en": "Collapse submenu",
+		"fr": "Réduire le sous-menu",
+		"it": "Riduci il sottomenu",
+		"ru": "Свернуть подменю"
+	},
 	"copiedToClipboard": {
 		"en": "Copied to clipboard",
 		"fr": "Copié dans le presse-papiers",

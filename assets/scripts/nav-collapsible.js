@@ -1,92 +1,23 @@
-// Collapsible submenus in the left navigation. Loaded only with JavaScript on.
-(function () {
-    "use strict";
-
+// Кнопки +/− и состояние уже нарисованы в HTML при сборке — скрипт только
+// переключает классы по клику. Клик по названию страницы остаётся переходом.
+function navCollapseBind() {
     var nav = document.getElementById("nav_primary");
-    if (!nav) return;
-
-    var config = { expandedDepth: 2, overrides: {} };
-    var configNode = document.getElementById("nav-collapse-config");
-    if (configNode) {
-        try {
-            var parsed = JSON.parse(configNode.textContent);
-            if (parsed && typeof parsed === "object") config = parsed;
-        } catch (e) {}
-    }
-    var overrides = config.overrides || {};
-    var depth = Number(config.expandedDepth);
-    if (!Number.isFinite(depth) || depth < 1) depth = 2;
-
-    var groups = [];
-
-    // root <li> = level 1; its children live in the <ol> it owns.
-    function levelOf(li) {
-        var level = 0;
-        for (var parent = li.parentElement; parent; parent = parent.parentElement) {
-            if (parent.tagName === "OL") level++;
-        }
-        return level;
-    }
-
-    function nameOf(anchor) {
-        return ((anchor && anchor.textContent) || "подменю").trim();
-    }
-
-    function idFor(anchor, index) {
-        var href = (anchor && anchor.getAttribute("href")) || "";
-        var slug = href.toLowerCase().replace(/[^a-z0-9а-яё_-]+/gi, "-")
-            .replace(/^-+|-+$/g, "");
-        return "nav-group-" + (slug || index);
-    }
-
-    function setExpanded(group, expanded) {
-        group.list.classList.toggle("nav-collapsible__children--collapsed", !expanded);
-        group.button.setAttribute("aria-expanded", expanded ? "true" : "false");
-        group.icon.className = expanded ? "icon-minus-circle" : "icon-plus-circle";
-        var label = (expanded ? "Свернуть подменю: " : "Развернуть подменю: ") + nameOf(group.anchor);
-        group.button.setAttribute("aria-label", label);
-        group.button.title = label;
-    }
-
-    Array.prototype.forEach.call(nav.querySelectorAll("li"), function (li, index) {
-        var list = Array.prototype.find.call(li.children, function (child) {
-            return child.tagName === "OL";
-        });
-        if (!list) return;
-
-        var anchor = li.querySelector(":scope > a.nav_primary__anchor");
-        var button = document.createElement("button");
-        var icon = document.createElement("span");
-        button.type = "button";
-        button.className = "nav-collapsible__toggle";
-        button.appendChild(icon);
-
-        var id = idFor(anchor, index);
-        list.id = id;
-        button.setAttribute("aria-controls", id);
-
-        var group = { list: list, anchor: anchor, button: button, icon: icon };
-        button.addEventListener("click", function () {
-            setExpanded(group, button.getAttribute("aria-expanded") !== "true");
-        });
-
-        li.classList.add("nav-collapsible");
-        li.insertBefore(button, list);
-        groups.push(group);
-
-        var expanded = levelOf(li) + 1 <= depth;
-        var href = anchor && anchor.getAttribute("href");
-        if (href && Object.prototype.hasOwnProperty.call(overrides, href)) {
-            expanded = !!overrides[href];
-        }
-        setExpanded(group, expanded);
+    if (!nav || nav.dataset.navCollapseBound === "1") return;
+    nav.dataset.navCollapseBound = "1";
+    nav.addEventListener("click", function (event) {
+        var button = event.target.closest(".nav-collapsible__toggle");
+        if (!button || !nav.contains(button)) return;
+        var li = button.closest("li.nav-collapsible");
+        if (!li) return;
+        event.preventDefault();
+        var closed = li.classList.toggle("nav-collapsible--closed");
+        button.setAttribute("aria-expanded", closed ? "false" : "true");
+        var name = button.getAttribute("data-nav-name") || "подменю";
+        var text = (closed ? button.getAttribute("data-nav-expand") : button.getAttribute("data-nav-collapse")) + ": " + name;
+        button.setAttribute("aria-label", text);
+        button.title = text;
     });
+}
 
-    // Keep the branch containing the current page visible.
-    var current = nav.querySelector('a[aria-current="page"]');
-    if (current) {
-        groups.forEach(function (group) {
-            if (group.list.contains(current)) setExpanded(group, true);
-        });
-    }
-})();
+navCollapseBind();
+document.addEventListener("DOMContentLoaded", navCollapseBind);
